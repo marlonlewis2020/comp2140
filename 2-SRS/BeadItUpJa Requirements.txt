@@ -1,0 +1,215 @@
+Goal fulfilled through requirements:  
+
+The System should be reliable. 
+
+The System should improve efficiency. 
+
+The System should integrate with <<Productivity Tool: Excel, Sheets, Word>> to render reports. 
+
+The System should be developed with the evolutionary capability to integrate with a website for customer interaction and business operations management. 
+
+ 
+
+Follow-up Questions in RE spiral: 
+
+Follow-up questions for the customer are provided as comments. Please do not delete. Please provide clear customer answers as comments replies. For each data field, we need the format (I.e., phone number: “876-999-9999") and specific field size (I.e., phone number: 10 characters/bytes) and data type (I.e., string, int, date, etc.). If there are additional questions you would like to add, please reply to the very first comment stating the section number you’re referring to along with the question you believe should be submitted to the customer. 
+
+ 
+
+Possible Required Classes to Implement (with priority level): 
+
+Inventory Item (p1)  
+
+Product (p1) 
+
+Pickup Location (p2) 
+
+Customer (from Abstract class Person) (p2) 
+
+Order (p3)  
+
+User (from Abstract class Person) (p3) 
+
+Authentication (p3)  
+
+TextUIs or AppGUIs (p4) 
+
+Menu (p4) 
+
+ 
+
+Non-Functional Requirements: 
+
+Section/Module 0: (Priority 1) 
+
+The System shall operate on <<32-bit 4GB RAM Windows 10 PC>> platform. 
+
+The System shall provide on-demand accessibility to the authorized user. 
+
+The System shall store all app data locally on the device for offline persistent storage. 
+
+The System shall make use of checksum and redundancies for reliability, to ensure data integrity and to prevent data loss. 
+
+The System shall Encrypt all databases for privacy and security. 
+
+The System should be developed using Java. 
+
+The System shall only allow fully authorized users to use the system. 
+
+The System should allow the authorized user to edit and reset their login credentials. 
+
+The System shall keep a log of all changes to the database. 
+
+The system shall require the user to be authenticated after a session goes idle for a user-specified time period in minutes. 
+
+  
+
+Functional Requirements: 
+
+Section/Module 1: (Priority 1) 
+
+The system shall create product entries. 
+
+The system shall display product details. 
+
+The system shall allow the authorized user to search for a product by criteria.  
+
+The system shall allow the authorized user to edit product details. 
+
+The System shall allow the user to filter by specific criteria. 
+
+System requirement activity: The System shall provide verification for “create” and “edit” actions in the database. 
+
+  
+
+Section/Module 2: (Priority 3) 
+
+The System shall allow the authorized user to create an order. 
+
+The System shall allow the authorized user to delete an order. 
+
+The System shall display orders. 
+
+The System shall filter orders by select criteria. 
+
+The System shall allow the authorized user to edit an order. 
+
+The System shall allow the authorized user to search for an order. 
+
+System requirement activity: The System shall provide verification for “create” and “edit” actions in the database. 
+
+  
+
+Section/Module 3: (Priority 4) 
+
+The System shall generate a weekly report of all orders at the end of previous week. 
+
+The System shall report on number of orders, order product names and percentages, order status percentages, delivery location percentages and inventory level statuses for all items. 
+
+The System shall allow the authorized user to generate reports of orders by date. 
+
+The System shall provide notification of Low Stock.  
+
+ 
+
+Section/Module 4: (Priority 1) 
+
+The System shall allow the authorized user to create an Inventory Item. 
+
+The System shall display inventory levels for all items. (beads, spacers, pendants, pouches) 
+
+The System shall allow the authorized user to edit an Inventory Item. 
+
+The System shall allow the authorized user to delete an inventory item. 
+
+The System shall filter for all stock and low stock items. 
+
+System requirement activity: The System shall provide verification for “create” and “edit” actions in the database. 
+
+ 
+
+ 
+
+  
+
+Section/Module 5: (Priority 3) 
+
+The System shall provide an estimate of the number of available bracelets. 
+
+The System shall calculate the number of each bead required for the various standard-sized bracelets. 
+
+ 
+
+Section/Module 6: (Priority 2) 
+
+The System shall allow the authorized User to create pickup location. 
+
+The System shall allow the authorized user to edit pickup location. 
+
+The System shall allow the authorized user to delete pickup location. 
+
+The System shall display a list of available pickup locations. 
+
+The System shall filter pickup locations based on customer parish. 
+
+System requirement activity: The System shall provide verification for “create” and “edit” actions in the database. 
+
+ 
+
+Section/Module 7: (Priority 2) 
+
+The System shall allow an authorized user to create a customer record. 
+
+The System shall allow an authorized user to edit customer details.  
+
+The System shall display customers. 
+
+System requirement activity: The System shall provide verification for “create” and “edit” actions in the database. 
+
+The System should display all orders for a selected customer, order status and sorted by delivery date. 
+
+The system should display all closed orders in red. 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Architectural Design Considerations:  
+
+MVC or Layered 
+
+Design Idea/Consideration for Orders: 
+
+Orders View displays 4 sections/tabs: Products, Open, Created, Delivered 
+
+Products section displays all bracelet types, stock, undelivered amount ordered, amount applied and the pending amount to be created. Tapping on a type will allow the authorized user to indicate how much he just created, giving them the option to manually or automatically apply to open orders. Assignments change relevant order statuses from “Open” to “Created” when all the products in that order are completed. It chooses order to add products based on first come first served basis. 
+
+Open section shows all orders that are not yet fully created. Indicating type and amounts pending in the order. Tapping order allows the authorized user to see full order details. Tapping Edit allows user to edit order details. Tapping cancel allows user to delete order. 
+
+Created section shows all the orders that are fully created and ready for delivery. This is arranged in order by delivery date. Tapping an order allows the user to see full order details. Tap “Delivered” button to change order status to delivered. Tapping Edit allows user to edit order details. Tapping cancel allows user to delete order. 
+
+Delivered shows all the fulfilled orders.  
+
+Excess products created are stored as Stock to be applied to next order. Excess due to editing order items, order cancellation or return. 
+
+ 
