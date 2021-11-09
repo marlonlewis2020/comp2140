@@ -12,7 +12,7 @@ public class DBConnect {
     static final String DB = "jdbc:mysql://localhost/beaditupja";
     static final String USER = "admin";
     static final String PWD = "admin";
-    private Connection conn;
+    public Connection conn;
 
     public DBConnect() {
         try {
