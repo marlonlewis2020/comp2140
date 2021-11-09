@@ -23,6 +23,11 @@ public class DBConnect {
         }
     }
 
+    // checks all inventory levels each time an edit is made to the database
+    public String notification() {
+        return "";
+    }
+
     public Connection dbconnection() {
         return conn;
     }
