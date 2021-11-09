@@ -10,7 +10,7 @@ public class DBConnect {
     static final String DB = "jdbc:mysql://localhost/beaditupja";
     static final String USER = "admin";
     static final String PWD = "admin";
-    Connection conn = null;
+    private Connection conn;
 
     public DBConnect() {
         try {
@@ -18,5 +18,9 @@ public class DBConnect {
         } catch (SQLException e) {
             conn = null;
         }
+    }
+
+    public Connection dbconnection() {
+        return conn;
     }
 }
