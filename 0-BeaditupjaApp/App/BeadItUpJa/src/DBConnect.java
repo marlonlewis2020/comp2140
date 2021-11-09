@@ -12,12 +12,12 @@ public class DBConnect {
     static final String PWD = "admin";
     Connection conn = null;
 
-    try
     {
-        conn = DriverManager.getConnection(DB, USER, PWD);
-    }catch(
-    SQLException e)
-    {
-        e.printStackTrace();
+
+        try {
+            conn = DriverManager.getConnection(DB, USER, PWD);
+        } catch (SQLException e) {
+            conn = null;
+        }
     }
 }
