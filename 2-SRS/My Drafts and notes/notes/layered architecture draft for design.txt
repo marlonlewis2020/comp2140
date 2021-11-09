@@ -1,0 +1,103 @@
+public class Statement{
+Connection conn;
+PreparedStatement p;
+
+public Statement(Connection c){
+this.conn=c;
+}
+
+public PreparedStatement createItem(){}
+
+public PreparedStatement createLocation(){}
+
+public PreparedStatement createProduct(){}
+
+public PreparedStatement createCustomer(){}
+
+public PreparedStatement createUser(){}
+
+public PreparedStatement viewItem(){}
+
+public PreparedStatement editItem(){}
+
+public PreparedStatement listProducts(){}
+
+public PreparedStatement viewProduct(){}
+
+public PreparedStatement editProduct(){}
+
+public PreparedStatement viewCustomer(){}
+
+public PreparedStatement editCustomer(){}
+
+public PreparedStatement deleteLocation(){}
+
+}
+
+public class Rights{ [[for User class]]
+enum Rights{
+"CREATE",
+"EDIT",
+"VIEW",
+"DELETE"
+}
+}
+
+public class header{
+Interface DBConnection{
+String db;
+String uname;
+String pwd;
+Connection conn = DriverManager.getConnection(db,uname,pwd);
+
+public int create(){}
+
+public void edit(){}
+
+public bool create(){}
+}
+
+class Authentication{
+String username;
+String hashpwd;
+String name;
+Authentication auth;
+Date date;
+String time;
+
+public bool is_valid(){
+String sql = "select distinct password from users where user = "+this.username;
+String[] pwd = conn.query(sql);
+bool val = this.hashpwd==pwd[0];
+if (val){
+Authorization auth = new Authorization(this.username);
+}
+return val}
+
+class Authorization{
+String[] tables;
+String[] rights;
+public Authorization(String user){
+//code to populate tables array and rights array}
+}
+}
+.....................................................
+
+class Request{
+String table;
+int access;
+}
+}
+.....................................................
+.....................................................
+
+class Payload{
+int request; //i.e. edit - 1
+int specific; //i.e. update qty - 4
+string[] inputs;
+bool status;
+String[] response;
+}
+
+
+

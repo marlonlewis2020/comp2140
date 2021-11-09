@@ -1,0 +1,82 @@
+title Inventory Management
+
+bottomparticipants
+actor User
+participant authentication
+entity Inventory Item
+database UserDB
+database InventoryDB
+
+==sign in==
+authentication<-User:sign in
+activate User
+authentication->UserDB:check for user
+activate authentication
+activate UserDB
+
+alt verified
+authentication<--UserDB:return user data
+
+
+deactivate UserDB
+authentication-->User:access privileges
+else unverified
+User<--authentication:return login screen
+deactivate authentication
+deactivate User
+end
+
+==Create Inventory Item==
+loop valid inputs
+User->Inventory Item:submit item inputs
+activate User
+activate Inventory Item
+Inventory Item->Inventory Item:validate item
+note over Inventory Item:Checks **input validity** 
+User<--Inventory Item:error
+User<-Inventory Item:create item screen
+end
+
+alt unique item
+Inventory Item->InventoryDB:add item
+activate InventoryDB
+else item exists
+Inventory Item->InventoryDB:increase item qty
+Inventory Item->InventoryDB:update limit
+end
+User<--InventoryDB:status
+
+deactivate InventoryDB
+deactivate Inventory Item
+deactivate User
+
+==list items==
+User->Inventory Item:request inventory items
+activate Inventory Item
+activate User
+User->Inventory Item:select filter
+Inventory Item->Inventory Item:Apply filter
+Inventory Item->InventoryDB:get inventory items
+activate InventoryDB
+Inventory Item<--InventoryDB:inventory items
+deactivate InventoryDB
+User<--Inventory Item:inventory items
+deactivate Inventory Item
+deactivate User
+
+==view item==
+User->Inventory Item:select item
+activate Inventory Item
+activate User
+Inventory Item->Inventory Item: verify item
+Inventory Item->InventoryDB:request item
+activate InventoryDB
+Inventory Item<--InventoryDB: item details
+deactivate Inventory Item
+deactivate InventoryDB
+User<--Inventory Item: item details
+deactivate User
+
+==sign out==
+User->authentication:sign out
+User<--authentication:login screen

@@ -1,0 +1,14 @@
+Production Manager:
+Record Bracelet Bead Quantity
+Display Inventory
+Edit Inventory item
+Claculate number of bracelets
+
+Inventory Manager:
+Create Inventory Item
+Display Inventory
+Edit Inventory item
+Filter Inventory Items
+
+Operations Manager:
+Generate Weekly Report

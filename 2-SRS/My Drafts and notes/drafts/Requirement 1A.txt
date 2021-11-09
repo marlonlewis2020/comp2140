@@ -1,0 +1,51 @@
+
+Title/User Requirement: 
+     	The first User Requirement we will look at is 
+     	"The System shall allow the 
+     	Inventory Manager or Operations 
+     	Manager to create an inventory item."
+     
+Owner:     
+     	I am the owner responsible for fully specifying this requirement.
+
+Rationale:
+     	This requirement is necessary for the inventory management feature because
+     	the Inventory manager and Operations Manager will need to be able to populate the 
+     	inventory with all inventory items. 
+
+Priority: 
+	The Priority is HIGH because All other functions of the 
+	inventory management system requires the system to allow 
+	the user to create an inventory item. This requirement has no
+	other dependency.
+
+
+-----------------------------------------------------------
+
+
+Use Case: 
+	The use case relating to this requirement is Create Inventory Item".
+
+There are 5 System Requirements:
+1.	The System displays the create item screen.
+2.	The system shall accept user inputs matching 
+        the fields for an inventory item.
+3.	The User shall be allowed to validate input 
+        and edit inputs before submission.
+4.	The system shall add the item to the inventory 
+        database if the item does not exist or increment 
+        the item’s quantity in the database if it was 
+        already created.
+5.	The system shall return a confirmation message 
+        if the inventory database has been successfully 
+        updated.
+
+Acceptance Criteria: 
+     	The user shall be able to add item 
+     	in database 100% of the time after 
+     	having entered at least the item 
+     	name and quantity fields.
+
+-----------------------------------------------------------
+Callay - Dsplay Inventory Item
+-----------------------------------------------------------

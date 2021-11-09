@@ -1,0 +1,98 @@
+title Customer Management
+
+bottomparticipants
+actor User
+participant authentication
+participant Order Mgmt
+entity Customer
+database UserDB
+database CustomerDB
+database OrdersDB
+
+==sign in==
+authentication<-User:sign in
+activate User
+activate authentication
+authentication->*UserDB:check for user
+activate UserDB
+
+alt verified
+authentication<--UserDB:return user data
+
+
+deactivate UserDB
+authentication-->User:access privileges
+else unverified
+User<--authentication:return login screen
+deactivate authentication
+deactivate User
+end
+==Create Customer==
+User->*Order Mgmt:create order
+activate User
+activate Order Mgmt
+alt customer exists
+Order Mgmt->Customer:get customer details
+activate Customer
+Customer->CustomerDB:get customer details
+else new customer
+Order Mgmt->Customer:create customer
+Customer->CustomerDB:create customer
+end 
+Customer<--CustomerDB:customer details
+Order Mgmt<--Customer:customer details
+deactivate Customer
+note over Order Mgmt:adds customer details
+Order Mgmt->OrdersDB:get pickup locations
+activate OrdersDB
+Order Mgmt<--OrdersDB:pickup locations
+deactivate OrdersDB
+User<-Order Mgmt:request pickup location
+User-->Order Mgmt:pickup location
+note over Order Mgmt:adds pickup location
+Order Mgmt->OrdersDB:create order
+activate OrdersDB
+Order Mgmt<--OrdersDB:status
+deactivate OrdersDB
+User<--Order Mgmt:status
+deactivate Order Mgmt
+deactivate User
+
+==View/Edit Customer Details==
+User->Customer:select customer
+activate Customer
+activate User
+Customer->CustomerDB:find customer
+activate CustomerDB
+
+alt customer not found
+Customer<--CustomerDB:status
+User<--Customer:status
+deactivate User
+deactivate Customer
+else customer found
+
+
+Customer<--CustomerDB:customer details
+deactivate CustomerDB
+activate Customer
+User<--Customer:customer details
+deactivate Customer
+
+activate User
+User->Customer:submit cutomer edits
+activate Customer
+Customer->Customer:validates edits
+Customer->CustomerDB:save changes
+
+activate CustomerDB
+Customer<--CustomerDB:list of customers
+User<--Customer:list of Customers
+deactivate Customer
+deactivate CustomerDB
+deactivate User
+end 
+
+==sign out==
+User->authentication:sign out
+User<--authentication:login screen
