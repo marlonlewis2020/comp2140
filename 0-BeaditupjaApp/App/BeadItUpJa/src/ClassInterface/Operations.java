@@ -1,5 +1,7 @@
 package ClassInterface;
 
+import java.sql.PreparedStatement;
+
 public interface Operations {
 
     /*
