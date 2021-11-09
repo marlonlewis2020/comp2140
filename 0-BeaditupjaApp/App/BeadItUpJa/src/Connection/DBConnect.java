@@ -28,6 +28,7 @@ public class DBConnect {
         return "";
     }
 
+    // returns connection
     public Connection dbconnection() {
         return conn;
     }
