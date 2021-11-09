@@ -1,6 +1,9 @@
 package ClassInterface;
 
-import java.sql.PreparedStatement;
+/**
+ * Methods to be implemented by all the business classes of the BeadItUpJa
+ * project
+ */
 
 public interface Operations {
 
