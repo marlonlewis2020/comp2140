@@ -12,8 +12,7 @@ public class DBConnect {
     static final String PWD = "admin";
     Connection conn = null;
 
-    {
-
+    public DBConnect() {
         try {
             conn = DriverManager.getConnection(DB, USER, PWD);
         } catch (SQLException e) {
