@@ -1,0 +1,41 @@
+Class Diagram will e described in terms of the class Interfaces, Services and the Relationships between of each of the relevant classes.
+
+1. User: User has an aggregate relationship with Authentication.
+The User uses specific services via the Authentication class interface to verify a user and obtain the user-specific menu.
+
+2. Authentication: Authentication provides login and menu generation services via its interface to the User class.
+Within the application logic, the user is able to perform services on inventory, orders, customer and bracelet based on user-specific menu options.
+
+3. Order: Order's has aggregate relationships with Customer, Bracelet and Pickup location in order to provide its services via its interface.
+Those services include:
+getOrder() - which takes an integer order number.
+createOrder() - which takes a customer details and product info.
+updateOrder() - which takes in order id and update information.
+
+4. Customer: Customer is used by Orders. It provides the followig services via its interface:
+getOrders() - which lists all orders associated with a customer.
+CreateCustomer() -  takes customer details
+updateCustomer() - customerid
+
+5. Bracelet: Barcelet has an aggregate relationship with stock and size.
+It allows the user to:
+createProduct()
+updateBracelte()
+
+6. Report uses the Bracelet and Stock class to generate reports for the user.
+getReport(time:Date, reportType:String) returns a String
+
+7. Stock: Stock has an aggregate relationship with stock type.
+updateStock(stockName:String): void à used to update the stock based on the stock name 
+createStock(): void à used to add new stock items to the inventory 
+viewStock(ilterNum:int): void à used to filter the stocks for specific queries 
+checkLevel(): String à checks the level the stock item is at to ensure that it doesn’t go below the minimum level
+
+I will now hand over to Callay who will describe how these classes are used to perform specific business-related functions in an instances.
+
+HashMap<String, String>
+
+Menu{
+
+}
+ 

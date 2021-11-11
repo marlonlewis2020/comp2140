@@ -1,0 +1,7 @@
+Architecture:
+GUI display components?
+
+processing time by layers, security, 
+functions in the lower layer or app layer?
+
+client-server: availability/single point of failure [Questions]

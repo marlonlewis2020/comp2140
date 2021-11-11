@@ -1,35 +1,65 @@
 package ClassInterface;
 
+import java.sql.Connection;
+
+import Connection.DBConnect;
+
 /**
+ * BeadItUpJa Project
  * Methods to be implemented by all the business classes of the BeadItUpJa
- * project
+ * @version 1.0
+ * @author Marlon Lewis
+ * 
  */
 
 public interface Operations {
+    //uses connection from DBConnect class 
+    public final Connection conn = DBConnect.conn;
 
-    /*
-     * Adds the created object to the database
-     */
-    public abstract boolean create();
+    public final String[] menu_list = {
+        "create user", "create stock", "create bracelet", "create customer",
+        "edit user","edit stock","edit bracelet","edit customer","view users",
+        "view user","view inventory","view stock","view bracelets","view customer"
+    };
 
-    /*
-     * Edits the object in the database
-     */
-    public abstract boolean edit();
+    public final String createUser = "";
+    public final String createStock = "";
+    public final String createBracelet = "";
+    public final String createCustomer = "";
+    public final String editUser = "";
+    public final String editStock = "";
+    public final String editBracelet = "";
+    public final String editCustomer = "";
+    public final String viewUsers = "";
+    public final String viewUser = "";
+    public final String viewUnventory = "";
+    public final String viewStock = "";
+    public final String viewBracelets = "";
+    public final String viewCustomer = "";
 
-    /*
-     * Provides a list of objects of this class type from the database
-     */
-    public abstract String[] view();
+    // /*
+    //  * Adds the created object to the database
+    //  */
+    // public abstract boolean create();
 
-    /*
-     * Returns the id for this object
-     */
-    public abstract int getID();
+    // /*
+    //  * Edits the object in the database
+    //  */
+    // public abstract boolean edit();
 
-    /*
-     * Returns the string identifier for this object
-     */
-    public abstract String toString();
+    // /*
+    //  * Provides a list of objects of this class type from the database
+    //  */
+    // public abstract String[] view();
+
+    // /*
+    //  * Returns the id for this object
+    //  */
+    // public abstract int getID();
+
+    // /*
+    //  * Returns the string identifier for this object
+    //  */
+    // public abstract String toString();
 
 }

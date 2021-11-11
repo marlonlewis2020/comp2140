@@ -1,9 +1,8 @@
-public class Statement{
-Connection conn;
+public class MenuOptions{
 PreparedStatement p;
 
-public Statement(Connection c){
-this.conn=c;
+public MenuOptions(){
+//connection is part of Authentication object
 }
 
 public PreparedStatement createItem(){}
@@ -12,9 +11,15 @@ public PreparedStatement createLocation(){}
 
 public PreparedStatement createProduct(){}
 
-public PreparedStatement createCustomer(){}
+private PreparedStatement composeBracelet(){}
+
+public PreparedStatement createOrder(){}
+
+private PreparedStatement createCustomer(){}
 
 public PreparedStatement createUser(){}
+
+public PreparedStatement viewInventory(){}
 
 public PreparedStatement viewItem(){}
 
@@ -33,40 +38,34 @@ public PreparedStatement editCustomer(){}
 public PreparedStatement deleteLocation(){}
 
 }
-
-public class Rights{ [[for User class]]
-enum Rights{
-"CREATE",
-"EDIT",
-"VIEW",
-"DELETE"
-}
 }
 
-public class header{
-Interface DBConnection{
+public class Authentication{
+class DBConnection{
 String db;
 String uname;
 String pwd;
 Connection conn = DriverManager.getConnection(db,uname,pwd);
 
-public int create(){}
-
-public void edit(){}
-
-public bool create(){}
 }
 
 class Authentication{
 String username;
 String hashpwd;
 String name;
-Authentication auth;
 Date date;
-String time;
 
-public bool is_valid(){
-String sql = "select distinct password from users where user = "+this.username;
+public Authentication(String un, String pw){
+this.username = un;
+this.hashpwd = hash(pw);
+
+overview and intro - Mercedes
+comparison and benefits - 
+trade-offs and requirements - 
+}
+
+public bool authenticate(String un, String pw){
+String sql = "select * from users where user = "+this.username;
 String[] pwd = conn.query(sql);
 bool val = this.hashpwd==pwd[0];
 if (val){
