@@ -1,41 +1,42 @@
-Class Diagram will e described in terms of the class Interfaces, Services and the Relationships between of each of the relevant classes.
+The class Diagram will be described in terms of the class Interfaces, Services and the Relationships between of each of the relevant classes.
+
+The following classes relate to the non-Functional Requirements of Authentication and Security
 
 1. User: User has an aggregate relationship with Authentication.
-The User uses specific services via the Authentication class interface to verify a user and obtain the user-specific menu.
+The User uses specific services of the Authentication class interface to verify a user and obtain the user-specific menu.
 
 2. Authentication: Authentication provides login and menu generation services via its interface to the User class.
-Within the application logic, the user is able to perform services on inventory, orders, customer and bracelet based on user-specific menu options.
+It enables the user to access and perform specific services on the inventory, orders, customer and bracelet objects in the database 
+based on user-specific menu options and access privileges.
 
-3. Order: Order's has aggregate relationships with Customer, Bracelet and Pickup location in order to provide its services via its interface.
+Authentication uses and is used by The following classes to provide business functionality to the Customer and for user authorization purposes.
+
+3. Orders: Orders has an aggregate relationships with Customer, Bracelet and Pickup location in order to provide its services via its interface.
 Those services include:
-getOrder() - which takes an integer order number.
-createOrder() - which takes a customer details and product info.
-updateOrder() - which takes in order id and update information.
+getOrder()
+createOrder()
+updateOrder()
 
-4. Customer: Customer is used by Orders. It provides the followig services via its interface:
-getOrders() - which lists all orders associated with a customer.
-CreateCustomer() -  takes customer details
-updateCustomer() - customerid
+4. Customer: Customer is used by Orders to provide the following services to the user via its interface:
+getOrders()
+CreateCustomer()
+updateCustomer()
 
-5. Bracelet: Barcelet has an aggregate relationship with stock and size.
-It allows the user to:
+5. Bracelet: Barcelet has an aggregate relationship with stock and size, allowing the user to:
 createProduct()
 updateBracelte()
 
-6. Report uses the Bracelet and Stock class to generate reports for the user.
-getReport(time:Date, reportType:String) returns a String
+6. Report uses the Bracelet and Stock classes to generate reports for the user.
 
-7. Stock: Stock has an aggregate relationship with stock type.
-updateStock(stockName:String): void à used to update the stock based on the stock name 
-createStock(): void à used to add new stock items to the inventory 
-viewStock(ilterNum:int): void à used to filter the stocks for specific queries 
-checkLevel(): String à checks the level the stock item is at to ensure that it doesn’t go below the minimum level
+7. Stock: Stock has an aggregate relationship with stock type, allowing the user to:
+updateStock()
+createStock()
+viewStock(ilterNum:int)
+checkLevel()
 
-I will now hand over to Callay who will describe how these classes are used to perform specific business-related functions in an instances.
+The interfaces for each class and function will continue to be adjusted as necessary as we interleave through the design and implementation phases to 
+realize all the business requirements.
 
-HashMap<String, String>
-
-Menu{
-
-}
+I will now hand over to Callay who will further describe how these classes to the specific business-related functional requirements, 
+using instance examples.
  

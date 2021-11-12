@@ -1,7 +1,7 @@
 package ClassInterface;
 
 import java.sql.Connection;
-
+import java.util.HashMap;
 import Connection.DBConnect;
 
 /**
@@ -15,12 +15,14 @@ import Connection.DBConnect;
 public interface Operations {
     //uses connection from DBConnect class 
     public final Connection conn = DBConnect.conn;
+    
+    // {
+    //     "create user", "create stock", "create bracelet", "create customer",
+    //     "edit user","edit stock","edit bracelet","edit customer","view users",
+    //     "view user","view inventory","view stock","view bracelets","view customer"
+    // };
 
-    public final String[] menu_list = {
-        "create user", "create stock", "create bracelet", "create customer",
-        "edit user","edit stock","edit bracelet","edit customer","view users",
-        "view user","view inventory","view stock","view bracelets","view customer"
-    };
+    public static HashMap<String,String> menuHashMap = new HashMap<String,String>();
 
     public final String createUser = "";
     public final String createStock = "";
@@ -32,11 +34,12 @@ public interface Operations {
     public final String editCustomer = "";
     public final String viewUsers = "";
     public final String viewUser = "";
-    public final String viewUnventory = "";
+    public final String viewInventory = "";
     public final String viewStock = "";
     public final String viewBracelets = "";
     public final String viewCustomer = "";
-
+    public final String viewBracelet = "";
+}
     // /*
     //  * Adds the created object to the database
     //  */
@@ -61,5 +64,3 @@ public interface Operations {
     //  * Returns the string identifier for this object
     //  */
     // public abstract String toString();
-
-}
