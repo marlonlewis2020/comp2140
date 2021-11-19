@@ -75,7 +75,7 @@ public class Authentication implements Operations{
      * Method deconstructs the Authentication attributes
      * @return sing out confirmation
      */
-    private String logout(){
+    public String logout(){
         role = null;
         user = null;
         pw = 0;

@@ -1,0 +1,56 @@
+Authentication (implements Operations Interface){
+    private PreparedStatement verify
+    private String role
+    private String user
+    private int pw
+    public ArrayList<String> menu_list
+    private ArrayList<String> userMenu
+    private String request
+    private ResultSet result
+    private String auth_message
+    private String auth_option
+
+    public Authentication()
+    public void authenticate(String user, String pw)
+    public String logout()
+    public ResultSet sendMenuRequest(String type)
+    public String getRole()
+    public String getUser()
+    public Connection getDbConn()
+    public String getAuth_message()
+    public ArrayList<String> getUserMenu()
+    public ArrayList<String> getMenu_list()
+    public String getRequest()
+    public String getAuth_option()
+    public String toString()
+}
+
+Operations<Interface> (aggregates DBConnect){
+    public final String createUser
+    public final String createStock
+    public final String createBracelet
+    public final String createCustomer
+    public final String editUser
+    public final String editStock
+    public final String editBracelet
+    public final String editCustomer
+    public final String viewUsers
+    public final String viewUser
+    public final String viewInventory
+    public final String viewStock
+    public final String viewBracelets
+    public final String viewCustomer
+    public final String viewBracelet
+}
+
+DBConnect{
+    static final String DB
+    static final String USER
+    static final String PWD
+    public static Connection conn
+
+    public DBConnect()
+    public String notification()
+    public Connection dbconnection()
+    public void save(String table, HashMap<String, String> dict)
+}
