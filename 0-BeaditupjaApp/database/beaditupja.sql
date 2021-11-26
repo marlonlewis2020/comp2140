@@ -1,146 +1,179 @@
--- MySQL dump 10.11
+-- phpMyAdmin SQL Dump
+-- version 5.0.2
+-- https://www.phpmyadmin.net/
 --
--- to install this database, from a terminal, type:
--- mysql -u USERNAME -p -h SERVERNAME beaditupja < beaditupja.sql
---
--- Host: localhost    Database: beaditupja
--- ------------------------------------------------------
--- Server version   5.0.45-log
+-- Host: 127.0.0.1
+-- Generation Time: Nov 26, 2021 at 11:53 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
-CREATE DATABASE IF not EXISTS beaditupja;
-USE beaditupja;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
--- Table structure for table `inventory_items`
+-- Database: `beaditupja`
 --
 
-CREATE TABLE IF not EXISTS `inventory_items` (
-  `id` int(3) NOT NULL auto_increment,
-  `name` char(35) NOT NULL default '',
-  `type` char(35) NOT NULL default '',
-  `qty` int(10) NOT NULL,
-  `limit` int(10) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=440 DEFAULT CHARSET=utf8mb4;
+-- --------------------------------------------------------
 
 --
--- creating data for table `inventory_items`
+-- Table structure for table `bracelet`
 --
 
-LOCK TABLES `inventory_items` WRITE;
-/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `inventory_items` VALUES (1,'white', 'bead',100,25),
-(2,'gold bead', 'bead',5000,750),
-(3,'black bead','bead',10000,1000),
-(4,'red bead','bead',1000,250),
-(5,'blue bead','bead',800,250),
-(6,'transparent','spacer',500,50),
-(7,'white','spacer',500,50),
-(8,'black pouch','pouch',100,25);
-UNLOCK TABLES;
+CREATE TABLE `bracelet` (
+  `id` int(8) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `collection` varchar(30) NOT NULL,
+  `cost` decimal(8,0) NOT NULL,
+  `bead_quantity_small` int(2) NOT NULL,
+  `bead_quantity_medium` int(2) NOT NULL,
+  `bead_quantity_large` int(2) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
-
---
--- Table structure for table `<<name>>`
---
-
-CREATE TABLE IF not EXISTS `products` (
-  `id` int(3) NOT NULL auto_increment,
-  `collection` char(35) NOT NULL default '',
-  `name` char(35) NOT NULL default '',
-  `description` char(150) NOT NULL default '',
-  `bead1` char(35) NOT NULL,
-  `bead1_qty` int(2) NOT NULL,
-  `bead2` char(35) NOT NULL,
-  `bead2_qty` int(2) NOT NULL,
-  `spacer` char(35) NOT NULL,
-  `spacer_qty` int(2) NOT NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=440 DEFAULT CHARSET=utf8mb4;
+-- --------------------------------------------------------
 
 --
--- creating data for table `cities`
+-- Table structure for table `customers`
 --
 
-LOCK TABLES `products` WRITE;
-/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `inventory_items` VALUES (1,"city of gold","golden calf","golden calf bracelet in the city of gold collection",'gold bead',9,'white bead',5,'spacers',3),
-(2,"emerald city","green tortoise","green tortoise bracelet in the emerald city collection",'green bead',7,'white bead',4,'black bead',3),
-(3,"city of gold","golden lion","golden lion bracelet in the city of gold collection",'gold bead',7,'white bead',4,'black bead',3),
-UNLOCK TABLES;
+CREATE TABLE `customers` (
+  `id` int(8) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `telephone` int(10) NOT NULL,
+  `order_address` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `<<name>>`
+-- Table structure for table `orders`
 --
 
-CREATE TABLE IF not EXISTS `<<name>>` (
-  `id` int(3) NOT NULL auto_increment,
-  `name` char(35) NOT NULL default '',
-  `qty` int(10) NOT NULL,
-  `limit` int(10) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=440 DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `orders` (
+  `order_number` int(8) NOT NULL,
+  `items` varchar(150) NOT NULL,
+  `customer_id` int(8) NOT NULL,
+  `pickup_location` varchar(30) NOT NULL,
+  `total` decimal(8,0) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- creating data for table `cities`
+-- Table structure for table `pickup_location`
 --
 
-LOCK TABLES `inventory_items` WRITE;
-/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `inventory_items` VALUES (1,'white bead',100,25),
-(2,'gold bead',5000,750),
-(3,'black bead',10000,1000),
-(4,'red bead',1000,250),
-(5,'spacers',500,50),
-(6,'blue bead',800,250),
-(7,'pouches',100,25);
-UNLOCK TABLES;
+CREATE TABLE `pickup_location` (
+  `id` int(8) NOT NULL,
+  `parish` varchar(16) NOT NULL,
+  `location` varchar(30) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- Table structure for table `<<name>>`
+-- Table structure for table `roles`
 --
 
-CREATE TABLE IF not EXISTS `<<name>>` (
-  `id` int(3) NOT NULL auto_increment,
-  `name` char(35) NOT NULL default '',
-  `qty` int(10) NOT NULL,
-  `limit` int(10) NOT NULL default '',
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=440 DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `roles` (
+  `id` int(8) NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `privilege` varchar(150) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
 
 --
--- creating data for table `cities`
+-- Table structure for table `stock`
 --
 
-LOCK TABLES `inventory_items` WRITE;
-/*!40000 ALTER TABLE `cities` DISABLE KEYS */;
-INSERT INTO `inventory_items` VALUES (1,'white bead',100,25),
-(2,'gold bead',5000,750),
-(3,'black bead',10000,1000),
-(4,'red bead',1000,250),
-(5,'spacers',500,50),
-(6,'blue bead',800,250),
-(7,'pouches',100,25);
-UNLOCK TABLES;
+CREATE TABLE `stock` (
+  `id` int(8) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `type` varchar(15) NOT NULL,
+  `color` varchar(10) NOT NULL,
+  `quantity` int(8) NOT NULL,
+  `limit` int(4) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(8) NOT NULL,
+  `name` varchar(30) NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(30) NOT NULL,
+  `role` varchar(16) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `bracelet`
+--
+ALTER TABLE `bracelet`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pickup_location`
+--
+ALTER TABLE `pickup_location`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `bracelet`
+--
+ALTER TABLE `bracelet`
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `pickup_location`
+--
+ALTER TABLE `pickup_location`
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2008-06-06 19:04:10

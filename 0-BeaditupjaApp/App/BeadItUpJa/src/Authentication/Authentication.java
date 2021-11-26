@@ -28,6 +28,7 @@ public class Authentication implements Operations{
     private ResultSet result = null;
     private String auth_message = "You are not signed in!";
     private String auth_option = "Sign in!";
+    
 
     /**
      * constructor sets the initial query string to allow the user to sign in
@@ -47,6 +48,7 @@ public class Authentication implements Operations{
      * @throws SQLException
      */
     public void authenticate(String user, String pw) {
+
         this.user = user;
         this.pw = pw.hashCode();
         try{

@@ -29,7 +29,7 @@ public class DBConnect {
     }
 
     // returns connection
-    public Connection dbconnection() {
+    public static Connection dbconnection() {
         return conn;
     }
 
