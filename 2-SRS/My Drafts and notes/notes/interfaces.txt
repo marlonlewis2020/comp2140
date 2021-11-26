@@ -1,7 +1,0 @@
-Software Interfaces:
-The system will use, where appropriate, the standard software development resources available. 
-This includes, but is not limited to, Python, Java, MySQL Server.
-
-Communication Interfaces:
-The system will use the appropriate communication resources available. 
-This includes but is not limited to HTTP for communication with the web server and TCP/IP network protocol with the HTTP protocol.
