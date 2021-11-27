@@ -64,7 +64,4 @@ class Stock extends DBAccess{
         create(stock,fields,values);
     }
 
-    public estimate(){
-        
-    }
 }
