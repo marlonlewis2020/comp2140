@@ -34,7 +34,7 @@ public class Authentication implements Operations{
      * 
      */
     public Authentication(){
-        request = String.format("select * from 'roles' r join 'users' u on r.id where u.uname=%s and u.pword=%d", user, pw);
+        request = "select * from 'roles' r join 'users' u on r.id=u.id where u.uname=? and u.pword=?";
     }
 
     /**
@@ -51,7 +51,7 @@ public class Authentication implements Operations{
             logout();
         }
         else{
-            String sql = "select * from roles r join users u on r.uid=u.id where u.username=? and u.password=?";
+            String sql = "select * from roles r join users u on r.id=u.id where u.username=? and u.password=?";
             this.user = user;
             this.pw = pw.hashCode(); //pw.hashCode()
             try{
@@ -221,12 +221,17 @@ public class Authentication implements Operations{
         return result;
     }
 
-    public static void main(String[] args) {
-        //run tests
-        String admin = "admin";
-        Authentication test = new Authentication();
-        test.authenticate(admin, admin);
-    }
+    private PreparedStatement usePreparedstmt(String[] vals){
+        PreparedStatement sql = getPS();
+        try{
+            for(int i = 0; i<vals.length;i++){
+                sql.setString(i+1, vals[i]);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sql;
+        }
 
     private String setter(int n, String[] c, String[] v){
         String resultString= "";
@@ -239,14 +244,11 @@ public class Authentication implements Operations{
 
     @Override
     public void update(String table, String columns, String values, int id) {
-        PreparedStatement sql = getPS();
-        String[] fields = columns.split(",");
-        String[] inputs = values.split(",");
-        int sized = fields.length;
-        String resultString = setter(sized,fields,inputs);
+        int sized = columns.split(",").length;
+        String resultString = setter(sized,columns.split(","),values.split(","));
+        String[] localList = {table,resultString};
+        PreparedStatement sql = usePreparedstmt(localList);
         try {
-            sql.setString(1, table);
-            sql.setString(2, resultString);
             sql.setInt(3, id);
             sql.executeUpdate();
         } catch (SQLException e) {
@@ -257,14 +259,11 @@ public class Authentication implements Operations{
 
     @Override
     public void create(String table, String columns, String values) {
-        PreparedStatement sql = getPS();
-        String[] fields = columns.split(",");
-        String[] inputs = values.split(",");
-        int sized = fields.length;
-        String resultString = setter(sized,fields,inputs);
+        int sized = columns.split(",").length;
+        String resultString = setter(sized,columns.split(","),values.split(","));
+        String[] localList = {table,resultString};
+        PreparedStatement sql = usePreparedstmt(localList);
         try {
-            sql.setString(1, table);
-            sql.setString(2, resultString);
             sql.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -275,10 +274,23 @@ public class Authentication implements Operations{
     @Override
     public ResultSet viewAll(String table, String columns) {
         ResultSet result = null;
-        PreparedStatement sql = getPS();
+        String[] localList = {columns,table};
+        PreparedStatement sql = usePreparedstmt(localList);
         try {
-            sql.setString(1, columns);
-            sql.setString(2, table);
+            result = sql.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+        
+
+    @Override
+    public ResultSet viewSpecific(String table, String columns, String criteria) {
+        ResultSet result = null;
+        String[] localList = {columns,table,criteria};
+        PreparedStatement sql = usePreparedstmt(localList);
+        try {
             result = sql.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -286,18 +298,10 @@ public class Authentication implements Operations{
         return result;
     }
 
-    @Override
-    public ResultSet viewSpecific(String table, String columns, String criteria) {
-        ResultSet result = null;
-        PreparedStatement sql = getPS();
-        try {
-            sql.setString(1, columns);
-            sql.setString(2, table);
-            sql.setString(3, criteria);
-            result = sql.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
+    public static void main(String[] args) {
+        //run tests
+        // String admin = "admin";
+        // Authentication test = new Authentication();
+        System.out.println("password123".hashCode());
     }
 }
