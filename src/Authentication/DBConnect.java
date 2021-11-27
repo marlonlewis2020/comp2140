@@ -11,8 +11,8 @@ import java.util.HashMap;
 public class DBConnect {
 
     static final String DB = "jdbc:mysql://localhost/beaditupja";
-    static final String USER = "admin";
-    static final String PWD = "admin";
+    static final String USER = "root";
+    static final String PWD = "";
     public static Connection conn;
 
     public DBConnect() {
