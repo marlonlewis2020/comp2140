@@ -1,5 +1,7 @@
 package Authentication;
 
+import java.sql.Connection;
+
 /**
  * BeadItUpJa Project
  * @version 1.0
@@ -8,24 +10,21 @@ package Authentication;
  */
 
 import java.sql.PreparedStatement;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 
 import ClassInterface.Operations;
 
 public class Authentication implements Operations{
-    private PreparedStatement verify;
+    private PreparedStatement ps;
     
     private String role = null;
     private String user = null;
     private int pw = 0;
-    public ArrayList<String> menu_list = null;
     private ArrayList<String> userMenu = null;
     private String request = null;
-    private ResultSet result = null;
     private String auth_message = "You are not signed in!";
     private String auth_option = "Sign in!";
     
@@ -48,27 +47,30 @@ public class Authentication implements Operations{
      * @throws SQLException
      */
     public void authenticate(String user, String pw) {
-
-        this.user = user;
-        this.pw = pw.hashCode();
-        try{
-            ResultSet roles = sendMenuRequest("query");
-            ResultSetMetaData roles_md = roles.getMetaData();
-            if (roles.next()){
-                for (int column=0;column<roles.getFetchSize();column++){
-                    String menuItem = roles_md.getColumnName(column+1);
-                    getMenu_list().add(menuItem);
-                    if (roles.getString(column+1)=="True"){
-                        userMenu.add(sepStringOn(menuItem,"_"));
-                    }
-                }
-                role = roles.getString("role");
-                login();
-            }
+        if(user=="" && pw==""){
             logout();
         }
-        catch(SQLException e){
-            e.printStackTrace();
+        else{
+            String sql = "select * from roles r join users u on r.uid=u.id where u.username=? and u.password=?";
+            this.user = user;
+            this.pw = pw.hashCode(); //pw.hashCode()
+            try{
+                PreparedStatement p = getDbConn().prepareStatement(sql);
+                p.setString(1,user);
+                p.setString(2,pw);
+                ResultSet roles = p.executeQuery();
+                if (roles.next()){
+                    role = roles.getString("role");
+                    String[] items = role.split(";");
+                    userMenu.addAll(Arrays.asList(items));
+                    login();
+                }else{
+                    logout();
+                }
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -81,10 +83,8 @@ public class Authentication implements Operations{
         role = null;
         user = null;
         pw = 0;
-        menu_list = null;
         userMenu = null;
-        request = String.format("select * from 'roles' r join 'users' u on r.id where u.uname=%s and u.pword=%d", user, pw);
-        result = null;
+        request = "select * from 'roles' r join 'users' u on r.id=u.id where u.username=? and u.password=?";
         auth_message = "You are not signed in!";
         auth_option = "Sign in!";
         return "Sign out completed. "+auth_message;
@@ -97,21 +97,22 @@ public class Authentication implements Operations{
      */
     private String login(){
         auth_message = "You are logged in";
-        menuHashMap.put("create user",createUser);
-        menuHashMap.put("create stock",createStock);
-        menuHashMap.put("create bracelet",createBracelet);
-        menuHashMap.put("create customer",createCustomer);
-        menuHashMap.put("edit user",editUser);
-        menuHashMap.put("edit stock",editStock);
-        menuHashMap.put("edit bracelet",editBracelet);
-        menuHashMap.put("edit customer",editCustomer);
-        menuHashMap.put("view users",viewUsers);
-        menuHashMap.put("view user",viewUser);
-        menuHashMap.put("view inventory",viewInventory);
-        menuHashMap.put("view stock",viewStock);
-        menuHashMap.put("view bracelets",viewBracelets);
-        menuHashMap.put("view bracelet",viewBracelet);
-        menuHashMap.put("view customer",viewCustomer);
+        menuHashMap.put("create user",create);
+        menuHashMap.put("create stock",create);
+        menuHashMap.put("create bracelet",create);
+        menuHashMap.put("create customer",create);
+        menuHashMap.put("edit user",update);
+        menuHashMap.put("edit stock",update);
+        menuHashMap.put("edit bracelet",update);
+        menuHashMap.put("edit customer",update);
+        menuHashMap.put("view users",view);
+        menuHashMap.put("view user",viewSelected);
+        menuHashMap.put("view inventory",view);
+        menuHashMap.put("view stock",viewSelected);
+        menuHashMap.put("view bracelets",view);
+        menuHashMap.put("view bracelet",viewSelected);
+        menuHashMap.put("view customers",view);
+        menuHashMap.put("view customer",viewSelected);
         auth_option = "Sign out!";
         return "Welcome "+getUser()+" "+auth_message;
     }
@@ -124,30 +125,9 @@ public class Authentication implements Operations{
      * Only used by the application logic layer
      * @return String SQL statement to be executed to fulfill the user's menu request
      */
-    private String getMenuRequest(){
+    private String getRequest(){
         return request;
     }
-
-    /**
-     * Private method used internally to retrieve the ResultSet results of a sql query
-     * @return ResultSet query's result
-     */
-    private ResultSet getResult() {
-        return result;
-    }
-
-    /**
-     * 
-     * Private method used internally that takes a string that has a delimiter, replaces the delimiter with a sapce and returns the new string.
-     * @param word: string containing a specific delimiter 
-     * @param sep: delimiter in the word to be replaced 
-     * @return string with replaced delimiter
-     */
-    private String sepStringOn(String word,String sep){
-        String[] new_word = word.split(sep);
-        return String.join(" ",new_word);
-    }
-
 
     // ---------- //PUBLIC METHODS// ---------- //
 
@@ -157,33 +137,9 @@ public class Authentication implements Operations{
      * Only used by the Interface Management layer
      * @param option: THE STRING REPRESENTATION OF MENU OPTION CHOSEN BY THE USER
      */
-    public void setMenuRequest(String option){
+    public void setRequest(String option){
         request = menuHashMap.get(option);
     }
-
-    /**
-     * 
-     * Method sends the current sql request that has been set for the user, based on the menu option selected. 
-     * It uses the getMenuRequest function to send the relevant sql to process the user's request based on their menu selection. 
-     * Only to be used by the Data Access layer.
-     * @param type
-     * @return resultset of the processed user query
-     */
-    public ResultSet sendMenuRequest(String type){
-        try{
-            PreparedStatement p = getVerify();
-            if(type=="query"){
-                result = p.executeQuery();
-            }else{
-                p.executeUpdate();
-                result=null;
-            }
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-        return getResult();
-    }
-
     
     // ---------- //GETTERS FOR THE CLASS// ---------- //
 
@@ -216,8 +172,8 @@ public class Authentication implements Operations{
      * Method retrieves the connection object for the database
      * @return database connection
      */
-    public Connection getDbConn() {
-        return conn;
+    public static Connection getDbConn() {
+        return DBConnect.dbconnection();
     }
 
     /**
@@ -240,37 +196,19 @@ public class Authentication implements Operations{
     public ArrayList<String> getUserMenu() {
         return userMenu;
     }
-    
-    /**
-     * 
-     * Method retrieves list of all menu options
-     * @return 
-     */
-    public ArrayList<String> getMenu_list() {
-        return menu_list;
-    }
-
-    /**
-     * 
-     * Method retrieves sql statement of the user's request
-     * @return
-     */
-    public String getRequest() {
-        return request;
-    }
 
     public String getAuth_option() {
         return auth_option;
     }
 
-    public PreparedStatement getVerify() {
+    public PreparedStatement getPS() {
         try{
-            verify = getDbConn().prepareStatement(getMenuRequest());
+            ps = getDbConn().prepareStatement(getRequest());
         }catch(SQLException e){
             e.printStackTrace();
-            verify = null;
+            ps = null;
         }
-        return verify;
+        return ps;
     }
 
     public String toString(){
@@ -288,5 +226,78 @@ public class Authentication implements Operations{
         String admin = "admin";
         Authentication test = new Authentication();
         test.authenticate(admin, admin);
+    }
+
+    private String setter(int n, String[] c, String[] v){
+        String resultString= "";
+        for(int i=0;i<n-1;i++){
+            resultString+=c[i]+"="+v[i]+",";
+        }
+        resultString+=c[n]+"="+v[n];
+        return resultString;
+    }
+
+    @Override
+    public void update(String table, String columns, String values, int id) {
+        PreparedStatement sql = getPS();
+        String[] fields = columns.split(",");
+        String[] inputs = values.split(",");
+        int sized = fields.length;
+        String resultString = setter(sized,fields,inputs);
+        try {
+            sql.setString(1, table);
+            sql.setString(2, resultString);
+            sql.setInt(3, id);
+            sql.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+    @Override
+    public void create(String table, String columns, String values) {
+        PreparedStatement sql = getPS();
+        String[] fields = columns.split(",");
+        String[] inputs = values.split(",");
+        int sized = fields.length;
+        String resultString = setter(sized,fields,inputs);
+        try {
+            sql.setString(1, table);
+            sql.setString(2, resultString);
+            sql.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+    }
+
+    @Override
+    public ResultSet viewAll(String table, String columns) {
+        ResultSet result = null;
+        PreparedStatement sql = getPS();
+        try {
+            sql.setString(1, columns);
+            sql.setString(2, table);
+            result = sql.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public ResultSet viewSpecific(String table, String columns, String criteria) {
+        ResultSet result = null;
+        PreparedStatement sql = getPS();
+        try {
+            sql.setString(1, columns);
+            sql.setString(2, table);
+            sql.setString(3, criteria);
+            result = sql.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

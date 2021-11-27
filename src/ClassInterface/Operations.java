@@ -1,8 +1,7 @@
 package ClassInterface;
 
-import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.HashMap;
-import Authentication.DBConnect;
 
 /**
  * BeadItUpJa Project
@@ -14,7 +13,7 @@ import Authentication.DBConnect;
 
 public interface Operations {
     //uses connection from DBConnect class 
-    public final Connection conn = DBConnect.dbconnection();
+    // public final Connection conn = DBConnect.dbconnection();
     
     // {
     //     "create user", "create stock", "create bracelet", "create customer",
@@ -24,21 +23,19 @@ public interface Operations {
 
     public static HashMap<String,String> menuHashMap = new HashMap<String,String>();
 
-    public final String createUser = "";
-    public final String createStock = "";
-    public final String createBracelet = "";
-    public final String createCustomer = "";
-    public final String editUser = "";
-    public final String editStock = "";
-    public final String editBracelet = "";
-    public final String editCustomer = "";
-    public final String viewUsers = "";
-    public final String viewUser = "";
-    public final String viewInventory = "";
-    public final String viewStock = "";
-    public final String viewBracelets = "";
-    public final String viewCustomer = "";
-    public final String viewBracelet = "";
+    public final String create = "insert into ? (?) values (?,?,?,?)";
+    public final String update = "update ? set ? where id=?";
+    public final String view = "select ? from ?";
+    public final String viewSelected = "select ? from ? where ?";
+
+    public void update(String table, String columns, String values, int id);
+
+    public void create(String table, String columns, String values);
+
+    public ResultSet viewAll(String table, String columns);
+
+    public ResultSet viewSpecific(String table, String columns, String criteria);
+
 }
     // /*
     //  * Adds the created object to the database
