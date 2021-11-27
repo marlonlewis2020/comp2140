@@ -2,7 +2,7 @@ package ClassInterface;
 
 import java.sql.Connection;
 import java.util.HashMap;
-import Connection.DBConnect;
+import Authentication.DBConnect;
 
 /**
  * BeadItUpJa Project
