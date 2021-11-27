@@ -10,10 +10,10 @@ import java.util.HashMap;
  */
 public class DBConnect {
 
-    static final String DB = "jdbc:mysql://localhost/beaditupja";
-    static final String USER = "root";
-    static final String PWD = "";
-    public static Connection conn;
+    private static final String DB = "jdbc:mysql://localhost/beaditupja";
+    private static final String USER = "root";
+    private static final String PWD = "";
+    private static Connection conn;
 
     public DBConnect() {
         try {
