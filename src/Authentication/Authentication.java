@@ -14,20 +14,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.ResultSet;
+// import Bracelet;
 
 import ClassInterface.Operations;
 
 public class Authentication implements Operations{
+    private static DBConnect conn;
     private PreparedStatement ps;
     
     private String role = null;
     private String user = null;
     private int pw = 0;
-    private ArrayList<String> userMenu = null;
+    private ArrayList<String> userMenu = new ArrayList<String>();
     private String request = null;
     private String auth_message = "You are not signed in!";
     private String auth_option = "Sign in!";
-    
 
     /**
      * constructor sets the initial query string to allow the user to sign in
@@ -51,7 +52,8 @@ public class Authentication implements Operations{
             logout();
         }
         else{
-            String sql = "select * from roles r join users u on r.id=u.id where u.username=? and u.password=?";
+            conn = new DBConnect();
+            String sql = "select * from roles r join users u on r.name=u.role where u.username=? and u.password=?";
             this.user = user;
             this.pw = pw.hashCode(); //pw.hashCode()
             try{
@@ -60,8 +62,8 @@ public class Authentication implements Operations{
                 p.setString(2,pw);
                 ResultSet roles = p.executeQuery();
                 if (roles.next()){
-                    role = roles.getString("role");
-                    String[] items = role.split(";");
+                    role = roles.getString("privilege");
+                    String[] items = role.split(",");
                     userMenu.addAll(Arrays.asList(items));
                     login();
                 }else{
@@ -83,10 +85,11 @@ public class Authentication implements Operations{
         role = null;
         user = null;
         pw = 0;
-        userMenu = null;
+        userMenu = new ArrayList<String>();
         request = "select * from 'roles' r join 'users' u on r.id=u.id where u.username=? and u.password=?";
         auth_message = "You are not signed in!";
         auth_option = "Sign in!";
+        conn.close();
         return "Sign out completed. "+auth_message;
     }
 
@@ -114,6 +117,7 @@ public class Authentication implements Operations{
         menuHashMap.put("view customers",view);
         menuHashMap.put("view customer",viewSelected);
         auth_option = "Sign out!";
+        // Bracelet.populate();
         return "Welcome "+getUser()+" "+auth_message;
     }
 
@@ -173,7 +177,7 @@ public class Authentication implements Operations{
      * @return database connection
      */
     public static Connection getDbConn() {
-        return DBConnect.dbconnection();
+        return conn.dbconnection();
     }
 
     /**
@@ -221,87 +225,4 @@ public class Authentication implements Operations{
         return result;
     }
 
-    private PreparedStatement usePreparedstmt(String[] vals){
-        PreparedStatement sql = getPS();
-        try{
-            for(int i = 0; i<vals.length;i++){
-                sql.setString(i+1, vals[i]);
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return sql;
-        }
-
-    private String setter(int n, String[] c, String[] v){
-        String resultString= "";
-        for(int i=0;i<n-1;i++){
-            resultString+=c[i]+"="+v[i]+",";
-        }
-        resultString+=c[n]+"="+v[n];
-        return resultString;
-    }
-
-    @Override
-    public void update(String table, String columns, String values, int id) {
-        int sized = columns.split(",").length;
-        String resultString = setter(sized,columns.split(","),values.split(","));
-        String[] localList = {table,resultString};
-        PreparedStatement sql = usePreparedstmt(localList);
-        try {
-            sql.setInt(3, id);
-            sql.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-    }
-
-    @Override
-    public void create(String table, String columns, String values) {
-        int sized = columns.split(",").length;
-        String resultString = setter(sized,columns.split(","),values.split(","));
-        String[] localList = {table,resultString};
-        PreparedStatement sql = usePreparedstmt(localList);
-        try {
-            sql.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-    }
-
-    @Override
-    public ResultSet viewAll(String table, String columns) {
-        ResultSet result = null;
-        String[] localList = {columns,table};
-        PreparedStatement sql = usePreparedstmt(localList);
-        try {
-            result = sql.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-        
-
-    @Override
-    public ResultSet viewSpecific(String table, String columns, String criteria) {
-        ResultSet result = null;
-        String[] localList = {columns,table,criteria};
-        PreparedStatement sql = usePreparedstmt(localList);
-        try {
-            result = sql.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public static void main(String[] args) {
-        //run tests
-        // String admin = "admin";
-        // Authentication test = new Authentication();
-        System.out.println("password123".hashCode());
-    }
 }

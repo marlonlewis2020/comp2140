@@ -1,6 +1,5 @@
 package ClassInterface;
 
-import java.sql.ResultSet;
 import java.util.HashMap;
 
 /**
@@ -27,14 +26,6 @@ public interface Operations {
     public final String update = "update ? set ? where id=?";
     public final String view = "select ? from ?";
     public final String viewSelected = "select ? from ? where ?";
-
-    public void update(String table, String columns, String values, int id);
-
-    public void create(String table, String columns, String values);
-
-    public ResultSet viewAll(String table, String columns);
-
-    public ResultSet viewSpecific(String table, String columns, String criteria);
 
 }
     // /*

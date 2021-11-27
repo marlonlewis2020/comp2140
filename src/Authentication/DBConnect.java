@@ -1,8 +1,6 @@
 package Authentication;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * DBConnect
@@ -16,15 +14,28 @@ public class DBConnect {
 
     public DBConnect() {
         try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(DB, USER, PWD);
         } catch (SQLException e) {
-            conn = null;
+            // e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     // returns connection
-    protected static Connection dbconnection() {
+    protected Connection dbconnection() {
         return conn;
+    }
+
+    public void close(){
+        try{
+            conn.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Could not close connection");
+        }
     }
 
 }

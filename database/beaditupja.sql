@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2021 at 11:53 PM
+-- Generation Time: Nov 27, 2021 at 09:06 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -111,7 +111,6 @@ CREATE TABLE `stock` (
 
 CREATE TABLE `users` (
   `id` int(8) NOT NULL,
-  `name` varchar(30) NOT NULL,
   `username` varchar(30) NOT NULL,
   `password` varchar(30) NOT NULL,
   `role` varchar(16) NOT NULL
