@@ -14,7 +14,7 @@ import Authentication.DBConnect;
 
 public interface Operations {
     //uses connection from DBConnect class 
-    public final Connection conn = DBConnect.conn;
+    public final Connection conn = DBConnect.dbconnection();
     
     // {
     //     "create user", "create stock", "create bracelet", "create customer",
