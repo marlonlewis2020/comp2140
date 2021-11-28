@@ -29,7 +29,6 @@ public interface Operations {
     public final String viewById = "select * from ? where id=?";
     public final String viewByName = "SELECT * FROM `stock` WHERE name=?"; 
     public final String viewByNamePhone = "select * from customers where name = ? and telephone=?";
-
 }
     // /*
     //  * Adds the created object to the database
