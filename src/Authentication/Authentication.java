@@ -100,22 +100,23 @@ public class Authentication implements Operations{
      */
     private String login(){
         auth_message = "You are logged in";
-        menuHashMap.put("create user",create);
-        menuHashMap.put("create stock",create);
-        menuHashMap.put("create bracelet",create);
-        menuHashMap.put("create customer",create);
-        menuHashMap.put("edit user",update);
-        menuHashMap.put("edit stock",update);
-        menuHashMap.put("edit bracelet",update);
-        menuHashMap.put("edit customer",update);
+        menuHashMap.put("create user",createStock);
+        menuHashMap.put("create stock",createStock);
+        menuHashMap.put("create bracelet",createStock);
+        menuHashMap.put("create customer",createStock);
+        menuHashMap.put("edit user",updateStock);
+        menuHashMap.put("edit stock",updateStock); 
+        menuHashMap.put("use stock",useStock); 
+        menuHashMap.put("edit bracelet",updateStock);
+        menuHashMap.put("edit customer",updateStock);
         menuHashMap.put("view users",view);
-        menuHashMap.put("view user",viewSelected);
+        menuHashMap.put("view user",viewById);
         menuHashMap.put("view inventory",view);
-        menuHashMap.put("view stock",viewSelected);
+        menuHashMap.put("view stock",viewByName);
         menuHashMap.put("view bracelets",view);
-        menuHashMap.put("view bracelet",viewSelected);
+        menuHashMap.put("view bracelet",viewByName);
         menuHashMap.put("view customers",view);
-        menuHashMap.put("view customer",viewSelected);
+        menuHashMap.put("view customer",viewByNamePhone);
         auth_option = "Sign out!";
         // Bracelet.populate();
         return "Welcome "+getUser()+" "+auth_message;
@@ -129,7 +130,7 @@ public class Authentication implements Operations{
      * Only used by the application logic layer
      * @return String SQL statement to be executed to fulfill the user's menu request
      */
-    private String getRequest(){
+    public String getRequest(){
         return request;
     }
 

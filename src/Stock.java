@@ -6,79 +6,92 @@
 
  import ClassInterface.DBAccess;
  import java.sql.*;
- import Authentication.Authentication;
+import java.util.ArrayList;
+
+import Authentication.Authentication;
 
 class Stock{
+    private int id;
     private StockType type;
     private String name;
     private int quantity;
     private int level;
     /*String filter number*/
-    private Connection conn = Authentication.getDbConn();
+    // private Connection conn = Authentication.getDbConn();
     private static Authentication auth = new Authentication();
-    private static DBAccess dba;
+
+    public Stock(int id_input, StockType type, String name,int quantity,int level){
+        this.id=id_input;
+        this.type=type;
+        this.level=level;
+        this.name=name;
+        this.quantity=quantity;
+    }
 
     public Stock(StockType type, String name,int quantity,int level){
         this.type=type;
         this.level=level;
         this.name=name;
         this.quantity=quantity;
+        
+        // auth.setRequest("view stock");
+        // DBAccess dba;
+        // dba = new DBAccess(auth);
     }
 
-    public Stock(Authentication auth1, StockType type, String name,int quantity,int level){
-        this.type=type;
-        this.level=level;
-        this.name=name;
-        this.quantity=quantity;
-        auth = auth1;
+    public int getID(){
+        return this.id;
+    }
+
+    public static ArrayList<Stock> inventory(){
+        ArrayList<Stock> inventory = new ArrayList<Stock>();
+        auth.setRequest("view inventory");
+        DBAccess dba;
         dba = new DBAccess(auth);
-
-        String fields = "type,name,quantity,limit,color";
-        String values = String.join(",",String.valueOf(this.type),this.name,String.valueOf(this.quantity),String.valueOf(this.level),"n/a");
-
-        ResultSet res = dba.viewSpecific("stock","id,quantity","name="+this.name);
-        int q;
-        int i;
-        try{
-            q = res.getInt("quantity");
-            i = res.getInt("id");
-            if(res.next()){
-            updateStock(q, i);
+        try {
+            ResultSet r = dba.viewAll();
+            while(r.next()){
+                Stock e = new Stock(r.getInt("id"),StockType.valueOf(r.getString("type")),r.getString("name"),r.getInt("quantity"),r.getInt("limit"));
+                inventory.add(e);
             }
-            else{
-            createStock(fields, values);
-            }
-        }catch(SQLException e){
+            return inventory;
+        } catch (Exception e) {
             e.printStackTrace();
+            return inventory;
         }
-
     }
 
-    public static ResultSet inventory(){
-        return dba.viewAll("stock","*");
-    }
-
-    public static boolean exists(String sname){
-        ResultSet res = dba.viewSpecific("stock","id","name="+sname);
-        try{
-            if(res.next()){
-                return Boolean.valueOf("True");
-            }
-            return Boolean.valueOf("False");
+    private boolean exists(String sname){
+        auth.setRequest("view stock");
+        System.out.println("[Stock - exists method] request: "+auth.getRequest());
+        DBAccess dba;
+        dba = new DBAccess(auth);
+        ResultSet res = dba.viewSpecific("stock",sname);
+        System.out.println("[Stock - exists method] res: "+res);
+        if(res!=null){
+            System.out.println("testin bool: "+Boolean.valueOf("True"));
+            return Boolean.valueOf("True");
         }
-        catch(SQLException e){
-            e.printStackTrace();
-            return Boolean.valueOf("False");
-        }
+        System.out.println("testin bool: "+Boolean.valueOf("False"));
+        return Boolean.valueOf("False");
+        
     }
 
     public static int getQuantity(String name){
         try{
             auth.setRequest("view stock");
-            ResultSet r = dba.viewSpecific("stock","quantity","name="+name);
-            return Integer.valueOf(r.getInt("quantity"));
+            DBAccess dba;
+            dba = new DBAccess(auth);
+            System.out.println("[Stock - getQuantity method] view stock: "+auth.getRequest());
+            ResultSet r = dba.viewSpecific("stock",name);
+            if(r!=null){
+                r.next();
+                return r.getInt("quantity");
+            }
+                return 0;
         }
         catch(SQLException e){
+            System.out.println(e.getMessage());
             e.printStackTrace();
             return 0;
         }
@@ -92,27 +105,50 @@ class Stock{
         return this.level;
     }
     
-    public void updateStock(int value, int id){
+    public static void updateStock(char ch,int qty, String name){
+        DBAccess dba;
+        if (ch=='+'){
+            auth.setRequest("edit stock");
+            dba = new DBAccess(auth);
+            dba.update(qty,name);
+        }
+        else if(ch=='-'){
+            auth.setRequest("use stock");
+            dba = new DBAccess(auth);
+            dba.update(qty,name);
+        }
+    }
+
+    /**
+     * Function deletes an entore record of a stock item from the database.
+     * @param name - the name of a stock item to be deleted
+     * @throws SQLException
+     */
+    public static void deleteStock(String name){
         try{
-            ResultSet res = dba.viewSpecific("stock","quantity","id="+id);
-            int val = res.getInt("quantity")+value;
-            dba.update("stock", "quantity", String.valueOf(val), id);
-        }catch(SQLException e){
+            String sql = "DELETE FROM `stock` WHERE `name` = ?";
+            PreparedStatement p = Authentication.getDbConn().prepareStatement(sql);
+            p.setString(1,name);
+            p.executeUpdate();
+        }
+        catch(SQLException e){
             e.printStackTrace();
         }
     }
 
-    public void deleteStock(String name) throws SQLException{
-        String sql = "delete from stock where name=?";
-        PreparedStatement p = conn.prepareStatement(sql);
-        p.setString(1,name);
-        p.executeUpdate();
+    /**
+     * function writes a new stock item to database
+     */
+    public void createStock(){
+        if(!exists(name)){
+            auth.setRequest("create stock");
+        DBAccess dba;
+        dba = new DBAccess(auth);
+        dba.create(String.valueOf(this.type),this.name,this.quantity,this.level);
+        }
+        else{
+            updateStock('+',quantity, name);
+        }
+        
     }
-
-    public void createStock(String fields, String values){
-        dba.create("stock",fields,values);
-    }
-
-    // public static 
-
 }

@@ -1,12 +1,25 @@
 import Authentication.Authentication;
 class test {
     public static void main(String[] args) {
-        System.out.println("password123".hashCode());
+        // System.out.println("password123".hashCode());
+        /**
+         * Authentication Tests
+         */
         Authentication auth = new Authentication();
         Authentication none = new Authentication();
         auth.authenticate("mlewis","1403730359");
         none.authenticate("user", "pw");
+        
+        //testing login user's menu options
+        for(String s : auth.getUserMenu()){
+            System.out.println("Authenticated User's Menu item: "+s);
+        }
+        //testing unauthenticated user's menu options
+        for(String s : none.getUserMenu()){
+            System.out.println("Logged Out User's Menu item: "+s);
+        }
 
+        //confirming login/logout changes to state
         System.out.println("'auth' authenticated: "+auth.getAuth_message());
         System.out.println("'none' failed authentication: "+none.getAuth_message());
         auth.authenticate("", "");
@@ -14,11 +27,24 @@ class test {
         none.authenticate("mlewis","1403730359");
         System.out.println("'none' authenticated: "+none.getAuth_message());
 
-        /*Stock class test*/
-        Stock name = new Stock (auth, StockType.Beads,"Gibbits", 150,50);
+        
+
+        /**
+        * Stock class test
+        */
+        // Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
+        // gibbs.createStock();
         int quantity = Stock.getQuantity("Gibbits");
         System.out.println("Quantity = "+ quantity);
-        //Bracelet Tests
+        Stock.updateStock('+',12, "Gibbits");
+        // Stock.updateStock('-',500, "Gibbits");
+        quantity = Stock.getQuantity("Gibbits");
+        System.out.println("Quantity = "+ quantity);
+
+
+        /**
+        * Bracelet Tests
+        */
 
         Bracelet b = new Bracelet("b1", 3.00, "yello-2;green-4", "yello-5;green-8", "yello-10;green-16", "diatta");
         Bracelet.addToArray(b);
