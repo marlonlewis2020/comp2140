@@ -166,8 +166,8 @@ public class Bracelet{
       try{
         
         Connection conn = Authentication.getDbConn();
-        String query = "insert into bracelets (id,name,collection,cost, smallBeads, mediumBeads, largeBeads)"
-          + " values (?, ?, ?, ?, ?, ?, ?, ?)";
+        String query = "insert into bracelet (id,name,collection,cost, smallBeads, mediumBeads, largeBeads)"
+          + " values (?, ?, ?, ?, ?, ?, ?)";
 
         // create the mysql insert prepared statement
         PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -180,10 +180,11 @@ public class Bracelet{
         preparedStmt.setString(7,  this.getLgBeadQty());
         // execute the preparedstatement
         preparedStmt.execute();
+        System.out.println("Added to database");
       }
       catch(Exception e)
       {
-        System.err.println("Got an exception!");
+        e.printStackTrace();
         System.err.println(e.getMessage());
       }
   }
