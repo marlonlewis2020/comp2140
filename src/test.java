@@ -27,5 +27,5 @@ class test {
         System.out.println(Bracelet.searchByName("b1"));
         Bracelet.deleteBracelet("b1");
 
-}
+    }
 }
