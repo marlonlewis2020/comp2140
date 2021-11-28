@@ -4,10 +4,8 @@
  * @author Kimani Munn
  */
  
-class Stocktype {
-    enum Type {
-        Beads,
-        Spacers,
-        Pouch
-    }
+public enum StockType {
+    Beads,
+    Spacers,
+    Pouch
 }
