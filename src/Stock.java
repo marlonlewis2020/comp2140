@@ -1,7 +1,7 @@
 /**
  * Stock is an invertory item located in the bead it up ja app.
- * @version 1.0
- * @author Kimani Munn
+ * @version 1.1
+ * @author Kimani Munn,Marlon Lewis
  */
 
  import ClassInterface.DBAccess;
@@ -16,6 +16,13 @@ class Stock{
     /*String filter number*/
     private Connection conn = Authentication.getDbConn();
     private static DBAccess dba;
+
+    public Stock(StockType type, String name,int quantity,int level){
+        this.type=type;
+        this.level=level;
+        this.name=name;
+        this.quantity=quantity;
+    }
 
     public Stock(Authentication auth, StockType type, String name,int quantity,int level){
         this.type=type;
