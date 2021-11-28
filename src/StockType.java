@@ -5,7 +5,7 @@
  */
  
 class Stocktype {
-    enum Stocktype {
+    enum Type {
         Beads,
         Spacers,
         Pouch
