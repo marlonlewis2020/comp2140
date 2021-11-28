@@ -25,7 +25,7 @@ class Stock{
         dba = new DBAccess(auth);
 
         String fields = "type,name,quantity,limit,color";
-        String values = String.join(",",this.type,this.name,String.valueOf(this.quantity),String.valueOf(this.level),"n/a");
+        String values = String.join(",",String.valueOf(this.type),this.name,String.valueOf(this.quantity),String.valueOf(this.level),"n/a");
 
         ResultSet res = dba.viewSpecific("stock","id,quantity","name="+this.name);
         int q;
@@ -45,9 +45,9 @@ class Stock{
 
     }
 
-    // public static ResultSet inventory(){
-    //     dba.view
-    // }
+    public static ResultSet inventory(){
+        return dba.viewAll("stock","*");
+    }
 
     public static boolean exists(String sname){
         ResultSet res = dba.viewSpecific("stock","id","name="+sname);
