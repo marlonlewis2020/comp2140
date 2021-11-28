@@ -26,6 +26,9 @@ class test {
         none.authenticate("mlewis","1403730359");
         System.out.println("'none' authenticated: "+none.getAuth_message());
 
-
+        /*Stock class test*/
+        Stock name = new Stock (auth, StockType.Beads,"Gibbits", 150,50);
+        int quantity = Stock.getQuantity("Gibbits");
+        System.out.println("Quantity = "+ quantity);
 }
 }
