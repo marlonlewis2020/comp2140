@@ -58,9 +58,13 @@ class Stock{
     }
     
     public void updateStock(int value, int id){
-        ResultSet res = dba.viewSpecific("stock","quantity","id="+id);
-        int val = res.getInt("quantity")+value;
-        dba.update("stock", "quantity", val, id);
+        try{
+            ResultSet res = dba.viewSpecific("stock","quantity","id="+id);
+            int val = res.getInt("quantity")+value;
+            dba.update("stock", "quantity", String.valueOf(val), id);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public void deleteStock(String name) throws SQLException{
