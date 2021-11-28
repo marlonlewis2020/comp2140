@@ -32,8 +32,8 @@ class test {
         /**
         * Stock class test
         */
-        // Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
-        // gibbs.createStock();
+        //Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
+        //gibbs.createStock();
         int quantity = Stock.getQuantity("Gibbits");
         System.out.println("Quantity = "+ quantity);
         Stock.updateStock('+',12, "Gibbits");
@@ -46,16 +46,21 @@ class test {
         * Bracelet Tests
         */
 
-        Bracelet b = new Bracelet("b1", 3.00, "yello-2;green-4", "yello-5;green-8", "yello-10;green-16", "diatta");
-        Bracelet.addToArray(b);
-        b.addToDatabase();
+        Bracelet.populate();
+        //Bracelet b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
+        //Bracelet.addToArray(b);
+        //b.addToDatabase();
+        //System.out.println(b.getName());
+        //System.out.println(b.getBracelets());
+        //System.out.println(b.getID());
+        //System.out.println(b.getCollection());
+        //System.out.println(Bracelet.getBraceletIndex("b1"));
+        Bracelet b = Bracelet.searchByName("b1");
         System.out.println(b.getName());
-        System.out.println(b.getBracelets());
-        System.out.println(b.getID());
-        System.out.println(b.getCollection());
-        System.out.println(Bracelet.getBraceletIndex("b1"));
-        System.out.println(Bracelet.searchByName("b1"));
-        Bracelet.deleteBracelet("b1");
+        System.out.println(b.getSmallBeadQty());
+        System.out.println(b.getLgBeadQty());
+        System.out.println(b.getMedBeadQty());
+        //Bracelet.deleteBracelet("b1");
 
 }
 }
