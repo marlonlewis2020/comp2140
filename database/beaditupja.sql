@@ -32,9 +32,9 @@ CREATE TABLE `bracelet` (
   `name` varchar(30) NOT NULL,
   `collection` varchar(30) NOT NULL,
   `cost` double(8,0) NOT NULL,
-  `smallBead` varchar(2) DEFAULT NULL,
-  `mediumBeads` varchar(2) DEFAULT NULL,
-  `largeBeads` varchar(2) DEFAULT NULL
+  `smallBeads` varchar(999) DEFAULT NULL,
+  `mediumBeads` varchar(999) DEFAULT NULL,
+  `largeBeads` varchar(999) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
