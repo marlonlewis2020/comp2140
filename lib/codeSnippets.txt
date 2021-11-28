@@ -1,0 +1,84 @@
+    // /**
+    //  * function returns the prepared statement required to fulfill the user's request.
+    //  * @param vals is the string array containing the parts of the sql string that must e updated with user input.
+    //  * @return complete prepared statement.
+    //  */    
+    // private PreparedStatement usePreparedstmt(String[] vals, String criteria){
+    //     System.out.println("vls: "+vals);
+    //     PreparedStatement sql = auth.getPS();
+    //     System.out.println("usePS: "+sql);
+    //     try{
+    //         for(int i = 0; i<vals.length;i++){
+    //             System.out.println("i: "+i+", value: "+vals[i]);
+    //             sql.setString(i+1, vals[i]);
+    //         }
+    //     }catch (SQLException e) {
+    //         e.printStackTrace();
+    //     }
+    //     System.out.println("using prepared stmt: "+sql);
+    //     return sql;
+    //     }
+
+    // /**
+    //  * function creates the set substring part of the update sql string. 
+    //  * i.e. 'name=John,age=9,location=Jamaica'.
+    //  * Function takes three parameters n, c, v.
+    //  * @param n is the last index of the equal sized arrays c and v
+    //  * @param c is a string array of the database fields of the record to be updated
+    //  * @param v is a string array of the values in the same order of the fieds in c to be placed into the respective fields.
+    //  * @return String with all the requested updates that should be made.
+    //  */
+    // private String setter(int n, String[] c, String[] v)
+    // {
+    //     String resultString= "";
+    //     for(int i=0;i<n-1;i++){
+    //         resultString+=c[i]+"="+v[i]+",";
+    //     }
+    //     resultString+=c[n-1]+"="+v[n-1];
+    //     System.out.println("request string: "+resultString);
+    //     return resultString;
+    // }
+    
+    // /**
+    //  * Function responsible for updating any table and any fields in the beaditupja database
+    //  * @param table is the name of the table in the database to be updated.
+    //  * @param columns is the string of fields or the record to be updated.
+    //  * @param values is the string of values to put into the specified fields in the ame order stated in the fields param.
+    //  * @param id is the unique id for the record to be updated.
+    //  */
+    // public void update(String table, String columns, String values, int id) 
+    // {
+    //     // int sized = columns.split(",").length;
+    //     // String resultString = setter(sized,columns.split(","),values.split(","));
+    //     // String[] localList = {table,resultString};
+    //     // PreparedStatement sql = usePreparedstmt(localList);
+    //     // try {
+    //     //     sql.setInt(3, id);
+    //     //     sql.executeUpdate();
+    //     // } catch (SQLException e) {
+    //     //     e.printStackTrace();
+    //     // }
+    //     System.out.println("[DBAccess - update method] empty");
+    // }
+
+    // /**
+    //  * Function responsible for updating any table and any fields in the beaditupja database
+    //  * @param table is the name of the table in the database to be updated.
+    //  * @param columns is the string of fields or the record to be updated.
+    //  * @param values is the string of values to put into the specified fields in the ame order stated in the fields param.
+    //  * @param name is the unique name for the record to be updated.
+    //  */
+    // public void update(String table, String columns, String values, String name) 
+    // {
+        // int sized = columns.split(",").length;
+        // String resultString = setter(sized,columns.split(","),values.split(","));
+        // String[] localList = {table,resultString};
+        // PreparedStatement sql = usePreparedstmt(localList);
+        // try {
+        //     sql.setString(3, name);
+        //     sql.executeUpdate();
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        // }
+    //     System.out.println("DBAccess update method");
+    // }
