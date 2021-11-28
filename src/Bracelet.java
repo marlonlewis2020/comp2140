@@ -23,8 +23,6 @@ public class Bracelet{
     private ArrayList <String> beadQty = new ArrayList <String>();  //["bead-integernumberofamtrequired","bead2-integernumberofamtrequired",...]
     //private String beadsString;//("bead-intgernumberofamtrequired;bead2-integernumberofamtrequired...")
     //private ArrayList <String> beads = new ArrayList <String>(); 
-    
-
 
     //Constructor
     /**
@@ -192,9 +190,8 @@ public class Bracelet{
 
 
   //populate bracelet array with info from database
-  public static void populate(){
-    
-
+  
+    public static void populate(){
       try {
             //Creating a DB Connect Object to connect to database
             Connection conn = Authentication.getDbConn();
@@ -278,6 +275,7 @@ public class Bracelet{
         return -1;
     }
 
+
     //Delete a bracelet
     /**
      * 
@@ -302,6 +300,10 @@ public class Bracelet{
 
     //Estimate bracelet quantity
 
+    /**
+     * 
+     * @return arraylist including the number of bracelets that can be made based on stock levels
+     */
     public ArrayList <Integer> estimateQty(){        
         int smallMin = 99999;
         int medMin = 99999;
@@ -315,27 +317,47 @@ public class Bracelet{
         beadTypesMed = (getMedBeadQty()).split(";");
         beadTypesLg = (getLgBeadQty()).split(";");
 
-        for(int i = 0; i < beadTypesSmall.length; i++){
-            if((Stock.getQuantity((beadTypesSmall[i].split("-"))[0])) / Integer.parseInt((beadTypesSmall[i].split("-"))[1]) < smallMin){
-                smallMin = (Stock.getQuantity((beadTypesSmall[i].split("-"))[0])) / Integer.parseInt((beadTypesSmall[i].split("-"))[1]);
-            }
+        if(beadTypesSmall.length == 0){
+            qty.add(-1);
         }
-        for(int i = 0; i < beadTypesMed.length; i++){
-            if((Stock.getQuantity((beadTypesMed[i].split("-"))[0])) / Integer.parseInt((beadTypesMed[i].split("-"))[1])< medMin){
-                medMin = (Stock.getQuantity((beadTypesMed[i].split("-"))[0])) /  Integer.parseInt((beadTypesMed[i].split("-"))[1]);
+        else
+        {
+            for(int i = 0; i < beadTypesSmall.length; i++){
+                if((Stock.getQuantity((beadTypesSmall[i].split("-"))[0])) / Integer.parseInt((beadTypesSmall[i].split("-"))[1]) < smallMin){
+                    smallMin = (Stock.getQuantity((beadTypesSmall[i].split("-"))[0])) / Integer.parseInt((beadTypesSmall[i].split("-"))[1]);
+                }
             }
-           
+            qty.add(smallMin);
         }
-        for(int i = 0; i < beadTypesLg.length; i++){
-            if((Stock.getQuantity((beadTypesLg[i].split("-"))[0])) / Integer.parseInt((beadTypesLg[i].split("-"))[1]) < largeMin){
-                largeMin = (Stock.getQuantity((beadTypesLg[i].split("-"))[0])) /  Integer.parseInt((beadTypesLg[i].split("-"))[1]);
+
+        if(beadTypesMed.length == 0){
+            qty.add(-1);
+        }
+        else{
+            for(int i = 0; i < beadTypesMed.length; i++){
+                if((Stock.getQuantity((beadTypesMed[i].split("-"))[0])) / Integer.parseInt((beadTypesMed[i].split("-"))[1])< medMin){
+                    medMin = (Stock.getQuantity((beadTypesMed[i].split("-"))[0])) /  Integer.parseInt((beadTypesMed[i].split("-"))[1]);
+                }
+               
             }
+            qty.add(medMin);
         }
         
-        qty.add(smallMin);
-        qty.add(medMin);
-        qty.add(largeMin);
+        if(beadTypesLg.length == 0){
+            qty.add(-1);
+        }
+        else
+        {
+            for(int i = 0; i < beadTypesLg.length; i++){
+                if((Stock.getQuantity((beadTypesLg[i].split("-"))[0])) / Integer.parseInt((beadTypesLg[i].split("-"))[1]) < largeMin){
+                    largeMin = (Stock.getQuantity((beadTypesLg[i].split("-"))[0])) /  Integer.parseInt((beadTypesLg[i].split("-"))[1]);
+                }
+            }
+            qty.add(largeMin);
+        }
 
+        // -1 is returned if the bead type and number of beads wasnt specified, otherwise the maximum # of bracelets that can be made based on stock level 
+        //is returned for each size, with index 0-2 being the small, mec and large bracelets in that order.
         return qty;
     }
 
