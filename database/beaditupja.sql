@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2021 at 09:06 PM
+-- Generation Time: Nov 28, 2021 at 03:53 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -31,10 +31,10 @@ CREATE TABLE `bracelet` (
   `id` int(8) NOT NULL,
   `name` varchar(30) NOT NULL,
   `collection` varchar(30) NOT NULL,
-  `cost` decimal(8,0) NOT NULL,
-  `bead_quantity_small` int(2) NOT NULL,
-  `bead_quantity_medium` int(2) NOT NULL,
-  `bead_quantity_large` int(2) NOT NULL
+  `cost` double(8,0) NOT NULL,
+  `smallBead` varchar(2) DEFAULT NULL,
+  `mediumBeads` varchar(2) DEFAULT NULL,
+  `largeBeads` varchar(2) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -88,6 +88,13 @@ CREATE TABLE `roles` (
   `privilege` varchar(150) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `privilege`) VALUES
+(1, 'admin', 'admin,owner');
+
 -- --------------------------------------------------------
 
 --
@@ -115,6 +122,13 @@ CREATE TABLE `users` (
   `password` varchar(30) NOT NULL,
   `role` varchar(16) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `role`) VALUES
+(1, 'mlewis', '1403730359', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -164,13 +178,13 @@ ALTER TABLE `pickup_location`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
