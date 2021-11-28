@@ -15,6 +15,7 @@ class Stock{
     private int level;
     /*String filter number*/
     private Connection conn = Authentication.getDbConn();
+    private static Authentication auth = new Authentication();
     private static DBAccess dba;
 
     public Stock(StockType type, String name,int quantity,int level){
@@ -24,11 +25,12 @@ class Stock{
         this.quantity=quantity;
     }
 
-    public Stock(Authentication auth, StockType type, String name,int quantity,int level){
+    public Stock(Authentication auth1, StockType type, String name,int quantity,int level){
         this.type=type;
         this.level=level;
         this.name=name;
         this.quantity=quantity;
+        auth = auth1;
         dba = new DBAccess(auth);
 
         String fields = "type,name,quantity,limit,color";
@@ -72,6 +74,7 @@ class Stock{
 
     public static int getQuantity(String name){
         try{
+            auth.setRequest("view stock");
             ResultSet r = dba.viewSpecific("stock","quantity","name="+name);
             return Integer.valueOf(r.getInt("quantity"));
         }
