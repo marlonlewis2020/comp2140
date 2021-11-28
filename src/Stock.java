@@ -9,7 +9,7 @@
  import Authentication.Authentication;
 
 class Stock{
-    private String type;
+    private StockType type;
     private String name;
     private int quantity;
     private int level;
@@ -17,7 +17,7 @@ class Stock{
     private Connection conn = Authentication.getDbConn();
     private static DBAccess dba;
 
-    public Stock(Authentication auth, String type,String name,int quantity,int level){
+    public Stock(Authentication auth, StockType type, String name,int quantity,int level){
         this.type=type;
         this.level=level;
         this.name=name;
@@ -43,6 +43,24 @@ class Stock{
             e.printStackTrace();
         }
 
+    }
+
+    // public static ResultSet inventory(){
+    //     dba.view
+    // }
+
+    public static boolean exists(String sname){
+        ResultSet res = dba.viewSpecific("stock","id","name="+sname);
+        try{
+            if(res.next()){
+                return Boolean.valueOf("True");
+            }
+            return Boolean.valueOf("False");
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+            return Boolean.valueOf("False");
+        }
     }
 
     public static int getQuantity(String name){
