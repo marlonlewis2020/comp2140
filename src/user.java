@@ -70,16 +70,21 @@ class User
       
       Connection conn = Authentication.getDbConn();
       
+      System.out.println("Entered Successfully");
+
       String query = "insert into users (id, name, username, password, role)" + " values (?, ?, ?, ?, ?)";
 
       PreparedStatement preparedStmt = conn.prepareStatement(query);
-          preparedStmt.setInt(1, this.getUserID());
-          preparedStmt.setString(2, "");
-          preparedStmt.setString(3, this.getUserName());
-          preparedStmt.setString(4, this.getPassword() );
-          preparedStmt.setString(5, this.getRole());
+      preparedStmt.setInt(1, this.getUserID());
+      preparedStmt.setString(2, "");
+      System.out.println("Entered Successfully");
+      preparedStmt.setString(3, this.getUserName());
+      preparedStmt.setString(4, this.getPassword() );
+      System.out.println("Entered Successfully");
+      preparedStmt.setString(5, this.getRole());
 
       preparedStmt.execute();
+      System.out.println("Entered Successfully");
       
 
     }
