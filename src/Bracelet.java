@@ -59,6 +59,10 @@ public class Bracelet{
     }
 
 
+    /**
+     * Call this function immediately after creatinga  bracelet instance
+     * @param b bracelet
+     */
     public static void addToArray(Bracelet b){
         bracelets.add(b);
     }
@@ -81,7 +85,7 @@ public class Bracelet{
 
     /**
      * return bracelet ID
-     * @return
+     * @return bracelet ID
      */
     public int getID(){
         return this.ID;
