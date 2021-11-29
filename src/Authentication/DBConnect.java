@@ -13,16 +13,36 @@ public class DBConnect {
     private static Connection conn;
     private static int users = 0;
 
+    /**
+     * function sets up the database connection for other classes to use
+     */
     public DBConnect() {
         users++;
-        System.out.println("[CONNECTING] users connected: "+users);
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(DB, USER, PWD);
-        } catch (SQLException e) {
-            // e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        System.out.println("[CONNECTING] active user connections: "+users);
+        boolean x = conn==null;
+        boolean c;
+
+        if(!x){
+            try {
+                c = conn.isClosed();
+            } catch (Exception e) {
+                e.printStackTrace();
+                c = false;
+            }
+        }
+        else {
+            c = false;
+        }
+
+        if(c || x){
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+                conn = DriverManager.getConnection(DB, USER, PWD);
+            } catch (SQLException e) {
+                // e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -33,13 +53,15 @@ public class DBConnect {
 
     public void close(){
         users--;
-        System.out.println("[CONNECTING] users connected: "+users);
-        try{
-            conn.close();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            System.out.println("Could not close connection");
+        System.out.println("[CONNECTING] active user connections: "+users);
+        if(users<1){
+            try{
+                conn.close();
+            }
+            catch(Exception e){
+                e.printStackTrace();
+                System.out.println("Could not close connection");
+            }
         }
     }
 
