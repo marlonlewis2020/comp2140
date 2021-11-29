@@ -1,56 +1,84 @@
 Authentication (implements Operations Interface){
-    private PreparedStatement verify
-    private String role
-    private String user
-    private int pw
-    public ArrayList<String> menu_list
-    private ArrayList<String> userMenu
-    private String request
-    private ResultSet result
-    private String auth_message
-    private String auth_option
+    - PreparedStatement verify
+    - String role
+    - String user
+    - int pw
+    + ArrayList<String> menu_list
+    - ArrayList<String> userMenu
+    - String request
+    - ResultSet result
+    - String auth_message
+    - String auth_option
 
-    public Authentication()
-    public void authenticate(String user, String pw)
-    public String logout()
-    public ResultSet sendMenuRequest(String type)
-    public String getRole()
-    public String getUser()
-    public Connection getDbConn()
-    public String getAuth_message()
-    public ArrayList<String> getUserMenu()
-    public ArrayList<String> getMenu_list()
-    public String getRequest()
-    public String getAuth_option()
-    public String toString()
+    + Authentication()
+    + void authenticate(String user, String pw)
+    + String logout()
+    + ResultSet sendMenuRequest(String type)
+    + String getRole()
+    + String getUser()
+    + Connection getDbConn()
+    + String getAuth_message()
+    + ArrayList<String> getUserMenu()
+    + ArrayList<String> getMenu_list()
+    + String getRequest()
+    + String getAuth_option()
+    + String toString()
 }
 
 Operations<Interface> (aggregates DBConnect){
-    public final String createUser
-    public final String createStock
-    public final String createBracelet
-    public final String createCustomer
-    public final String editUser
-    public final String editStock
-    public final String editBracelet
-    public final String editCustomer
-    public final String viewUsers
-    public final String viewUser
-    public final String viewInventory
-    public final String viewStock
-    public final String viewBracelets
-    public final String viewCustomer
-    public final String viewBracelet
+    + final String createUser
+    + final String createStock
+    + final String createBracelet
+    + final String createCustomer
+    + final String editUser
+    + final String editStock
+    + final String editBracelet
+    + final String editCustomer
+    + final String viewUsers
+    + final String viewUser
+    + final String viewInventory
+    + final String viewStock
+    + final String viewBracelets
+    + final String viewCustomer
+    + final String viewBracelet
 }
 
 DBConnect{
     static final String DB
     static final String USER
     static final String PWD
-    public static Connection conn
+    + static Connection conn
 
-    public DBConnect()
-    public String notification()
-    public Connection dbconnection()
-    public void save(String table, HashMap<String, String> dict)
+    + DBConnect()
+    + String notification()
+    + Connection dbconnection()
+    + void save(String table, HashMap<String, String> dict)
 }
+
+    - static DBConnect conn
+    - PreparedStatement ps
+    - String role
+    - String user
+    - int pw
+    - ArrayList<String> userMenu
+    - String request
+    - String auth_message
+    - String auth_option
+    + Authentication()
+    + String authenticate(String, String) 
+    + String logout()
+    - String login()
+    + String getRequest()
+    + void setRequest(String)
+    + String getRole()
+    + int getPwd()
+    + String getUser()
+    + static Connection getDbConn()
+    + String getAuth_message()
+    + ArrayList<String> getUserMenu()
+    + String getAuth_option()
+    + PreparedStatement getPS()
+    + String toString()
+
+
+
