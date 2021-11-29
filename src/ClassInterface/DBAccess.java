@@ -27,17 +27,20 @@ public class DBAccess {
      * Function updates the quantity of a stock item
      * @param qty - the value to update by.
      * @param name - the name of the stock item.
+     * @return boolean true if successfully update to quantity, false otherwise.
      */
-    public void update(int qty, String name){
+    public boolean update(int qty, String name){
         PreparedStatement sql = auth.getPS();
         try{
             sql.setInt(1,qty);
             sql.setString(2,name);
             sql.execute();
+            return true;
         }
         catch(SQLException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
+            return false;
         }
 
     }

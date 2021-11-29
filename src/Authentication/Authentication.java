@@ -49,9 +49,10 @@ public class Authentication implements Operations{
      * @param pw: PASSWORD
      * @throws SQLException
      */
-    public void authenticate(String user, String pw) {
+    public String authenticate(String user, String pw) {
         if(user=="" && pw==""){
             logout();
+            return"";
         }
         else{
             conn = new DBConnect();
@@ -68,12 +69,15 @@ public class Authentication implements Operations{
                     String[] items = role.split(",");
                     userMenu.addAll(Arrays.asList(items));
                     login();
+                    return roles.getString("name");
                 }else{
                     logout();
+                    return "";
                 }
             }
             catch(SQLException e){
                 e.printStackTrace();
+                return "";
             }
         }
     }
