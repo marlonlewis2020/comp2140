@@ -1,7 +1,5 @@
 package Authentication;
 
-import java.sql.Connection;
-
 /**
  * BeadItUpJa Project
  * @version 1.0
@@ -9,6 +7,7 @@ import java.sql.Connection;
  * 
  */
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,8 +16,10 @@ import java.sql.ResultSet;
 // import Bracelet;
 // import Stock;
 // import Order;
+// import Customer;
 
 import ClassInterface.Operations;
+
 
 public class Authentication implements Operations{
     private static DBConnect conn;
@@ -47,6 +48,7 @@ public class Authentication implements Operations{
      * It also allows user data and requests to be stored for processing.
      * @param user: USERNAME
      * @param pw: PASSWORD
+     * @return role of authenticated user or empty string if login fails
      * @throws SQLException
      */
     public String authenticate(String user, String pw) {
@@ -208,10 +210,18 @@ public class Authentication implements Operations{
         return userMenu;
     }
 
+    /**
+     * function gets the sign in/out options 
+     * @return sign in or sign out based on login status
+     */
     public String getAuth_option() {
         return auth_option;
     }
 
+    /**
+     * function gets the sql request string and converts it into a prepared dtatement
+     * @return prepared statement matching the user's request
+     */
     public PreparedStatement getPS() {
         try{
             ps = getDbConn().prepareStatement(getRequest());
@@ -222,6 +232,10 @@ public class Authentication implements Operations{
         return ps;
     }
 
+    /**
+     * toString method that returns login/logout confirmation message when user logs in/out
+     * @return login/logout confirmation message
+     */
     public String toString(){
         String result = "Welcome %s! %s";
         if (getUser()==null){
