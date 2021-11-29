@@ -1,6 +1,6 @@
 /**
  * Stock is an invertory item located in the bead it up ja app.
- * @version 1.1
+ * @version 1.2
  * @author Kimani Munn,Marlon Lewis
  */
 
