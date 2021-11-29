@@ -1,40 +1,48 @@
-
 import Authentication.Authentication;
+
 class test {
-    
-    public static void main(String[] args) {
-        // System.out.println("password123".hashCode());
-        /**
-         * Authentication Tests
-         */
+
+    /**
+     * Authentication Tests
+     */
+    private Authentication authenticationTests(){
         try {
+            //testing login feature
             Authentication auth = new Authentication();
+            System.out.println("[AUTHENTICATED USER] role: "+auth.authenticate("mlewis","1403730359"));
+
             Authentication none = new Authentication(); 
-            System.out.println("role: "+auth.authenticate("mlewis","1403730359"));
-            System.out.println("role: "+none.authenticate("user", "pw"));
+            System.out.println("[ANON USER] role: "+none.authenticate("user", "pw"));
             
-            //testing login user's menu options
+            // displating user's menu options
             for(String s : auth.getUserMenu()){
-                System.out.println("Authenticated User's Menu item: "+s);
+                System.out.println("AUTHENTICATED USER'S] Menu option: "+s);
             }
 
-            //confirming login/logout changes to state
-            System.out.println("authenticated: "+auth.getAuth_message());
-            System.out.println("NOT authenticated: "+none.getAuth_message()); 
+            // CHECKING AUTHENTICATION STATUS
+            System.out.println("[AUTHENTICATED] MESSAGE: " + auth.getAuth_message());
+            System.out.println("[NOT AUTHENTICATED] MESSAGE: " + none.getAuth_message()); 
+
+            // SIGNING OUT AND GETTING AUTHENTICATION STATUS MESSAGE
             auth.authenticate("", "");
-            System.out.println("auth signed out: "+auth.getAuth_message());
+            System.out.println("auth signed out: " + auth.getAuth_message());
+
+            // SIGNING IN AND GETTING AUTHENTICATION
             none.authenticate("mlewis","1403730359");
-            System.out.println("'none' authenticated: "+none.getAuth_message());
+            System.out.println("'none' authenticated: " + none.getAuth_message());
+            return none;
             
         } catch (Exception e) {
             // System.out.println(e.getMessage()); 
             System.out.println("!!!!!AUTHENTICATION EXCEPTION ENCOUNTERED!!!!!");
+            return null;
         }
-        
+    }
 
-        /**
-        * Stock class test
-        */
+    /**        
+    * Stock class test            
+    */
+    private String stockTests(){
         try {
             Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
             gibbs.createStock();
@@ -56,16 +64,18 @@ class test {
             System.out.println("[TOSTRING() FROM CLASS TEST]: "+sec.toString());
             sec.createStock();
             System.out.println("[VIEWITEM(STOCKNAME) TEST]" + Stock.viewItem(sec.getStockName()).toString());
+            return "Stock Tests completed successfully; \n";
         } catch (Exception e) {
             // System.out.println(e.getMessage()); 
             System.out.println("!!!!!STOCK EXCEPTION ENCOUNTERED!!!!!");
+            return "Stock Tests failed; \n";
         }
+    }
 
-
-        /**
-        * Bracelet Tests
-        */
-
+    /**
+     * Bracelet Tests
+     */
+    private String braceletTests(){
         try{
             Bracelet.populate();
             Bracelet b; 
@@ -83,11 +93,35 @@ class test {
             System.out.println(b.getLgBeadQty());
             System.out.println(b.getMedBeadQty());
             //Bracelet.deleteBracelet("b1");
+            return "Bracelet Tests completed successfully; \n";
         }
         catch(Exception e){
             // System.out.println(e.getMessage()); 
             System.out.println("!!!!!BRACELET EXCEPTION ENCOUNTERED!!!!!");
+            return "Bracelet Tests failed; \n";
         }
+    }
+    
+    public static void main(String[] args) {
+        /**
+         * -----  COMMENT OUT TEST METHODS YOU DO NOT WANT TO RUN!!!!!              -----
+         * -----  ENSURE AUTHENTICATIONTESTS() ALWAYS RUNS BEFORE YOUR CODE!!!!!    -----
+         * System.out.println("password123".hashCode());
+        */
 
+        /*        * create test object          */
+        test t = new test();
+        
+        /*        * RUNNING TESTS               */
+        Authentication a = t.authenticationTests(); //Authentication
+        // String b = t.stockTests(); //Stock
+        // String c = t.braceletTests(); //Bracelet
+
+        /*        * END OF TESTS. CLOSING       */       
+        String x = "\n\nAuthentication Tests failed; \n";
+        if(a!=null){x = "\n\nAuthentication Tests completed successfully; \n";}
+        System.out.println(x);
+        // System.out.println(b+c);
+        a.logout();
 }
 }
