@@ -8,8 +8,8 @@ class test {
          */
         Authentication auth = new Authentication();
         Authentication none = new Authentication();
-        auth.authenticate("mlewis","1403730359");
-        none.authenticate("user", "pw");
+        System.out.println("role: "+auth.authenticate("mlewis","1403730359"));
+        System.out.println("role: "+none.authenticate("user", "pw"));
         
         //testing login user's menu options
         for(String s : auth.getUserMenu()){
@@ -33,14 +33,28 @@ class test {
         /**
         * Stock class test
         */
-        //Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
-        //gibbs.createStock();
+        Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
+        gibbs.createStock();
         int quantity = Stock.getQuantity("Gibbits");
         System.out.println("Quantity = "+ quantity);
-        Stock.updateStock('+',12, "Gibbits");
+        Stock.updateStock('-',12, "Gibbits");
         // Stock.updateStock('-',500, "Gibbits");
         quantity = Stock.getQuantity("Gibbits");
         System.out.println("Quantity = "+ quantity);
+        for(Stock s:Stock.viewStock()){
+            System.out.println(s.toString());
+        }
+
+        Stock sec = new Stock(StockType.Beads,"Panther", 9150,50);
+        ;
+        System.out.println(sec.toString());
+        sec.createStock();
+        //Stock.viewItem(sec.getStockName()).toString();
+
+
+
+
+
 
 
         /**

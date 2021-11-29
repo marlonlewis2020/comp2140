@@ -4,8 +4,8 @@
  * @author Kimani Munn,Marlon Lewis
  */
 
- import ClassInterface.DBAccess;
- import java.sql.*;
+import ClassInterface.DBAccess;
+import java.sql.*;
 import java.util.ArrayList;
 
 import Authentication.Authentication;
@@ -15,8 +15,9 @@ class Stock{
     private int quantity;
     private StockType stockType;
     private String name;
-    private int stockID;
+    private int stockID=0;
     private int level;
+    private static ArrayList<Stock> inventory = new ArrayList<Stock>();
     private static Authentication auth = new Authentication();
 
         // auth.setRequest("view stock");
@@ -91,7 +92,7 @@ class Stock{
     }
 
     public String getStockName(){
-        return name;
+        return this.name;
     }
 
     /**
@@ -117,19 +118,24 @@ class Stock{
     public void createStock(){
         if(!exists(name)){
             auth.setRequest("create stock");
-        DBAccess dba;
-        dba = new DBAccess(auth);
-        dba.create(String.valueOf(this.stockType),this.name,this.quantity,this.level);
+            DBAccess dba;
+            dba = new DBAccess(auth);
+            dba.create(String.valueOf(this.stockType),this.name,this.quantity,this.level);
+            System.out.println("created");
         }
         else{
+            System.out.println("not created");
             updateStock('+',quantity, name);
         }
     }
 
+    /**
+     * Function creates an ArrayList of Stock items from the database
+     * @return
+     */
     public static ArrayList<Stock> viewStock(){
-
         //filter by level
-        ArrayList<Stock> inventory = new ArrayList<Stock>();
+        inventory = new ArrayList<Stock>();
         auth.setRequest("view inventory");
         DBAccess dba;
         dba = new DBAccess(auth);
@@ -138,12 +144,30 @@ class Stock{
             while(r.next()){
                 Stock e = new Stock(r.getInt("id"),StockType.valueOf(r.getString("type")),r.getString("name"),r.getInt("quantity"),r.getInt("limit"));
                 inventory.add(e);
+                System.out.println("added stock from database");
             }
             return inventory;
         } catch (Exception e) {
             e.printStackTrace();
             return inventory;
         }
+    }
+
+    /**
+     * Function gets a Stock object from the database.
+     * @param name - name of a stock item in the database
+     * @return Stock matching the name or null if no match found
+     */
+    public static Stock viewItem(String name){
+        inventory = viewStock();
+        for(Stock s: inventory){
+            System.out.println(s.getStockName()+", "+name);
+            if (s.getStockName()==name){
+                System.out.println("INVENTORY ITEM FOUND");
+                return s;
+            }
+        }
+        return null;
     }
 
     public int getLevel(){
@@ -166,5 +190,9 @@ class Stock{
         System.out.println("testin bool: "+Boolean.valueOf("False"));
         return Boolean.valueOf("False");
         
+    }
+
+    public String toString(){
+        return "[Stock item] "+"id: "+getID()+", name: "+getStockName()+", qty: "+this.quantity+", limmit: "+getLevel();
     }
 }
