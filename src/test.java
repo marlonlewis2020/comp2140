@@ -77,23 +77,33 @@ class test {
      */
     private String braceletTests(){
         try{
+            Stock bark = new Stock(StockType.Beads,"Bark",200,50);
+            bark.createStock();
+            //Populating bracelet array with data that was in the databse before.
             Bracelet.populate();
-            Bracelet b; 
-            b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
-            //System.out.println(b.getName());
-            //System.out.println(b.getBracelets());
-            //System.out.println(b.getID());
-            //System.out.println(b.getCollection());
-            //System.out.println(Bracelet.getBraceletIndex("b1"));
-            // Bracelet b = Bracelet.searchByName("b1");
-            Bracelet.addToArray(b);
-            b.addToDatabase();
-            System.out.println(b.getName());
-            System.out.println(b.getSmallBeadQty());
-            System.out.println(b.getLgBeadQty());
-            System.out.println(b.getMedBeadQty());
-            //Bracelet.deleteBracelet("b1");
+            //Creating bracelet objects
+            Bracelet bracelet1 = new Bracelet("King", 1200, "Gibbits-5;Panther-5","Gibbits-7;Panther-7","Gibbits-10;Panther-10","Royalty");
+            Bracelet bracelet2= new Bracelet("Roots", 2200, "Gibbits-5;Bark-5","Gibbits-7;Bark-7","Gibbits-10;Bark-10","Nature");
+            Bracelet bracelet3 = new Bracelet("Summer", 5000, "Bark-5;Panther-5","Bark-7;Panther-7","Bark-10;Panther-10","Seasons");
+            
+            //Adding bracelets to database
+            bracelet1.addToDatabase();
+            bracelet2.addToDatabase();
+            bracelet3.addToDatabase();
+
+            //adding braceles to array
+            Bracelet.addToArray(bracelet1);
+            Bracelet.addToArray(bracelet2);
+            Bracelet.addToArray(bracelet3);
+
+            //Estimate quantity of bracelets that can be made based on avalaible beads.
+            System.out.println(bracelet1.estimateQty());
+            System.out.println(bracelet2.estimateQty());
+            System.out.println(bracelet3.estimateQty());
+
             return "Bracelet Tests completed successfully; \n";
+
+            
         }
         catch(Exception e){
             // System.out.println(e.getMessage()); 
