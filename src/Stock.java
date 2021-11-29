@@ -170,7 +170,7 @@ class Stock{
      * Function creates an ArrayList of Stock items from the database
      * @return inventory list of Stock items/objects in the database
      */
-    public static ArrayList<Stock> viewStock(){
+    public static ArrayList<Stock> viewStock(int filter){
         //filter by level
         inventory = new ArrayList<Stock>();
         auth.setRequest("view inventory");
@@ -183,7 +183,16 @@ class Stock{
                 inventory.add(e);
                 // System.out.println("added stock from database");
             }
-            return inventory;
+            if(filter==1){
+                return inventory;
+            }
+            ArrayList<Stock> filtered = new ArrayList<Stock>(); 
+            for(Stock stock: inventory){
+                if(Stock.getQuantity(stock.getStockName())<=stock.getLevel()){
+                    filtered.add(stock);
+                }
+            }
+            return filtered;
         } catch (Exception e) {
             e.printStackTrace();
             return inventory;
@@ -196,7 +205,7 @@ class Stock{
      * @return Stock matching the name or null if no match found
      */
     public static Stock viewItem(String name){
-        inventory = viewStock();
+        inventory = viewStock(1);
         for(Stock s: inventory){
             if (s.getStockName().equals(name)){
                 // System.out.println("INVENTORY ITEM FOUND");

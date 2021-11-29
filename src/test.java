@@ -55,7 +55,7 @@ class test {
             Stock.updateStock('-',500, "Panther");
             System.out.println("Gibbits Quantity = "+ Stock.getQuantity("Gibbits")); 
             System.out.println("Panther Quantity = "+ Stock.getQuantity("Panther")); 
-            for(Stock s:Stock.viewStock()){
+            for(Stock s:Stock.viewStock(1)){
                 System.out.println(s.toString());
             }
     
