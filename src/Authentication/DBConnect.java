@@ -11,8 +11,11 @@ public class DBConnect {
     private static final String USER = "root";
     private static final String PWD = "";
     private static Connection conn;
+    private static int users = 0;
 
     public DBConnect() {
+        users++;
+        System.out.println("[CONNECTING] users connected: "+users);
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(DB, USER, PWD);
@@ -29,6 +32,8 @@ public class DBConnect {
     }
 
     public void close(){
+        users--;
+        System.out.println("[CONNECTING] users connected: "+users);
         try{
             conn.close();
         }
