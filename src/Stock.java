@@ -11,70 +11,49 @@ import java.util.ArrayList;
 import Authentication.Authentication;
 
 class Stock{
-    private int id;
-    private StockType type;
-    private String name;
+    
     private int quantity;
+    private StockType stockType;
+    private String name;
+    private int stockID;
     private int level;
-    /*String filter number*/
-    // private Connection conn = Authentication.getDbConn();
     private static Authentication auth = new Authentication();
 
+        // auth.setRequest("view stock");
+        // DBAccess dba;
+        // dba = new DBAccess(auth);
+
+        /**
+         * add int id to attribute 
+         * remove the filternum from attributes
+         * change checkLevel to getLevel, return an integer
+         * updateStock(char ch,int qty, String name), return void
+         * viewStock(int filterNum), return ArrayList<Stock>
+         */
+
     public Stock(int id_input, StockType type, String name,int quantity,int level){
-        this.id=id_input;
-        this.type=type;
+        this.stockID=id_input;
+        this.stockType=type;
         this.level=level;
         this.name=name;
         this.quantity=quantity;
     }
 
     public Stock(StockType type, String name,int quantity,int level){
-        this.type=type;
+        this.stockType=type;
         this.level=level;
         this.name=name;
         this.quantity=quantity;
-        
-        // auth.setRequest("view stock");
-        // DBAccess dba;
-        // dba = new DBAccess(auth);
+    }
+
+    public Stock(StockType type, String name,int quantity){
+        this.stockType=type;
+        this.name=name;
+        this.quantity=quantity;
     }
 
     public int getID(){
-        return this.id;
-    }
-
-    public static ArrayList<Stock> inventory(){
-        ArrayList<Stock> inventory = new ArrayList<Stock>();
-        auth.setRequest("view inventory");
-        DBAccess dba;
-        dba = new DBAccess(auth);
-        try {
-            ResultSet r = dba.viewAll();
-            while(r.next()){
-                Stock e = new Stock(r.getInt("id"),StockType.valueOf(r.getString("type")),r.getString("name"),r.getInt("quantity"),r.getInt("limit"));
-                inventory.add(e);
-            }
-            return inventory;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return inventory;
-        }
-    }
-
-    private boolean exists(String sname){
-        auth.setRequest("view stock");
-        System.out.println("[Stock - exists method] request: "+auth.getRequest());
-        DBAccess dba;
-        dba = new DBAccess(auth);
-        ResultSet res = dba.viewSpecific("stock",sname);
-        System.out.println("[Stock - exists method] res: "+res);
-        if(res!=null){
-            System.out.println("testin bool: "+Boolean.valueOf("True"));
-            return Boolean.valueOf("True");
-        }
-        System.out.println("testin bool: "+Boolean.valueOf("False"));
-        return Boolean.valueOf("False");
-        
+        return this.stockID;
     }
 
     public static int getQuantity(String name){
@@ -96,14 +75,6 @@ class Stock{
             return 0;
         }
     }
-
-    public String getStockName(){
-        return name;
-    }
-
-    public int getcheckLevel(){
-        return this.level;
-    }
     
     public static void updateStock(char ch,int qty, String name){
         DBAccess dba;
@@ -117,6 +88,10 @@ class Stock{
             dba = new DBAccess(auth);
             dba.update(qty,name);
         }
+    }
+
+    public String getStockName(){
+        return name;
     }
 
     /**
@@ -144,11 +119,52 @@ class Stock{
             auth.setRequest("create stock");
         DBAccess dba;
         dba = new DBAccess(auth);
-        dba.create(String.valueOf(this.type),this.name,this.quantity,this.level);
+        dba.create(String.valueOf(this.stockType),this.name,this.quantity,this.level);
         }
         else{
             updateStock('+',quantity, name);
         }
+    }
+
+    public static ArrayList<Stock> viewStock(){
+
+        //filter by level
+        ArrayList<Stock> inventory = new ArrayList<Stock>();
+        auth.setRequest("view inventory");
+        DBAccess dba;
+        dba = new DBAccess(auth);
+        try {
+            ResultSet r = dba.viewAll();
+            while(r.next()){
+                Stock e = new Stock(r.getInt("id"),StockType.valueOf(r.getString("type")),r.getString("name"),r.getInt("quantity"),r.getInt("limit"));
+                inventory.add(e);
+            }
+            return inventory;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return inventory;
+        }
+    }
+
+    public int getLevel(){
+        return this.level;
+    }
+
+    //Support Functions//
+
+    private boolean exists(String sname){
+        auth.setRequest("view stock");
+        System.out.println("[Stock - exists method] request: "+auth.getRequest());
+        DBAccess dba;
+        dba = new DBAccess(auth);
+        ResultSet res = dba.viewSpecific("stock",sname);
+        System.out.println("[Stock - exists method] res: "+res);
+        if(res!=null){
+            System.out.println("testin bool: "+Boolean.valueOf("True"));
+            return Boolean.valueOf("True");
+        }
+        System.out.println("testin bool: "+Boolean.valueOf("False"));
+        return Boolean.valueOf("False");
         
     }
 }

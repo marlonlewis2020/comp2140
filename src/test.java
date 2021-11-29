@@ -48,15 +48,15 @@ class test {
         */
 
         Bracelet.populate();
-        //Bracelet b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
-        //Bracelet.addToArray(b);
-        //b.addToDatabase();
+        Bracelet b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
+        Bracelet.addToArray(b);
+        b.addToDatabase();
         //System.out.println(b.getName());
         //System.out.println(b.getBracelets());
         //System.out.println(b.getID());
         //System.out.println(b.getCollection());
         //System.out.println(Bracelet.getBraceletIndex("b1"));
-        Bracelet b = Bracelet.searchByName("b1");
+        // Bracelet b = Bracelet.searchByName("b1");
         System.out.println(b.getName());
         System.out.println(b.getSmallBeadQty());
         System.out.println(b.getLgBeadQty());
