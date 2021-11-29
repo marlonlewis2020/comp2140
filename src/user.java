@@ -9,7 +9,7 @@ class User
   private int userID;
   private static int nextid =0;
   private String userName;
-  private String passWord;
+  private int passWord;
   private String role;
   public ArrayList<String> menu = new ArrayList<String>();
   private ArrayList<User> approvedUsers = new ArrayList<User>();
@@ -20,7 +20,7 @@ class User
   public User( String userName, String passWord, String role)
   {
     this.userName = userName;
-    this.passWord = passWord;
+    this.passWord = passWord.hashCode();
     this.role = role;
     this.userID = nextid;
     nextid++;
@@ -38,7 +38,7 @@ class User
 
   public String getPassword()
   {
-    return this.passWord;
+    return String.valueOf(this.passWord);
   }
 
   public String getRole()
@@ -69,28 +69,17 @@ class User
      // approvedUsers.add(user);
       
       Connection conn = Authentication.getDbConn();
-      
-      System.out.println("Entered Successfully");
-
-      String query = "insert into users (id, name, username, password, role)" + " values (?, ?, ?, ?, ?)";
-
+      String query = "insert into users (username, password, role)" + " values (?, ?, ?)";
       PreparedStatement preparedStmt = conn.prepareStatement(query);
-      preparedStmt.setInt(1, this.getUserID());
-      preparedStmt.setString(2, "");
-      System.out.println("Entered Successfully");
-      preparedStmt.setString(3, this.getUserName());
-      preparedStmt.setString(4, this.getPassword() );
-      System.out.println("Entered Successfully");
-      preparedStmt.setString(5, this.getRole());
-
-      preparedStmt.execute();
-      System.out.println("Entered Successfully");
-      
-
+      preparedStmt.setString(1, this.getUserName());
+      preparedStmt.setString(2, this.getPassword() );
+      preparedStmt.setString(3, this.getRole());
+      preparedStmt.execute();  
     }
     catch(Exception e)
     {
-      
+      System.out.println(e.getMessage());
+      e.printStackTrace();
     }
     
     

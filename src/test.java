@@ -6,7 +6,7 @@ class test {
         /**
          * Authentication Tests
          */
-     /*   Authentication auth = new Authentication();
+        Authentication auth = new Authentication();
         Authentication none = new Authentication();
         auth.authenticate("mlewis","1403730359");
         none.authenticate("user", "pw");
