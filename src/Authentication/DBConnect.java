@@ -4,6 +4,8 @@ import java.sql.*;
 
 /**
  * DBConnect
+ * @version 1.0
+ * @author Marlon Lewis
  */
 public class DBConnect {
 
