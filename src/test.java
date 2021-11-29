@@ -5,7 +5,7 @@ class test {
         /**
          * Authentication Tests
          */
-        Authentication auth = new Authentication();
+     /*   Authentication auth = new Authentication();
         Authentication none = new Authentication();
         auth.authenticate("mlewis","1403730359");
         none.authenticate("user", "pw");
@@ -33,20 +33,21 @@ class test {
         * Stock class test
         */
         //Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
-        //gibbs.createStock();
+        //gibbs.createStock();*/
+        /*
         int quantity = Stock.getQuantity("Gibbits");
         System.out.println("Quantity = "+ quantity);
         Stock.updateStock('+',12, "Gibbits");
         // Stock.updateStock('-',500, "Gibbits");
         quantity = Stock.getQuantity("Gibbits");
-        System.out.println("Quantity = "+ quantity);
+        System.out.println("Quantity = "+ quantity);*/
 
 
         /**
         * Bracelet Tests
         */
 
-        Bracelet.populate();
+       /* Bracelet.populate();
         //Bracelet b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
         //Bracelet.addToArray(b);
         //b.addToDatabase();
@@ -60,7 +61,13 @@ class test {
         System.out.println(b.getSmallBeadQty());
         System.out.println(b.getLgBeadQty());
         System.out.println(b.getMedBeadQty());
-        //Bracelet.deleteBracelet("b1");
+        //Bracelet.deleteBracelet("b1");*/
+
+        /*user test*/
+       
+        User user = new User ("Callay", "lovelyyy","Admin");
+        user.addUser();
 
 }
+
 }
