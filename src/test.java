@@ -37,7 +37,7 @@ class test {
         //gibbs.createStock();
         int quantity = Stock.getQuantity("Gibbits");
         System.out.println("Quantity = "+ quantity);
-        Stock.updateStock('+',12, "Gibbits");
+        // Stock.updateStock('+',12, "Gibbits");
         // Stock.updateStock('-',500, "Gibbits");
         quantity = Stock.getQuantity("Gibbits");
         System.out.println("Quantity = "+ quantity);
@@ -47,21 +47,30 @@ class test {
         * Bracelet Tests
         */
 
+        // Stock quartz = new Stock(StockType.Beads,"Qaurtz",300,40);
+        // Stock hearts = new Stock(StockType.Beads,"Hearts",100,40);
+        // Stock diamonds = new Stock(StockType.Beads,"Diamonds",2200,30);
+        // quartz.createStock();
+        // hearts.createStock();
+        // diamonds.createStock();
+        
         Bracelet.populate();
-        //Bracelet b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
-        //Bracelet.addToArray(b);
-        //b.addToDatabase();
-        //System.out.println(b.getName());
-        //System.out.println(b.getBracelets());
-        //System.out.println(b.getID());
-        //System.out.println(b.getCollection());
-        //System.out.println(Bracelet.getBraceletIndex("b1"));
-        Bracelet b = Bracelet.searchByName("b1");
-        System.out.println(b.getName());
-        System.out.println(b.getSmallBeadQty());
-        System.out.println(b.getLgBeadQty());
-        System.out.println(b.getMedBeadQty());
-        //Bracelet.deleteBracelet("b1");
+        //Bracelet bracelet1 = new Bracelet("King",1300.00,"Gibbit-10;Quartz-20","Gibbit-20;Quartz-30","Gibbit-30-Quartz-40","Royalty");
+        //Bracelet bracelet2 = new Bracelet("Queen",1500.00,"Hearts-20;Diamonds-20","Hearts-30;Diamonds-30","Hearts-40;Diamonds-40","Royalty");
+        //Bracelet bracelet3 = new Bracelet("Graphite",2500.00,"Quartz-20;Diamonds-10","Quartz-30;Diamonds-20","Quartz-40;Diamonds-30","Dark");
 
-}
+        //bracelet1.addToDatabase();
+        //bracelet2.addToDatabase();
+        //bracelet3.addToDatabase();
+
+        Bracelet.updateBracelet("Graphite", new Bracelet("Prince",1300.00,"Gibbit-10;Quartz-20","Gibbit-20;Quartz-30","Gibbit-30-Quartz-60","Royalty"));
+
+        for(int i =0; i < Bracelet.getBracelets().size(); i++){
+            System.out.println(Bracelet.getBracelets().get(i).getName());
+        }
+
+        
+        
+
+    }
 }
