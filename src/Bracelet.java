@@ -320,8 +320,8 @@ public class Bracelet{
      * @return arraylist including the number of bracelets that can be made based on stock levels
      */
     public ArrayList <Integer> estimateQty(){        
-        int smallMin = 99999;
-        int medMin = 99999;
+        int smallMin = 999999999;
+        int medMin = 999999999;
         int largeMin = 99999;
         String [] beadTypesSmall;
         String [] beadTypesMed;
