@@ -25,14 +25,7 @@ class Stock{
         // DBAccess dba;
         // dba = new DBAccess(auth);
 
-        /**
-         * add int id to attribute 
-         * remove the filternum from attributes
-         * change checkLevel to getLevel, return an integer
-         * updateStock(char ch,int qty, String name), return void
-         * viewStock(int filterNum), return ArrayList<Stock>
-         * add toString method, returns String
-         */
+       
 
          /**
           * overloaded constructor to load stock item from database into object for handling.
@@ -42,7 +35,7 @@ class Stock{
           * @param quantity - quantity of stock item
           * @param level - low level for the stock item
           */
-    public Stock(int id_input, StockType type, String name,int quantity,int level){
+    protected Stock(int id_input, StockType type, String name,int quantity,int level){
         this.stockID=id_input;
         this.stockType=type;
         this.level=level;
