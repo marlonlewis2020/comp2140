@@ -101,6 +101,13 @@ class test {
             return "Bracelet Tests failed; \n";
         }
     }
+
+    private String confirmations(Authentication a,String b, String c){
+        String x = "\n\nAuthentication Tests failed; \n";
+        if(a!=null){x = "\n\nAuthentication Tests completed successfully; \n";}
+        a.logout();
+        return x+b+c;
+    }
     
     public static void main(String[] args) {
         /**
@@ -109,19 +116,16 @@ class test {
          * System.out.println("password123".hashCode());
         */
 
-        /*        * create test object          */
+        /*        * CREATING TEST OBJECT        */
         test t = new test();
         
         /*        * RUNNING TESTS               */
         Authentication a = t.authenticationTests(); //Authentication
-        // String b = t.stockTests(); //Stock
-        // String c = t.braceletTests(); //Bracelet
+        String b = t.stockTests(); //Stock
+        String c = t.braceletTests(); //Bracelet
 
         /*        * END OF TESTS. CLOSING       */       
-        String x = "\n\nAuthentication Tests failed; \n";
-        if(a!=null){x = "\n\nAuthentication Tests completed successfully; \n";}
-        System.out.println(x);
-        // System.out.println(b+c);
-        a.logout();
+        System.out.println(t.confirmations(a,b,c));
+        // PRINTING CONFIRMATIONS
 }
 }
