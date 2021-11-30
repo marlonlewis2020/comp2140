@@ -79,7 +79,7 @@ class test {
 
         /*user test*/
        
-        User user = new User ("Calzy", "beautiful","Admin");
+        User user = new User ("Calzy", "beautiful", Role.INVENTORY_MANAGER);
         //user.addUser();
         user.addUser();
 

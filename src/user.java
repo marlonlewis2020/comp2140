@@ -10,14 +10,14 @@ class User
   private static int nextid =0;
   private String userName;
   private int passWord;
-  private String role;
+  private Role role;
   public ArrayList<String> menu = new ArrayList<String>();
   
 
 
   public User(){}
   
-  public User( String userName, String passWord, String role)
+  public User( String userName, String passWord, Role role)
   {
     this.userName = userName;
     this.passWord = passWord.hashCode();
@@ -41,7 +41,7 @@ class User
     return String.valueOf(this.passWord);
   }
 
-  public String getRole()
+  public Role getRole()
   {
     return this.role;
   }
@@ -68,7 +68,7 @@ class User
         PreparedStatement preparedStmt = conn.prepareStatement(query);
         preparedStmt.setString(1, this.getUserName());
         preparedStmt.setString(2, this.getPassword() );
-        preparedStmt.setString(3, this.getRole());
+        preparedStmt.setString(3, String.valueOf(this.getRole()));
         preparedStmt.execute(); 
       }
       else
