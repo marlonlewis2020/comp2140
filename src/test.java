@@ -86,15 +86,17 @@ class test {
             Bracelet bracelet2= new Bracelet("Roots", 2200, "Gibbits-5;Bark-5","Gibbits-7;Bark-7","Gibbits-10;Bark-10","Nature");
             Bracelet bracelet3 = new Bracelet("Summer", 5000, "Bark-5;Panther-5","Bark-7;Panther-7","Bark-10;Panther-10","Seasons");
             
-            //Adding bracelets to database
-            bracelet1.addToDatabase();
-            bracelet2.addToDatabase();
-            bracelet3.addToDatabase();
 
             //adding braceles to array
             Bracelet.addToArray(bracelet1);
             Bracelet.addToArray(bracelet2);
             Bracelet.addToArray(bracelet3);
+
+            //Adding bracelets to database
+            bracelet1.addToDatabase();
+            bracelet2.addToDatabase();
+            bracelet3.addToDatabase();
+
 
             //Estimate quantity of bracelets that can be made based on avalaible beads.
             System.out.println(bracelet1.estimateQty());
