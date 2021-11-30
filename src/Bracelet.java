@@ -59,7 +59,13 @@ public class Bracelet{
         }
     }
 
-    public Bracelet(){};
+     /**
+     * Call this function immediately after creatinga  bracelet instance
+     * @param b bracelet
+     */
+    public static void addToArray(Bracelet b){
+        bracelets.add(b);
+    }
 
     //Getters
     /**
@@ -68,15 +74,6 @@ public class Bracelet{
      */
     public String getName(){
         return this.name;
-    }
-
-
-    /**
-     * Call this function immediately after creatinga  bracelet instance
-     * @param b bracelet
-     */
-    public static void addToArray(Bracelet b){
-        bracelets.add(b);
     }
 
     /**
@@ -178,32 +175,36 @@ public class Bracelet{
      * @param b Bracelet object
      */
     public void addToDatabase(){
-
-      try{
+        try{
+            if(Bracelet.searchByName(getName()) == null || Bracelet.getBracelets().size() == 0){
+                Connection conn = Authentication.getDbConn();
+                String query = "insert into bracelet (id,name,collection,cost, smallBeads, mediumBeads, largeBeads)"
+                    + " values (?, ?, ?, ?, ?, ?, ?)";
+            
+                // create the mysql insert prepared statement
+                PreparedStatement preparedStmt = conn.prepareStatement(query);
+                preparedStmt.setInt(1, this.getID());
+                preparedStmt.setString(2, this.getName());
+                preparedStmt.setString(3, this.getCollection());
+                preparedStmt.setDouble(4, this.getCost());
+                preparedStmt.setString(5, this.getSmallBeadQty());
+                preparedStmt.setString(6,  this.getMedBeadQty());
+                preparedStmt.setString(7,  this.getLgBeadQty());
+                // execute the preparedstatement
+                preparedStmt.execute();
+                System.out.println("Added to database");
+            }
+            else{
+                System.out.println("Duplicate bracelet creation attempt!");
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            System.err.println(e.getMessage());
+        }
+    }
         
-        Connection conn = Authentication.getDbConn();
-        String query = "insert into bracelet (id,name,collection,cost, smallBeads, mediumBeads, largeBeads)"
-          + " values (?, ?, ?, ?, ?, ?, ?)";
-
-        // create the mysql insert prepared statement
-        PreparedStatement preparedStmt = conn.prepareStatement(query);
-        preparedStmt.setInt(1, this.getID());
-        preparedStmt.setString(2, this.getName());
-        preparedStmt.setString(3, this.getCollection());
-        preparedStmt.setDouble(4, this.getCost());
-        preparedStmt.setString(5, this.getSmallBeadQty());
-        preparedStmt.setString(6,  this.getMedBeadQty());
-        preparedStmt.setString(7,  this.getLgBeadQty());
-        // execute the preparedstatement
-        preparedStmt.execute();
-        System.out.println("Added to database");
-      }
-      catch(Exception e)
-      {
-        e.printStackTrace();
-        System.err.println(e.getMessage());
-      }
-  }
+  
 
 
   //populate bracelet array with info from database
@@ -322,7 +323,7 @@ public class Bracelet{
     public ArrayList <Integer> estimateQty(){        
         int smallMin = 999999999;
         int medMin = 999999999;
-        int largeMin = 99999;
+        int largeMin = 999999999;
         String [] beadTypesSmall;
         String [] beadTypesMed;
         String [] beadTypesLg;
@@ -389,8 +390,8 @@ public class Bracelet{
             st.setString(7,editedBracelet.getLgBeadQty());
             st.setString(8,name);
             st.executeUpdate();
-            bracelets.add(Bracelet.getBraceletIndex(b.getName()),editedBracelet);
             bracelets.remove(Bracelet.getBraceletIndex(b.getName()));
+            bracelets.add(editedBracelet);
         } catch(Exception e) {
             System.out.println(e);
         }
