@@ -232,8 +232,8 @@ public class CreateNewBrace extends JFrame
                 lg = lg.substring(0,lg.length()-1); }
 
             Bracelet newBrace = new Bracelet(name,cost,small,med,lg,collection);
-            Bracelet.addToArray(newBrace);
             newBrace.addToDatabase();
+            Bracelet.addToArray(newBrace);
             System.out.println(newBrace.getName());
 
         }

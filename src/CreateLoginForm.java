@@ -174,8 +174,6 @@ class CreateLoginForm extends JPanel implements ActionListener
           String role = (auth.authenticate(userValue,String.valueOf(passValue.hashCode())));
           System.out.println(role);
           Bracelet.populate();
-          System.out.println(Bracelet.getBracelets().get(4).getName());
-          System.out.println(Bracelet.getBracelets().get(0).getName());
 
 
           MenuScreen newMenu = new MenuScreen();  //MenuScreen newMenu = new MenuScreen(role);
