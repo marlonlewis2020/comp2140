@@ -1,7 +1,5 @@
 package Authentication;
 
-import java.sql.Connection;
-
 /**
  * BeadItUpJa Project
  * @version 1.0
@@ -9,14 +7,19 @@ import java.sql.Connection;
  * 
  */
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.ResultSet;
 // import Bracelet;
+// import Stock;
+// import Order;
+// import Customer;
 
 import ClassInterface.Operations;
+
 
 public class Authentication implements Operations{
     private static DBConnect conn;
@@ -45,11 +48,13 @@ public class Authentication implements Operations{
      * It also allows user data and requests to be stored for processing.
      * @param user: USERNAME
      * @param pw: PASSWORD
+     * @return role of authenticated user or empty string if login fails
      * @throws SQLException
      */
-    public void authenticate(String user, String pw) {
+    public String authenticate(String user, String pw) {
         if(user=="" && pw==""){
             logout();
+            return"";
         }
         else{
             conn = new DBConnect();
@@ -59,19 +64,22 @@ public class Authentication implements Operations{
             try{
                 PreparedStatement p = getDbConn().prepareStatement(sql);
                 p.setString(1,user);
-                p.setString(2,pw);
+                p.setString(2,String.valueOf(this.pw));
                 ResultSet roles = p.executeQuery();
                 if (roles.next()){
                     role = roles.getString("privilege");
                     String[] items = role.split(",");
                     userMenu.addAll(Arrays.asList(items));
                     login();
+                    return roles.getString("name");
                 }else{
                     logout();
+                    return "";
                 }
             }
             catch(SQLException e){
                 e.printStackTrace();
+                return "";
             }
         }
     }
@@ -100,23 +108,23 @@ public class Authentication implements Operations{
      */
     private String login(){
         auth_message = "You are logged in";
-        menuHashMap.put("create user",createStock);
-        menuHashMap.put("create stock",createStock);
-        menuHashMap.put("create bracelet",createStock);
-        menuHashMap.put("create customer",createStock);
-        menuHashMap.put("edit user",updateStock);
-        menuHashMap.put("edit stock",updateStock); 
-        menuHashMap.put("use stock",useStock); 
-        menuHashMap.put("edit bracelet",updateStock);
-        menuHashMap.put("edit customer",updateStock);
-        menuHashMap.put("view users",view);
-        menuHashMap.put("view user",viewById);
-        menuHashMap.put("view inventory",view);
-        menuHashMap.put("view stock",viewByName);
-        menuHashMap.put("view bracelets",view);
-        menuHashMap.put("view bracelet",viewByName);
-        menuHashMap.put("view customers",view);
-        menuHashMap.put("view customer",viewByNamePhone);
+        menuHashMap.put("create user",CREATESTOCK);
+        menuHashMap.put("create stock",CREATESTOCK);
+        menuHashMap.put("create bracelet",CREATESTOCK);
+        menuHashMap.put("create customer",CREATESTOCK);
+        menuHashMap.put("edit user",UPDATESTOCK);
+        menuHashMap.put("edit stock",UPDATESTOCK); 
+        menuHashMap.put("use stock",USESTOCK); 
+        menuHashMap.put("edit bracelet",UPDATESTOCK);
+        menuHashMap.put("edit customer",UPDATESTOCK);
+        menuHashMap.put("view users",VIEW);
+        menuHashMap.put("view user",VIEWBYID);
+        menuHashMap.put("view inventory",VIEW);
+        menuHashMap.put("view stock",VIEWBYNAME);
+        menuHashMap.put("view bracelets",VIEW);
+        menuHashMap.put("view bracelet",VIEWBYNAME);
+        menuHashMap.put("view customers",VIEW);
+        menuHashMap.put("view customer",VIEWBYNAMEPHONE);
         auth_option = "Sign out!";
         // Bracelet.populate();
         return "Welcome "+getUser()+" "+auth_message;
@@ -202,10 +210,18 @@ public class Authentication implements Operations{
         return userMenu;
     }
 
+    /**
+     * function gets the sign in/out options 
+     * @return sign in or sign out based on login status
+     */
     public String getAuth_option() {
         return auth_option;
     }
 
+    /**
+     * function gets the sql request string and converts it into a prepared dtatement
+     * @return prepared statement matching the user's request
+     */
     public PreparedStatement getPS() {
         try{
             ps = getDbConn().prepareStatement(getRequest());
@@ -216,6 +232,10 @@ public class Authentication implements Operations{
         return ps;
     }
 
+    /**
+     * toString method that returns login/logout confirmation message when user logs in/out
+     * @return login/logout confirmation message
+     */
     public String toString(){
         String result = "Welcome %s! %s";
         if (getUser()==null){

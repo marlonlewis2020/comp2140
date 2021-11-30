@@ -22,13 +22,13 @@ public interface Operations {
 
     public static HashMap<String,String> menuHashMap = new HashMap<String,String>();
 
-    public final String createStock = "INSERT INTO `stock` (`type`, `name`, `quantity`, `limit`) VALUES (?, ?, ?, ?)";
-    public final String updateStock = "update `stock` set quantity=quantity+? where name=?";
-    public final String useStock = "update `stock` set quantity=quantity-? where name=?";
-    public final String view = "select * from `stock`";
-    public final String viewById = "select * from ? where id=?";
-    public final String viewByName = "SELECT * FROM `stock` WHERE name=?"; 
-    public final String viewByNamePhone = "select * from customers where name = ? and telephone=?";
+    public final String CREATESTOCK = "INSERT INTO `stock` (`type`, `name`, `quantity`, `limit`) VALUES (?, ?, ?, ?)";
+    public final String UPDATESTOCK = "update `stock` set quantity=quantity+? where name=?";
+    public final String USESTOCK = "update `stock` set quantity=quantity-? where name=?";
+    public final String VIEW = "select * from `stock`";
+    public final String VIEWBYID = "select * from ? where id=?";
+    public final String VIEWBYNAME = "SELECT * FROM `stock` WHERE name=?"; 
+    public final String VIEWBYNAMEPHONE = "select * from customers where name = ? and telephone=?";
 }
     // /*
     //  * Adds the created object to the database

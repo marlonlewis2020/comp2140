@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2021 at 03:53 AM
+-- Generation Time: Nov 29, 2021 at 01:26 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -58,10 +58,12 @@ CREATE TABLE `customers` (
 
 CREATE TABLE `orders` (
   `order_number` int(8) NOT NULL,
-  `items` varchar(150) NOT NULL,
+  `bracelets` varchar(150) NOT NULL,
+  `order_quantity` varchar(50) NOT NULL,
   `customer_id` int(8) NOT NULL,
   `pickup_location` varchar(30) NOT NULL,
-  `total` decimal(8,0) NOT NULL
+  `order_date` datetime NOT NULL,
+  `total` double(8,0) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -105,10 +107,16 @@ CREATE TABLE `stock` (
   `id` int(8) NOT NULL,
   `name` varchar(30) NOT NULL,
   `type` varchar(15) NOT NULL,
-  `color` varchar(10) NOT NULL,
   `quantity` int(8) NOT NULL,
   `limit` int(4) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `stock`
+--
+
+INSERT INTO `stock` (`id`, `name`, `type`, `quantity`, `limit`) VALUES
+(3, 'Gibbits', 'Beads', 160, 50);
 
 -- --------------------------------------------------------
 
@@ -153,6 +161,12 @@ ALTER TABLE `roles`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `stock`
+--
+ALTER TABLE `stock`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -166,7 +180,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `bracelet`
 --
 ALTER TABLE `bracelet`
-  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `pickup_location`
@@ -179,6 +193,12 @@ ALTER TABLE `pickup_location`
 --
 ALTER TABLE `roles`
   MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `stock`
+--
+ALTER TABLE `stock`
+  MODIFY `id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
