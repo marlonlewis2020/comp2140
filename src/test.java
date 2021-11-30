@@ -6,26 +6,26 @@ class test {
          * Authentication Tests
          */
         Authentication auth = new Authentication();
-        Authentication none = new Authentication();
+        //Authentication none = new Authentication();
         auth.authenticate("mlewis","1403730359");
-        none.authenticate("user", "pw");
+        // //none.authenticate("user", "pw");
         
-        //testing login user's menu options
-        for(String s : auth.getUserMenu()){
-            System.out.println("Authenticated User's Menu item: "+s);
-        }
-        //testing unauthenticated user's menu options
-        for(String s : none.getUserMenu()){
-            System.out.println("Logged Out User's Menu item: "+s);
-        }
+        // //testing login user's menu options
+        // for(String s : auth.getUserMenu()){
+        //     System.out.println("Authenticated User's Menu item: "+s);
+        // }
+        // //testing unauthenticated user's menu options
+        // for(String s : none.getUserMenu()){
+        //     System.out.println("Logged Out User's Menu item: "+s);
+        // }
 
-        //confirming login/logout changes to state
-        System.out.println("'auth' authenticated: "+auth.getAuth_message());
-        System.out.println("'none' failed authentication: "+none.getAuth_message());
-        auth.authenticate("", "");
-        System.out.println("auth signed out: "+auth.getAuth_message());
-        none.authenticate("mlewis","1403730359");
-        System.out.println("'none' authenticated: "+none.getAuth_message());
+        // //confirming login/logout changes to state
+        // System.out.println("'auth' authenticated: "+auth.getAuth_message());
+        // System.out.println("'none' failed authentication: "+none.getAuth_message());
+        // //auth.authenticate("", "");
+        //System.out.println("auth signed out: "+auth.getAuth_message());
+        //none.authenticate("mlewis","1403730359");
+        //System.out.println("'none' authenticated: "+none.getAuth_message());
 
         
 
@@ -34,12 +34,12 @@ class test {
         */
         //Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
         //gibbs.createStock();
-        int quantity = Stock.getQuantity("Gibbits");
-        System.out.println("Quantity = "+ quantity);
-        Stock.updateStock('+',12, "Gibbits");
-        // Stock.updateStock('-',500, "Gibbits");
-        quantity = Stock.getQuantity("Gibbits");
-        System.out.println("Quantity = "+ quantity);
+        // int quantity = Stock.getQuantity("Gibbits");
+        // System.out.println("Quantity = "+ quantity);
+        // Stock.updateStock('+',12, "Gibbits");
+        // // Stock.updateStock('-',500, "Gibbits");
+        // quantity = Stock.getQuantity("Gibbits");
+        // System.out.println("Quantity = "+ quantity);
 
 
         /**
@@ -55,20 +55,20 @@ class test {
         //System.out.println(b.getID());
         //System.out.println(b.getCollection());
         //System.out.println(Bracelet.getBraceletIndex("b1"));
-        Bracelet b = Bracelet.searchByName("b1");
-        System.out.println(b.getName());
-        System.out.println(b.getSmallBeadQty());
-        System.out.println(b.getLgBeadQty());
-        System.out.println(b.getMedBeadQty());
+        // Bracelet b = Bracelet.searchByName("b1");
+        // System.out.println(b.getName());
+        // System.out.println(b.getSmallBeadQty());
+        // System.out.println(b.getLgBeadQty());
+        // System.out.println(b.getMedBeadQty());
         //Bracelet.deleteBracelet("b1");
 
 
         /**
          * Customer Class
          */
-        Customer mercedes = new Customer(Long.valueOf("8768164681"), "Mercedes", "Sedecrem");
-        Customer marlon = new Customer(Long.valueOf("8764385612"), "Marlon", "Sovereign");
-        Customer gabriel = new Customer(Long.valueOf("8768964681"), "Gabriel", "Portmore");
+        Customer mercedes = new Customer(8768164681L, "Mercedes", "Sedecrem");
+        Customer marlon = new Customer(8764385612L, "Marlon", "Sovereign");
+        Customer gabriel = new Customer(8768964681L, "Gabriel", "Portmore");
 
         mercedes.addToDatabase();
         marlon.addToDatabase();
