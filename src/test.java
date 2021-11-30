@@ -55,13 +55,27 @@ class test {
             Stock.updateStock('-',500, "Panther");
             System.out.println("Gibbits Quantity = "+ Stock.getQuantity("Gibbits")); 
             System.out.println("Panther Quantity = "+ Stock.getQuantity("Panther")); 
+
+            // VIEWING ALL STOCK
+            System.out.println("\n\n[ALL STOCK]");
             for(Stock s:Stock.viewStock(1)){
                 System.out.println(s.toString());
             }
-    
+
+            // CREATING LOW STOCK ITEM
+            Stock low = new Stock (StockType.Beads,"iron", 150,200);
+            low.createStock();
+
+            // VIEWING LOW STOCK ITEMS
+            System.out.println("\n\n[LOW STOCK]");
+            for(Stock s:Stock.viewStock(0)){
+                System.out.println(s.toString());
+            }
+
+            System.out.println("\n\n[ADDING PANTHER BEAD]");
             Stock sec = new Stock(StockType.Beads,"Panther", 9150,50);
             ;
-            System.out.println("[TOSTRING() FROM CLASS TEST]: "+sec.toString());
+            System.out.println("\n\n[TOSTRING() FROM CLASS TEST]: "+sec.toString());
             sec.createStock();
             System.out.println("[VIEWITEM(STOCKNAME) TEST]" + Stock.viewItem(sec.getStockName()).toString());
             return "Stock Tests completed successfully; \n";
@@ -102,11 +116,11 @@ class test {
         }
     }
 
-    private String confirmations(Authentication a,String b, String c){
+    private String confirmations(Authentication a,String b, String c, String d, String e, String f){
         String x = "\n\nAuthentication Tests failed; \n";
         if(a!=null){x = "\n\nAuthentication Tests completed successfully; \n";}
         a.logout();
-        return x+b+c;
+        return x+b+c+d+e+f;
     }
     
     public static void main(String[] args) {
@@ -121,11 +135,14 @@ class test {
         
         /*        * RUNNING TESTS               */
         Authentication a = t.authenticationTests(); //Authentication
-        String b = t.stockTests(); //Stock
-        String c = t.braceletTests(); //Bracelet
+        String b = "[STOCK TEST PENDING]; \n"; //t.stockTests(); //Stock
+        String c = "[BRACELETS TEST PENDING]; \n"; //t.braceletTests(); //Bracelet
+        String d = "[USER TEST PENDING]; \n"; //t.stockTests(); //Stock
+        String e = "[CUSTOMER TEST PENDING]; \n"; //t.stockTests(); //Stock
+        String f = "[ORDER TEST PENDING]; \n"; //t.stockTests(); //Stock
 
         /*        * END OF TESTS. CLOSING       */       
-        System.out.println(t.confirmations(a,b,c));
+        System.out.println(t.confirmations(a,b,c,d,e,f));
         // PRINTING CONFIRMATIONS
 }
 }
