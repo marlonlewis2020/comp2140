@@ -162,13 +162,22 @@ class CreateLoginForm extends JPanel implements ActionListener
 
   public void actionPerformed(ActionEvent ae)     //pass action listener as a parameter  
     {  
+      
         String userValue = user_txtField.getText();        //get user entered username from the textField1  
         String passValue = pass_txtField.getText(); //get user entered pasword from the textField2  
         String roleVal = role_txtField.getText();
+        //Authentication newAuth = new Authentication();
+        //newAuth.authenticate(userValue,String.valueOf(passValue.hashCode()));
+        //Bracelet.populate();
 
       if (userValue.equals("mlewis") && passValue.equals("password123") && (roleVal.equals("ADMIN"))){  //if Authenticate(userValue,passValue) != ("") and passValue !=("temp")
           String role = (auth.authenticate(userValue,String.valueOf(passValue.hashCode())));
           System.out.println(role);
+          Bracelet.populate();
+          System.out.println(Bracelet.getBracelets().get(4).getName());
+          System.out.println(Bracelet.getBracelets().get(0).getName());
+
+
           MenuScreen newMenu = new MenuScreen();  //MenuScreen newMenu = new MenuScreen(role);
               
             //make page visible to the user  

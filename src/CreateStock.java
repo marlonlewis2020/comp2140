@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 
 public class CreateStock extends JFrame
 {
-    private JTextField  itemName;       //name
+    private JTextField  itemName;      //name
+    private JTextField stckType;
     private JTextField  quantity;        //age
     private JTextField  lowLevel;        //age
     private JButton     cmdSave;
@@ -27,6 +28,10 @@ public class CreateStock extends JFrame
         itemName = new JTextField();
         pnlDisplay.add(itemName);
 
+        pnlDisplay.add(new JLabel("TYPE")); 
+        stckType = new JTextField();
+        pnlDisplay.add(stckType);
+
 
         pnlDisplay.add(new JLabel("QUANTITY"));
         quantity = new JTextField();
@@ -41,7 +46,7 @@ public class CreateStock extends JFrame
        
         cmdSave   = new JButton("Save");
         cmdClose   = new JButton("Close");
-        cmdClose.addActionListener(new VisibleListener());
+        cmdClose.addActionListener(new CloseListener());
         cmdSave.addActionListener(new SaveListener());
         //cmdSave.addActionListener(new AddToListListener());
         
@@ -57,7 +62,7 @@ public class CreateStock extends JFrame
 
 
 
-    private class VisibleListener implements ActionListener
+    private class CloseListener implements ActionListener
     {
         public void actionPerformed (ActionEvent event)
         {

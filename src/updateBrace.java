@@ -19,14 +19,14 @@ public class updateBrace extends JFrame {
     private JLabel collectionLabel;
     private JLabel editBrace;
     private JLabel newBName;
-    private JLabel costLabel;
+    private JLabel cstLabel;
     private JLabel succUpdated;
 
     private JLabel notFound;
     private JLabel tryAgain;
     private String bracelet;
     private String collection;
-    private String cost;
+    private String cst;
     private String editedColl;
     private Double editedCost;
 
@@ -48,11 +48,11 @@ public class updateBrace extends JFrame {
         
         braceFind = new JButton("FIND");
         braceFind.setBounds(160,155,100,35);
-        braceFind.addActionListener(new braceFindListener());
+        braceFind.addActionListener(new bFindListener());
 
-        this.bracelet  = "Bracelet Name" ;
-        this.collection = "Collection";
-        this.cost = "Cost";
+        bracelet  = "Bracelet Name" ;
+        collection = "Collection";
+        cst = "Cost";
 
         nameBraceLabel = new JLabel(bracelet);
         nameBraceLabel.setBounds(160,180,200,35);
@@ -62,9 +62,9 @@ public class updateBrace extends JFrame {
         collectionLabel.setBounds(160,220,200,35);
         collectionLabel.setVisible(false);
 
-        costLabel = new JLabel(cost);
-        costLabel.setBounds(160,250,200,35);
-        costLabel.setVisible(false);
+        cstLabel = new JLabel(cst);
+        cstLabel.setBounds(160,250,200,35);
+        cstLabel.setVisible(false);
         
         
         editBrace = new JLabel("EDIT DESIRED FIELDS");
@@ -127,7 +127,7 @@ public class updateBrace extends JFrame {
         add(braceFind);
         add(nameBraceLabel);
         add(collectionLabel);
-        add(costLabel);
+        add(cstLabel);
         add(editBrace);
         add(newBName);
         add(newNameBrace);
@@ -162,44 +162,51 @@ public class updateBrace extends JFrame {
                }
             Bracelet editedBrace = new Bracelet(braceEntry.getText(),editedCost,brace.getSmallBeadQty(),brace.getMedBeadQty(), brace.getLgBeadQty(),editedColl);
             Bracelet.updateBracelet(braceEntry.getText(), editedBrace);
-            editedBrace.addToDatabase();
             succUpdated.setVisible(true);
             }else{
                 notFound.setVisible(true);
                 tryAgain.setVisible(true);
                 nameBraceLabel.setVisible(false);
                 collectionLabel.setVisible(false);
-                costLabel.setVisible(false);
+                cstLabel.setVisible(false);
                 
             }
 
         }
     }
 
-    public class braceFindListener implements ActionListener
+    public class bFindListener implements ActionListener
     {
+
         public void actionPerformed(ActionEvent e)
         {
-
-            if (Bracelet.searchByName(braceEntry.getText()) != null) // if statement to test findPromoter method
-            {
+            if (Bracelet.searchByName(braceEntry.getText()) != null) {
+                System.out.println("bracelt");
+                
                 bracelet = braceEntry.getText();
-                nameBraceLabel.setVisible(true);
                 collection = Bracelet.searchByName(braceEntry.getText()).getCollection();
+                cst  = String.valueOf((Bracelet.searchByName(braceEntry.getText()).getCost()));
+                System.out.println(bracelet);
+                System.out.println(collection);
+                System.out.println(cst);
+                nameBraceLabel.setText(bracelet);
+                nameBraceLabel.setVisible(true);
+
+                collectionLabel.setText(collection);
                 collectionLabel.setVisible(true);
-                cost = String.valueOf(Bracelet.searchByName(braceEntry.getText()).getCost());
-                costLabel.setVisible(true);
+
+                cstLabel.setText(cst);
+                cstLabel.setVisible(true);
+
                 notFound.setVisible(false);
                 tryAgain.setVisible(false);
+
             }else{
                 notFound.setVisible(true);
                 tryAgain.setVisible(true);
                 nameBraceLabel.setVisible(false);
                 collectionLabel.setVisible(false);
-                costLabel.setVisible(false);
-                //delPerson.setVisible(false);
-                //succDeleted.setVisible(false);
-                
+                cstLabel.setVisible(false);
             }
 
 

@@ -51,9 +51,6 @@ public class deleteBrace extends JFrame {
         findBlet.setBounds(160,155,100,35);
         findBlet.addActionListener(new findBletListener());
 
-        this.bletName  = "Bracelet Name" ;
-        this.bletColl = "Collection";
-        this.bletCost = "Cost";
 
         bletNameLabel = new JLabel(bletName);
         bletNameLabel.setBounds(160,180,200,35);
@@ -114,29 +111,34 @@ public class deleteBrace extends JFrame {
     {
         public void actionPerformed(ActionEvent e)
         {
-
-            if (Bracelet.searchByName(bEntry.getText()) != null) // if statement to test findPromoter method
-            {
-                bletNameLabel.setVisible(true);
+            
+            if (Bracelet.searchByName(bEntry.getText()) != null) {
+                System.out.println("bracelt");
+                
+                bletName = bEntry.getText();
                 bletColl = Bracelet.searchByName(bEntry.getText()).getCollection();
+                bletCost = String.valueOf((Bracelet.searchByName(bEntry.getText()).getCost()));
+                bletNameLabel.setText(bletName);
+                bletNameLabel.setVisible(true);
+
+                clxnLabel.setText(bletColl);
                 clxnLabel.setVisible(true);
-                bletCost = String.valueOf(Bracelet.searchByName(bEntry.getText()).getCost());
+
+                cstLabel.setText(bletCost);
                 cstLabel.setVisible(true);
+
                 notFound.setVisible(false);
                 tryAgain.setVisible(false);
+                deleteBtn.setVisible(true);
+
             }else{
                 notFound.setVisible(true);
                 tryAgain.setVisible(true);
                 bletNameLabel.setVisible(false);
                 clxnLabel.setVisible(false);
                 cstLabel.setVisible(false);
-                //delPerson.setVisible(false);
-                //succDeleted.setVisible(false);
-                
+                deleteBtn.setVisible(false);
             }
-
-
-
 
         }
     }

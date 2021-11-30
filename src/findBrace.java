@@ -4,24 +4,26 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class findBrace extends JFrame {
+public class findBrace extends JFrame implements ActionListener {
     int PREF_W = 450;
     int PREF_H = PREF_W;
-    private JButton braceFind;
+    private JButton braceFind_2;
     private JButton delPerson;
     private JButton returnToMenu;// initialization of new button
-    private JTextField braceEntry;
+    private JTextField braceEntry_2;
     private JTextField newNameBrace;
     private JTextField newCol;
     private JTextField newCostT;
     private JLabel label;
     private JLabel findBrace;
-    private JLabel nameBraceLabel;
-    private JLabel collectionLabel;
+    private JLabel nameBraceLabel_1;
+    private JLabel nameBraceLabel_2;
+    private JLabel collectionLabel_1;
     private JLabel editBrace;
     private JLabel newBName;
-    private JLabel costLabel;
+    private JLabel costLabel_1;
     private JLabel succUpdated;
+    
 
 
     private JLabel found;
@@ -45,28 +47,24 @@ public class findBrace extends JFrame {
         findBrace.setBounds(140,90,200,40);
         findBrace.setFont(findBrace.getFont().deriveFont(15f));
 
-        braceEntry = new JTextField();
-        braceEntry.setBounds(140,120,150,20);
+        braceEntry_2 = new JTextField();
+        braceEntry_2.setBounds(140,120,150,20);
         
-        braceFind = new JButton("FIND");
-        braceFind.setBounds(160,155,100,35);
-        braceFind.addActionListener(new braceFindListener());
+        braceFind_2 = new JButton("FIND");
+        braceFind_2.setBounds(160,155,100,35);
+        
 
-        this.bracelet  = "Bracelet Name" ;
-        this.collection = "Collection";
-        this.cost = "Cost";
+        nameBraceLabel_1 = new JLabel(bracelet);
+        nameBraceLabel_1.setBounds(160,180,200,35);
+        nameBraceLabel_1.setVisible(false);
 
-        nameBraceLabel = new JLabel(bracelet);
-        nameBraceLabel.setBounds(160,180,200,35);
-        nameBraceLabel.setVisible(false);
+        collectionLabel_1 = new JLabel(collection);
+        collectionLabel_1.setBounds(160,220,200,35);
+        collectionLabel_1.setVisible(false);
 
-        collectionLabel = new JLabel(collection);
-        collectionLabel.setBounds(160,220,200,35);
-        collectionLabel.setVisible(false);
-
-        costLabel = new JLabel(cost);
-        costLabel.setBounds(160,250,200,35);
-        costLabel.setVisible(false);
+        costLabel_1 = new JLabel(cost);
+        costLabel_1.setBounds(160,250,200,35);
+        costLabel_1.setVisible(false);
 
         notFound = new JLabel("Bracelet Not Found!");
         notFound.setBounds(140,195,200,50);
@@ -80,78 +78,68 @@ public class findBrace extends JFrame {
 
         returnToMenu = new JButton("RETURN TO BRACELT MENU");
         returnToMenu.setBounds(160,500,100,35);
-        returnToMenu.addActionListener(new returnToListener());
+        returnToMenu.addActionListener(this);
 
 
 
         add(titleLabel);
         add(findBrace);
-        add(braceEntry);
-        add(braceFind);
-        add(nameBraceLabel);
-        add(collectionLabel);
-        add(costLabel);
+        add(braceEntry_2);
+        add(braceFind_2);
+        add(nameBraceLabel_1);
+        add(collectionLabel_1);
+        add(costLabel_1);
         add(notFound);
         add(tryAgain);
         add(returnToMenu);
 
+        braceFind_2.addActionListener(this);
+
+       
+
     }
 
-   public class braceFindListener implements ActionListener
+    public void actionPerformed(ActionEvent ae)    
     {
-        public void actionPerformed(ActionEvent e)
-        {
-            if (braceEntry.getText().equals("TEST")) // if statement to test findPromoter method
-            {
-                nameBraceLabel.setVisible(true);
-                collectionLabel.setVisible(true);
-                costLabel.setVisible(true);
+        if (ae.getSource() == returnToMenu){
+            dispose();
+
+        }else if (ae.getSource()== braceFind_2){
+            
+            if (Bracelet.searchByName(braceEntry_2.getText()) != null) {
+                System.out.println("bracelt");
+                
+                bracelet = braceEntry_2.getText();
+                collection = Bracelet.searchByName(braceEntry_2.getText()).getCollection();
+                cost  = String.valueOf((Bracelet.searchByName(braceEntry_2.getText()).getCost()));
+                System.out.println(bracelet);
+                System.out.println(collection);
+                System.out.println(cost);
+                nameBraceLabel_1.setText(bracelet);
+                nameBraceLabel_1.setVisible(true);
+
+                collectionLabel_1.setText(collection);
+                collectionLabel_1.setVisible(true);
+
+                costLabel_1.setText(cost);
+                costLabel_1.setVisible(true);
+
                 notFound.setVisible(false);
                 tryAgain.setVisible(false);
+
             }else{
                 notFound.setVisible(true);
                 tryAgain.setVisible(true);
-                nameBraceLabel.setVisible(false);
-                collectionLabel.setVisible(false);
-                costLabel.setVisible(false);
-                //delPerson.setVisible(false);
-                //succDeleted.setVisible(false);
-                
+                nameBraceLabel_1.setVisible(false);
+                collectionLabel_1.setVisible(false);
+                costLabel_1.setVisible(false);
             }
-
-            /*if (Bracelet.searchByName(braceEntry.getText()) != null) // if statement to test findPromoter method
-            {
-                nameBraceLabel.setVisible(true);
-                collection = Bracelet.searchByName(braceEntry.getText()).getCollection();
-                collectionLabel.setVisible(true);
-                cost  = String.valueOf(Bracelet.searchByName(braceEntry.getText()).getCost());
-                costLabel.setVisible(true);
-                notFound.setVisible(false);
-                tryAgain.setVisible(false);
-            }else{
-                notFound.setVisible(true);
-                tryAgain.setVisible(true);
-                nameBraceLabel.setVisible(false);
-                collectionLabel.setVisible(false);
-                costLabel.setVisible(false);
-                //delPerson.setVisible(false);
-                //succDeleted.setVisible(false);
-                
-            }*/
-
-
-
+            
 
         }
+   
+
+    
     }
-
-    public class returnToListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-           dispose();
-
-        }
-    }
-
 }
+

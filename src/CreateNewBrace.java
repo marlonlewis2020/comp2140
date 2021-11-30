@@ -19,9 +19,9 @@ public class CreateNewBrace extends JFrame
     private JButton     btn_1;
     private JButton     btn_2;
     private JButton     btn_3;
-    public String small;
-    public String med;
-    public String lg;
+    public String small = "";
+    public String med = "";
+    public String lg = "";
 
     static JComboBox<String> cb_1;
     static JComboBox<String> cb_2;
@@ -60,7 +60,7 @@ public class CreateNewBrace extends JFrame
         pnlDisplay.add(smallBrace);
         smallBrace.setVisible(false);
 
-        JLabel lbl = new JLabel("BRACELET TYPE");
+        JLabel lbl = new JLabel("BEAD TYPE");
         lbl.setVisible(true);
         pnlDisplay.add(lbl);
         String[] choices = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
@@ -87,7 +87,7 @@ public class CreateNewBrace extends JFrame
         pnlDisplay.add(medBrace);
         medBrace.setVisible(false);
 
-        JLabel lb2 = new JLabel("BRACELET TYPE");
+        JLabel lb2 = new JLabel("BEAD TYPE");
         lb2.setVisible(true);
         pnlDisplay.add(lb2);
         String[] choices_2 = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
@@ -101,7 +101,7 @@ public class CreateNewBrace extends JFrame
 
         btn_2 = new JButton("ADD TYPE AND NUMBER");
         pnlDisplay.add(btn_2);
-        btn_1.addActionListener(new MEDbtn_2Listener());
+        btn_2.addActionListener(new MEDbtn_2Listener());
 
         //place holder for layout
         JButton nbtn_2 = new JButton("ADD TYPE AND NUMBER");
@@ -114,7 +114,7 @@ public class CreateNewBrace extends JFrame
         pnlDisplay.add(largeBrace);
         largeBrace.setVisible(false);
 
-        JLabel lb3 = new JLabel("BRACELET TYPE");
+        JLabel lb3 = new JLabel("BEAD TYPE");
         lb3.setVisible(true);
         pnlDisplay.add(lb3);
         String[] choices_3 = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
@@ -127,7 +127,7 @@ public class CreateNewBrace extends JFrame
         typeNumber_3 = new JTextField(20);
         pnlDisplay.add(typeNumber_3);
 
-        JButton btn_3 = new JButton("ADD TYPE AND NUMBER");
+        btn_3 = new JButton("ADD TYPE AND NUMBER");
         pnlDisplay.add(btn_3);
         btn_3.addActionListener(new LGbtn_3Listener());
 

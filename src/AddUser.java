@@ -66,9 +66,9 @@ public class AddUser extends JFrame
         {
           String name = userName.getText();
           String role = userRole.getText();
-          //String password = ("temp");
-          //newUser user = User(name,password,role);
-          //addUser(newUser);
+          String password = ("temp");
+          //User newUser = User(name,password,role);
+          //newUser.addUser();
           //dispose();
         }
     }

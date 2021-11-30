@@ -65,7 +65,7 @@ public class BraceletMenu extends JFrame
         estimateBrace = new JButton("ESTIMATE BRACELETS");
         estimateBrace.setBounds(180,500,250,40);
         estimateBrace.setFont(estimateBrace.getFont().deriveFont(15f)); 
-        //estimateBrace.addActionListener(new estimateBraceListener());
+        estimateBrace.addActionListener(new estimateBraceListener());
 
         returnMain = new JButton("RETURN TO MAIN MENU");
         returnMain.setBounds(480,550,250,40);
@@ -137,7 +137,7 @@ public class BraceletMenu extends JFrame
   }
 
 
- /* public class estimateBraceListener implements ActionListener
+ public class estimateBraceListener implements ActionListener
   {
       public void  actionPerformed(ActionEvent event)
       {
@@ -145,7 +145,7 @@ public class BraceletMenu extends JFrame
         estBrace.setVisible(true);
       }
       
-  }*/
+  }
 
   public class returnMainListener implements ActionListener
   {
