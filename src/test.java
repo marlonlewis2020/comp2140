@@ -119,7 +119,7 @@ class test {
         return x+b+c;
     }
     
-    public static void main(String[] args) {
+    //public static void main(String[] args) {
         /**
          * -----  COMMENT OUT TEST METHODS YOU DO NOT WANT TO RUN!!!!!              -----
          * -----  ENSURE AUTHENTICATIONTESTS() ALWAYS RUNS BEFORE YOUR CODE!!!!!    -----
@@ -127,16 +127,16 @@ class test {
         */
 
         /*        * CREATING TEST OBJECT        */
-        test t = new test();
+        //test t = new test();
         
         /*        * RUNNING TESTS               */
-        Authentication a = t.authenticationTests(); //Authentication
-        String b = t.stockTests(); //Stock
-        String c = t.braceletTests(); //Bracelet
+        //Authentication a = t.authenticationTests(); //Authentication
+        //String b = t.stockTests(); //Stock
+        //String c = t.braceletTests(); //Bracelet
 
         /*        * END OF TESTS. CLOSING       */       
-        System.out.println(t.confirmations(a,b,c));
+        //System.out.println(t.confirmations(a,b,c));
         // PRINTING CONFIRMATIONS
-}
+//}
 
 }
