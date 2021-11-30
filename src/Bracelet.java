@@ -59,7 +59,13 @@ public class Bracelet{
         }
     }
 
-    public Bracelet(){};
+     /**
+     * Call this function immediately after creatinga  bracelet instance
+     * @param b bracelet
+     */
+    public static void addToArray(Bracelet b){
+        bracelets.add(b);
+    }
 
     //Getters
     /**
@@ -68,15 +74,6 @@ public class Bracelet{
      */
     public String getName(){
         return this.name;
-    }
-
-
-    /**
-     * Call this function immediately after creatinga  bracelet instance
-     * @param b bracelet
-     */
-    public static void addToArray(Bracelet b){
-        bracelets.add(b);
     }
 
     /**
