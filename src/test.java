@@ -116,6 +116,18 @@ class test {
         }
     }
 
+    private String orderTests(){
+        return "";
+    }
+
+    private String customerTests(){
+        return "";
+    }
+
+    private String userTests(){
+        return "";
+    }
+
     private String confirmations(Authentication a,String b, String c, String d, String e, String f){
         String x = "\n\nAuthentication Tests failed; \n";
         if(a!=null){x = "\n\nAuthentication Tests completed successfully; \n";}
@@ -135,8 +147,8 @@ class test {
         
         /*        * RUNNING TESTS               */
         Authentication a = t.authenticationTests(); //Authentication
-        String b = "[STOCK TEST PENDING]; \n"; //t.stockTests(); //Stock
-        String c = "[BRACELETS TEST PENDING]; \n"; //t.braceletTests(); //Bracelet
+        String b = t.stockTests(); //Stock
+        String c = t.braceletTests(); //Bracelet
         String d = "[USER TEST PENDING]; \n"; //t.stockTests(); //Stock
         String e = "[CUSTOMER TEST PENDING]; \n"; //t.stockTests(); //Stock
         String f = "[ORDER TEST PENDING]; \n"; //t.stockTests(); //Stock
