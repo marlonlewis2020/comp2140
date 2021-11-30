@@ -2,7 +2,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import Authentication.*;
+import Authentication.Authentication;
 
 public class Customer
 {
@@ -12,8 +12,7 @@ public class Customer
     private ArrayList <Customer> customers = new ArrayList <Customer>();
 
 
-    private Connection conn = Authentication.getDbConn(); //Connection object created
-
+    
 
     public Customer(long phoneNumber, String customerName, String pickupLocation)
     {
@@ -31,8 +30,9 @@ public class Customer
     public void addToDatabase()
     {
         try{
-  
-          String query = "insert into Customer (name, telephone, pickup_location)"
+
+          Connection conn = Authentication.getDbConn(); //Connection object created
+          String query = "insert into customers (name,telephone,order_address)"
             + " values (?, ?, ?)";
 
           // create the mysql insert prepared statement
