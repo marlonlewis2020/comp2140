@@ -80,7 +80,7 @@ class test {
         /*user test*/
        
         User user = new User ("Callay", "lovelyyy","Admin");
-        user.addUser();
+        user.updateUser("Callay", "role", "Manager");
 
 }
 

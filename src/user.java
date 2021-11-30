@@ -1,7 +1,6 @@
 import java.util.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import Authentication.Authentication;
 
 class User
@@ -12,7 +11,7 @@ class User
   private int passWord;
   private String role;
   public ArrayList<String> menu = new ArrayList<String>();
-  private ArrayList<User> approvedUsers = new ArrayList<User>();
+  
 
 
   public User(){}
@@ -46,27 +45,12 @@ class User
     return this.role;
   }
 
-  public int findUser(ArrayList<User> users, int userID)
-	{
-		int pdx =-1;
-		int currdx=0;
-		while ((currdx<users.size())&&(pdx==-1))
-		{
-			if (users.get(currdx).getUserID()==userID)
-				pdx = currdx;
-			currdx++;
-
-		}
-
-		return pdx;
-  }
-
+  
   public void addUser()
   {
 
     try
     {
-     // approvedUsers.add(user);
       
       Connection conn = Authentication.getDbConn();
       String query = "insert into users (username, password, role)" + " values (?, ?, ?)";
@@ -78,52 +62,74 @@ class User
     }
     catch(Exception e)
     {
-      System.out.println(e.getMessage());
-      e.printStackTrace();
+      String message = e.getMessage();
+      System.out.println(message);
     }
     
     
   }
 
-  public void deleteUser(int userID)
+  public void deleteUser(String username)
   {
     try{
-    int index = findUser(approvedUsers, userID);
-    approvedUsers.remove(index);
+  
 
     Connection conn = Authentication.getDbConn();
 
-    String query = "Delete from users where id = ?";
+    String query = "Delete from users where username = ?";
          PreparedStatement preparedStmt = conn.prepareStatement(query);
-          preparedStmt.setInt(1, userID); 
+          preparedStmt.setString(1, username); 
 
           preparedStmt.execute();
   }
   catch(Exception e)
-  {}
+  {
+    String message = "Username not found";
+    System.out.println(message);
+  }
   }
 
-  public void updateUser(int userID, String fields, String values)
+  public void updateUser(String username, String field, String value)
   {
     Connection conn = Authentication.getDbConn();
 
-        String[] columns = fields.split(","); 
-        String[] inputs = values.split(","); 
-        String updates = "";
-
-        for (int i = 0; i < columns.length - 1; i++) 
-        {
-            updates += columns [i] + "=" + inputs [i] + ",";
-        }
-        updates += columns [columns.length] + "=" + inputs [columns.length];
-        
+       
         try
         {
-          String query = "Update orders set ? where order_number = ?";
-          PreparedStatement preparedStmt = conn.prepareStatement(query);
-          preparedStmt.setString(1, updates);
-          preparedStmt.setInt(2, userID);
+          if (field == "role")
+          {
+            String query = "Update users set role =? where username = ?";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, value);
+            preparedStmt.setString(2, username);
+
+            preparedStmt.execute();
+          }
+          else if(field == "password")
+          {
+            String query = "Update users set password=? where username = ?";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, value);
+            preparedStmt.setString(2, username);
+
+            preparedStmt.execute();
+          }
+          else if(field == "username")
+          {
+            String query = "Update users set username=? where username = ?";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, value);
+            preparedStmt.setString(2, username);
+
+            preparedStmt.execute();
+          }
         }
-        catch(Exception e){}
+        catch(Exception e)
+        {
+          String message = "Username not found";
+          System.out.println(message);
+
+         
+        }
 }
 }
