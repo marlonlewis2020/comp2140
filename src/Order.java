@@ -1,21 +1,21 @@
-//import java.util.ArrayList;
-//import java.util.Date;
+/**
+ * class is responsible for creating order objects, querying these orders and storing the details to the database
+ * @version 1.0
+ * @author Mercedes Smith, Marlon Lewis
+ */
 import java.sql.Connection;
-//import java.sql.ResultSet;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.sql.PreparedStatement;
 import Authentication.Authentication;
+import java.sql.Date;
 
 public class Order
 {
-    // private int orderNo;
-    // private int phoneNumber;
-    // private Customer customer;
-    // private static int nextorderNo = 0;
-    //private ArrayList <Order> orders = new ArrayList <Order>();
-    // private String customerName;
-    //private String orderItems;
-    //private ArrayList <Bracelet> allBracelets = new ArrayList <Bracelet>();
-    private java.sql.Date orderDate;
+    private int orderNo;
+    private ArrayList <Order> orders = new ArrayList <Order>();
+    private Date orderDate;
     private int customerID;
     private String bracelets = "";
     private String braceletQuantities;
@@ -24,46 +24,85 @@ public class Order
     
     private Connection conn = Authentication.getDbConn(); //Connection object created
 
-    // public String listtoString(List <String> olist)
-    // {
-    //   String m = "";
-    //   for (String s: olist)
-    //   {
-    //     m += s + ",";
-    //   }
-    //   return m;
-    // }
-
-    // public Order(int phoneNumber, Date orderDate, String braceletQuantities, String pickupLocation, String braceletNames)
-    // {
-    //     //Used to get bracelet names from database if there are more than one bracelets in an order. (to calulate total cost)
-    //     String temp = "";
-    //     String names = "";
-    //     for (int i = 0; i < braceletNames.size(); i++) 
-    //     {
-    //         names += braceletNames.get(i).getName() + ",";
-    //         temp += braceletNames.get(i).getName() + "," + braceletQuantities.get(i) + ";";
-    //         cost += (braceletNames.get(i)).getCost();
-    //     } 
-    //     this.bracelets.addAll(Arrays.asList(names.split(",")));
-
-    //     this.cost = 0;
-    //     this.orderDate = orderDate;
-    //     this.braceletQuantities = braceletQuantities;
-    //     this.pickupLocation = pickupLocation;
-    //     //this.customerID = customer.getcustomerID();
-    //     //this.customerName = customerName.getcustomerName();
-    // }
-
-    public Order(int cusId, String braceletQuantities, String bracelets, String pickupLocation)
+    public Order(String cusPhoneNumber, String cusName, String braceletQuantities, String bracelets, String pickupLocation)
     {
       this.bracelets = bracelets;
       this.braceletQuantities = braceletQuantities;
       this.pickupLocation = pickupLocation;
       this.orderDate = new java.sql.Date(new java.util.Date().getTime());
-      this.cost = 10.00; //calculate the cost based on items
-      this.customerID = cusId;
-      // addToDatabase();
+      this.cost = getTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
+      this.customerID = getCusId(cusName,cusPhoneNumber);
+    }
+
+    /**
+     * Method used when loading orders into order objects from the database
+     * @param cus_id - int representing customer if
+     * @param order_quantity - String representing the number of each bracelet in the bracelets string in order
+     * @param bracelets - String representing the bracelets in an Order
+     * @param pickup_location - String representing the pickup location
+     * @param order_number - int representing the order id for the order
+     * @param total - total cost of the Order
+     * @param order_date - Date when the order was placed
+     */
+    public Order(int cus_id, String order_quantity, String bracelets, String pickup_location,int order_number, Double total, Date order_date){
+      this.customerID = cus_id;
+      this.orderNo = order_number;
+      this.braceletQuantities = order_quantity;
+      this.bracelets = bracelets;
+      this.pickupLocation = pickup_location;
+      this.orderDate = order_date;
+      this.cost = total;
+    }
+
+    public int getOrderNo(){return this.orderNo;}
+
+    public Date getorderDate(){return this.orderDate;}
+
+    public String getbraceletQuantities(){return this.braceletQuantities;}
+
+    public String getpickupLocation(){return this.pickupLocation;}
+
+    public int getcustomerID(){return this.customerID;}
+
+    public double getcost(){return this.cost;}
+
+    public String toString(){
+      return getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getcost());
+    }
+
+    private int getTotalCost(String braceletQuantities, String bracelets){
+      int total = 0;
+      ArrayList<String> items = new ArrayList<String>();
+      items.addAll(Arrays.asList(bracelets.split(",")));
+      ArrayList<String> qtys = new ArrayList<String>();
+      qtys.addAll(Arrays.asList(braceletQuantities.split(",")));
+      for(int i = 0; i<items.size();i++){
+        total+=Bracelet.getCost(items.get(i))*Integer.valueOf(qtys.get(i)); // call a static function from Taye-Vaughn bracelet that gets the cost of a specific bracelet by name
+      }
+      return total;
+    }
+
+    private int getCusId(String cusName,String cusPhoneNumber){
+      String sql = "select * from customers where name = ? and telephone = ?";
+      try {
+        
+        PreparedStatement p = conn.prepareStatement(sql);
+        p.setString(1, cusName);
+        p.setLong(2, Long.parseLong(cusPhoneNumber));
+        ResultSet r = p.executeQuery();
+        if(r.next()){
+          return r.getInt("id");
+        }
+        else{
+          // call create Customer
+          // get customer id
+          // return customer id
+          return 0;
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        return 0;
+      }
     }
 
     public boolean addToDatabase()
@@ -93,90 +132,75 @@ public class Order
         }
     }
 
-    // public int getOrderNo(){return this.orderNo;}
-    // public Date getorderDate(){return this.orderDate;}
-    // public ArrayList <String> getbraceletQuantities(){return this.braceletQuantities;}
-    // public String getpickupLocation(){return this.pickupLocation;}
-    // public int getcustomerID(){return this.customerID;}
-    // public String getcustomerName(){return this.customerName;}
-    // public double getcost(){return this.cost;}
+    public void deleteOrder(int orderNo)
+    {
+       try{
+         String query = "Delete from Orders where order_number = ?";
+         PreparedStatement preparedStmt = conn.prepareStatement(query);
+          preparedStmt.setInt(1, orderNo); 
+          preparedStmt.execute();
+        }
+        catch(Exception e)
+        {
+          e.printStackTrace();
+          System.out.println(e.getMessage());
+        }
+    }
 
-    // public void deleteOrder(int orderNo)
-    // {
-    //    try{
-    //      String query = "Delete from Orders where order_number = ?";
-    //      PreparedStatement preparedStmt = conn.prepareStatement(query);
-    //       preparedStmt.setInt(1, orderNo); 
-
-    //       preparedStmt.execute();
-    //     }
-        
-    //     catch(Exception e)
-    //     {
-    //       e.printStackTrace();
-    //       System.Out.println(e.getMessage());
-    //     }
-        
-    // }
-
-    // public void updateOrder(int orderNo, String fields, String values)
-    // {
-    //     String [] columns = fields.split(","); 
-    //     String [] inputs = values.split(","); 
-    //     String updates = "";
-    //     for (int i = 0; i < columns.size() - 1; i++) 
-    //     {
-    //         updates += columns [i] + "=" + inputs [i] + ",";
-    //     }
-    //     updates += columns [columns.size()] + "=" + inputs [columns.size()];
-
-    //     try
-    //     {
-    //       String query = "Update orders set ? where order_number = ?";
-    //       PreparedStatement preparedStmt = conn.prepareStatement(query);
-    //       preparedStmt.setString(1, updates);
-    //       preparedStmt.setInt(2, orderNo);
-
-    //     }
-
-    //     catch(Exception e)
-    //     {
-    //       e.printStackTrace();
-    //       System.Out.println(e.getMessage());
-    //     }
-    // }
+    public boolean updateOrder(int orderNo, String fields, String values)
+    { 
+      boolean result = true;
+        ArrayList<String> columns = new ArrayList<String>();
+        columns.addAll(Arrays.asList(fields.split(","))); 
+        ArrayList<String> inputs = new ArrayList<String>();
+        inputs.addAll(Arrays.asList(values.split(","))); 
+        for (int i = 0; i < columns.size(); i++) 
+        {
+          try {
+            String query = String.format("Update orders set %s=? where order_number = ?",columns.get(i));
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+            preparedStmt.setString(1, inputs.get(i));
+            preparedStmt.setInt(2, orderNo);
+            preparedStmt.executeUpdate();
+            System.out.println(String.format("[SUCCESSFULLY UPDATED %s IN ORDER]", columns.get(i).toUpperCase()));
+          } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.out.println(String.format("[FAILED TO UPDATE %s IN ORDER]",columns.get(i).toUpperCase()));
+            return false;
+          }
+        }
+        return result;
+    }
 
     
 
-  //  public ArrayList <Order> populate()
-  //   {
-  //     try{
-  
-  //       String query = "select * from orders";
+   public ArrayList <Order> populate()
+   {
+     ResultSet result;
+    try{
+      String query = "select * from orders";
 
-  //       // create the mysql insert prepared statement
-  //       PreparedStatement preparedStmt = conn.prepareStatement(query);
-        
+      // create the mysql insert prepared statement
+      PreparedStatement preparedStmt = conn.prepareStatement(query);
+      
+      // execute the prepared statement
+      result = preparedStmt.executeQuery();
+    
+      while (result.next()) 
+      {
+        Order e = new Order(result.getInt("customer_id"), result.getString("order_quantity"), result.getString("bracelets"), 
+        result.getString("pickup_location"),result.getInt("order_number"), result.getDouble("total"),result.getDate("order_date"));
+        this.orders.add(e);
+      }
+      return this.orders;
+    }
+    catch(Exception e)
+    {
+      e.printStackTrace();
+      System.out.println(e.getMessage());
+      return this.orders;
+    }
+  }
 
-  //       // execute the prepared statement
-  //       ResultSet result = preparedStmt.executeQuery();
-  //       conn.close();
-  //     }
-
-  //     catch(Exception e)
-  //     {
-  //       e.printStackTrace();
-  //       System.out.println(e.getMessage());
-  //     }
-
-  //     while (result.next()) 
-  //     {
-  //       Order e = new Order(result.getInt("customer_id"), result.getDate("order_date"), result.getString("order_quantity"), result.getString("bracelets"), result.getString("pickup_location"), result.getString("orderNo"), cost);
-  //       this.orders.add(e);
-  //     }
-  //     this.orders = temp;
-  //     return this.orders;
-  //   }
-
-
-}
+  }
