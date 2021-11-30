@@ -122,17 +122,17 @@ class test {
         }
     }
 
-    private String orderTests(){
-        return "";
-    }
+    // private String orderTests(){
+    //     return "";
+    // }
 
-    private String customerTests(){
-        return "";
-    }
+    // private String customerTests(){
+    //     return "";
+    // }
 
-    private String userTests(){
-        return "";
-    }
+    // private String userTests(){
+    //     return "";
+    // }
 
     private String confirmations(Authentication a,String b, String c, String d, String e, String f){
         String x = "\n\nAuthentication Tests failed; \n";
