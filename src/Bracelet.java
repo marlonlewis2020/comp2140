@@ -178,7 +178,7 @@ public class Bracelet{
         try{
             if(Bracelet.searchByName(getName()) == null || Bracelet.getBracelets().size() == 0){
                 Connection conn = Authentication.getDbConn();
-                String query = "insert into bracelet (id,name,collection,cost, smallBeads, mediumBeads, largeBeads)"
+                String query = "insert into bracelet (id, name,collection,cost, smallBeads, mediumBeads, largeBeads)"
                     + " values (?, ?, ?, ?, ?, ?, ?)";
             
                 // create the mysql insert prepared statement
@@ -193,6 +193,7 @@ public class Bracelet{
                 // execute the preparedstatement
                 preparedStmt.execute();
                 System.out.println("Added to database");
+                Bracelet.addToArray(this);
             }
             else{
                 System.out.println("Duplicate bracelet creation attempt!");
@@ -229,6 +230,7 @@ public class Bracelet{
                 Bracelet b = new Bracelet(name,cost,bead_quantity_small,bead_quantity_medium,bead_quantity_large,collection);
                 b.setID(id);
                 bracelets.add(b);
+                nextID++;
             }
 
         }
