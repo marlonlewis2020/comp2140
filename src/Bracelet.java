@@ -9,20 +9,16 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 
+
 public class Bracelet{
     private String name;
     private String collection;
-    //private Size size;
     private int ID;
     private static int nextID = 0;
     private double cost;
-    //private String beadQty_small;
-    //private String beadQty_med;
-    //private String beadQty_lg;
     private static ArrayList <Bracelet> bracelets = new ArrayList <Bracelet>();
     private ArrayList <String> beadQty = new ArrayList <String>();  //["bead-integernumberofamtrequired","bead2-integernumberofamtrequired",...]
-    //private String beadsString;//("bead-intgernumberofamtrequired;bead2-integernumberofamtrequired...")
-    //private ArrayList <String> beads = new ArrayList <String>(); 
+    
 
     //Constructor
     /**
@@ -42,9 +38,25 @@ public class Bracelet{
         nextID++;
       
         //Recording the number of beadsString needed to make each size bracelet
-        beadQty.add(beadQty_small);
-        beadQty.add(beadQty_med);
-        beadQty.add(beadQty_lg);
+
+        if(beadQty_small.equals("")){
+            beadQty.add(null);
+        }
+        else{
+            beadQty.add(beadQty_small);
+        }
+        if(beadQty_med.equals("")){
+            beadQty.add(null);
+        }
+        else{
+            beadQty.add(beadQty_med);
+        }
+        if(beadQty_lg.equals("")){
+            beadQty.add(null);
+        }
+        else{
+            beadQty.add(beadQty_lg);
+        }
     }
 
     public Bracelet(){};
@@ -71,7 +83,7 @@ public class Bracelet{
      * 
      * @return bracelets array
      */
-    public ArrayList <Bracelet> getBracelets(){
+    public static ArrayList <Bracelet> getBracelets(){
         return bracelets;
     }
 
@@ -220,9 +232,7 @@ public class Bracelet{
 
         }
  
-        // Catch block to handle exception
         catch (SQLException e) {
-            // Print exception pop-up on scrreen
             System.out.println(e);
         }
     }
@@ -310,23 +320,20 @@ public class Bracelet{
      * @return arraylist including the number of bracelets that can be made based on stock levels
      */
     public ArrayList <Integer> estimateQty(){        
-        int smallMin = 99999;
-        int medMin = 99999;
+        int smallMin = 999999999;
+        int medMin = 999999999;
         int largeMin = 99999;
         String [] beadTypesSmall;
         String [] beadTypesMed;
         String [] beadTypesLg;
         ArrayList <Integer> qty = new ArrayList <Integer>();
         
-        beadTypesSmall = (getSmallBeadQty()).split(";");
-        beadTypesMed = (getMedBeadQty()).split(";");
-        beadTypesLg = (getLgBeadQty()).split(";");
-
-        if(beadTypesSmall.length == 0){
-            qty.add(-1);
+        if(getSmallBeadQty() == null){
+            qty.add(null);
         }
         else
         {
+            beadTypesSmall = (getSmallBeadQty()).split(";");
             for(int i = 0; i < beadTypesSmall.length; i++){
                 if((Stock.getQuantity((beadTypesSmall[i].split("-"))[0])) / Integer.parseInt((beadTypesSmall[i].split("-"))[1]) < smallMin){
                     smallMin = (Stock.getQuantity((beadTypesSmall[i].split("-"))[0])) / Integer.parseInt((beadTypesSmall[i].split("-"))[1]);
@@ -335,10 +342,11 @@ public class Bracelet{
             qty.add(smallMin);
         }
 
-        if(beadTypesMed.length == 0){
-            qty.add(-1);
+        if(getMedBeadQty() == null){
+            qty.add(null);
         }
         else{
+            beadTypesMed = (getMedBeadQty()).split(";");
             for(int i = 0; i < beadTypesMed.length; i++){
                 if((Stock.getQuantity((beadTypesMed[i].split("-"))[0])) / Integer.parseInt((beadTypesMed[i].split("-"))[1])< medMin){
                     medMin = (Stock.getQuantity((beadTypesMed[i].split("-"))[0])) /  Integer.parseInt((beadTypesMed[i].split("-"))[1]);
@@ -348,11 +356,12 @@ public class Bracelet{
             qty.add(medMin);
         }
         
-        if(beadTypesLg.length == 0){
-            qty.add(-1);
+        if(getLgBeadQty() == null){
+            qty.add(null);
         }
         else
         {
+            beadTypesLg = (getLgBeadQty()).split(";");
             for(int i = 0; i < beadTypesLg.length; i++){
                 if((Stock.getQuantity((beadTypesLg[i].split("-"))[0])) / Integer.parseInt((beadTypesLg[i].split("-"))[1]) < largeMin){
                     largeMin = (Stock.getQuantity((beadTypesLg[i].split("-"))[0])) /  Integer.parseInt((beadTypesLg[i].split("-"))[1]);
@@ -361,11 +370,31 @@ public class Bracelet{
             qty.add(largeMin);
         }
 
-        // -1 is returned if the bead type and number of beads wasnt specified, otherwise the maximum # of bracelets that can be made based on stock level 
+        // null is returned if the bead type and number of beads wasnt specified, otherwise the maximum # of bracelets that can be made based on stock level 
         //is returned for each size, with index 0-2 being the small, mec and large bracelets in that order.
         return qty;
     }
 
-    
+    public static void updateBracelet(String name, Bracelet editedBracelet){
+        Bracelet b = searchByName(name);
+        try {  
+            Connection conn = Authentication.getDbConn();
+            PreparedStatement st = conn.prepareStatement("UPDATE bracelet SET id = ?, name = ?, collection = ?, cost = ?, smallBeads = ?, mediumBeads = ?, largeBeads = ? where name = ?");
+            st.setInt(1,b.getID());
+            st.setString(2,editedBracelet.getName());
+            st.setString(3,editedBracelet.getCollection());
+            st.setDouble(4,editedBracelet.getCost());
+            st.setString(5,editedBracelet.getSmallBeadQty());
+            st.setString(6,editedBracelet.getMedBeadQty());
+            st.setString(7,editedBracelet.getLgBeadQty());
+            st.setString(8,name);
+            st.executeUpdate();
+            bracelets.add(Bracelet.getBraceletIndex(b.getName()),editedBracelet);
+            bracelets.remove(Bracelet.getBraceletIndex(b.getName()));
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+
+    }   
 
 }
