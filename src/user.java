@@ -1,3 +1,8 @@
+/**
+ * User class allows access to the system by allowing the user to create a user name and password and access a menu based on privileges assigned to a role.
+ * @author Callay Jarrett
+ * @version 1.6
+ */
 import java.util.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +21,12 @@ class User
 
 
   public User(){}
+  /**
+   * used to construct a user object
+   * @param userName username of the user
+   * @param passWord password of the user
+   * @param role  role of the user
+   */
   
   public User( String userName, String passWord, Role role)
   {
@@ -26,27 +37,45 @@ class User
     nextid++;
   }
 
+  /**
+   * used to get the user id
+   * @return the user id
+   */
   public int getUserID()
   {
     return this.userID;
   }
 
+  /**
+   * used to get the username
+   * @return the user name of the user
+   */
   public String getUserName()
   {
     return this.userName;
   }
 
-  public String getPassword()
+  /**
+   * gets the password of the user
+   * @return password of the user
+   */
+  private String getPassword()
   {
     return String.valueOf(this.passWord);
   }
 
+  /**
+   * used to the get the role of the user
+   * @return role of the user
+   */
   public Role getRole()
   {
     return this.role;
   }
 
-  
+  /**
+   * used to add a new user to the system
+   */
   public void addUser()
   {
 
@@ -85,7 +114,10 @@ class User
     
     
   }
-
+  /**
+   * deletes a user from the system using the username
+   * @param username user name of the user to be deleted
+   */
   public void deleteUser(String username)
   {
     try{
@@ -106,6 +138,12 @@ class User
   }
   }
 
+  /**
+   * allows the user to update either username, password or role of the user
+   * @param username username of the user to be updated
+   * @param field column heading to be updated (username,password,role)
+   * @param value updated version of the username, password or role
+   */
   public void updateUser(String username, String field, String value)
   {
     Connection conn = Authentication.getDbConn();
