@@ -132,4 +132,9 @@ public class Customer
             
 //     }
 // }
+
+
+public void checkDatabase(customerID, phoneNumber, orderID)
+{
   
+}
