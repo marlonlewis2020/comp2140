@@ -63,8 +63,14 @@ class test {
             }
 
             // CREATING LOW STOCK ITEM
-            Stock low = new Stock (StockType.Beads,"iron", 150,200);
-            low.createStock();
+            Stock not = new Stock (StockType.Beads,"iron", 150,200);
+            not.createStock();
+
+            Stock white = new Stock (StockType.Beads,"white", 150,50);
+            white.createStock();
+
+            Stock black = new Stock (StockType.Beads,"black", 150,200);
+            black.createStock();
 
             // VIEWING LOW STOCK ITEMS
             System.out.println("\n\n[LOW STOCK]");
