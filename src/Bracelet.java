@@ -209,7 +209,6 @@ public class Bracelet{
 
 
   //populate bracelet array with info from database
-  
     public static void populate(){
       try {
             //Creating a DB Connect Object to connect to database
@@ -230,7 +229,9 @@ public class Bracelet{
                 Bracelet b = new Bracelet(name,cost,bead_quantity_small,bead_quantity_medium,bead_quantity_large,collection);
                 b.setID(id);
                 bracelets.add(b);
-                nextID++;
+                if(b.getID()>=nextID){
+                    nextID = b.getID()+1;
+                }
             }
 
         }
@@ -378,6 +379,11 @@ public class Bracelet{
         return qty;
     }
 
+    /**
+     * 
+     * @param name name of old bracelet
+     * @param editedBracelet edited bracelet
+     */
     public static void updateBracelet(String name, Bracelet editedBracelet){
         Bracelet b = searchByName(name);
         try {  
