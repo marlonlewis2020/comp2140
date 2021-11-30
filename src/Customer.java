@@ -10,7 +10,7 @@ public class Customer
     private String customerName;
     private String pickupLocation;
     private ArrayList <Customer> customers = new ArrayList <Customer>();
-
+    private Connection conn = Authentication.getDbConn(); //Connection object created
 
     
 
@@ -31,7 +31,6 @@ public class Customer
     {
         try{
 
-          Connection conn = Authentication.getDbConn(); //Connection object created
           String query = "insert into customers (name,telephone,order_address)"
             + " values (?, ?, ?)";
 
@@ -52,7 +51,7 @@ public class Customer
           System.out.println(e.getMessage());
         }
     }
-}
+//}
 
 //     public void updateCustomer(int customerID, String fields, String values)
 //     {
@@ -134,7 +133,27 @@ public class Customer
 // }
 
 
-public void checkDatabase(customerID, phoneNumber, orderID)
-{
-  
+
+private int getCusId(String cusName,String cusPhoneNumber){
+  String sql = "select * from customers where name = ? and telephone = ?";
+  try {
+    
+    PreparedStatement p = conn.prepareStatement(sql);
+    p.setString(1, cusName);
+    p.setLong(2, Long.parseLong(cusPhoneNumber));
+    ResultSet r = p.executeQuery();
+    if(r.next()){
+      return r.getInt("id");
+    }
+    else{
+      // call create Customer
+      // get customer id
+      // return customer id
+      return 0;
+    }
+  } catch (Exception e) {
+    e.printStackTrace();
+    return 0;
+  }
+}
 }
