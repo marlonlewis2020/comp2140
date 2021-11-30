@@ -44,7 +44,7 @@ class Stock{
     }
 
     public static ArrayList<Stock> inventory(){
-        ArrayList<Stock> inventory = new ArrayList<Stock>();
+        ArrayList<Stock> jinventory = new ArrayList<Stock>();
         auth.setRequest("view inventory");
         DBAccess dba;
         dba = new DBAccess(auth);
