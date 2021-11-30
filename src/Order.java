@@ -30,7 +30,7 @@ public class Order
       this.braceletQuantities = braceletQuantities;
       this.pickupLocation = pickupLocation;
       this.orderDate = new java.sql.Date(new java.util.Date().getTime());
-      this.cost = getTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
+      this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
       this.customerID = getCusId(cusName,cusPhoneNumber);
     }
 
@@ -53,24 +53,12 @@ public class Order
       this.orderDate = order_date;
       this.cost = total;
     }
-
-    public int getOrderNo(){return this.orderNo;}
-
-    public Date getorderDate(){return this.orderDate;}
-
-    public String getbraceletQuantities(){return this.braceletQuantities;}
-
-    public String getpickupLocation(){return this.pickupLocation;}
-
-    public int getcustomerID(){return this.customerID;}
-
-    public double getcost(){return this.cost;}
-
-    public String toString(){
-      return getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getcost());
-    }
-
-    private int getTotalCost(String braceletQuantities, String bracelets){
+    
+    /**
+     * function gets the total cost of order
+     * @return int - total cost of order
+     */ 
+    private int calcTotalCost(String braceletQuantities, String bracelets){
       int total = 0;
       ArrayList<String> items = new ArrayList<String>();
       items.addAll(Arrays.asList(bracelets.split(",")));
@@ -82,6 +70,12 @@ public class Order
       return total;
     }
 
+    /**
+     * function gets the customer id for the order from the database
+     * @param cusName
+     * @param cusPhoneNumber
+     * @return
+     */
     private int getCusId(String cusName,String cusPhoneNumber){
       String sql = "select * from customers where name = ? and telephone = ?";
       try {
@@ -173,8 +167,10 @@ public class Order
         return result;
     }
 
-    
-
+    /**
+     * function populates a list of orders from the database
+     * @return ArrayList<Order>
+     */
    public ArrayList <Order> populate()
    {
      ResultSet result;
@@ -202,5 +198,57 @@ public class Order
       return this.orders;
     }
   }
+
+  // ---------- GETTERS ---------- //
+
+  /**
+     * function gets the set order number
+     * @return int - the order number that has been set.
+     */
+    public int getOrderNo(){return this.orderNo;}
+
+    /**
+     * function gets the oder date
+     * @return Date - date the order was placed
+     */
+    public Date getorderDate(){return this.orderDate;}
+
+    /**
+     * function gets the ordered string with braceletquantities for the order
+     * @return String - the ordered string with braceletquantities for the order
+     */ 
+    public String getbraceletQuantities(){return this.braceletQuantities;}
+
+    /**
+     * function gets the pickup location chosen by Customer
+     * @return String - pickup location chosen by Customer
+     */ 
+    public String getpickupLocation(){return this.pickupLocation;}
+
+    /**
+     * function gets the customer ID from object
+     * @return int - customer id for order
+     */ 
+    public int getcustomerID(){return this.customerID;}
+
+    /**
+     * function gets the set cost of this order
+     * @return int - cost of the order
+     */ 
+    public double getCost(){
+      if(this.cost>0){
+        return cost;
+      }
+      return calcTotalCost(braceletQuantities, bracelets);
+      }
+
+    /**
+     * function converts the order to a String
+     * @return object String
+     */ 
+    public String toString(){
+      return getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getCost());
+    }
+
 
   }
