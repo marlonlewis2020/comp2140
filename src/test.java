@@ -87,11 +87,7 @@ class test {
             Bracelet bracelet3 = new Bracelet("Summer", 5000, "Bark-5;Panther-5","Bark-7;Panther-7","Bark-10;Panther-10","Seasons");
             
 
-            //adding braceles to array
-            Bracelet.addToArray(bracelet1);
-            Bracelet.addToArray(bracelet2);
-            Bracelet.addToArray(bracelet3);
-
+            
             //Adding bracelets to database
             bracelet1.addToDatabase();
             bracelet2.addToDatabase();
