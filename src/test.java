@@ -9,7 +9,7 @@ class test {
         try {
             //testing login feature
             Authentication auth = new Authentication();
-            System.out.println("[AUTHENTICATED USER] role: "+auth.authenticate("mlewis","1403730359"));
+            System.out.println("[AUTHENTICATED USER] role: "+auth.authenticate("mlewis","password123"));
 
             Authentication none = new Authentication(); 
             System.out.println("[ANON USER] role: "+none.authenticate("user", "pw"));
@@ -28,7 +28,7 @@ class test {
             System.out.println("auth signed out: " + auth.getAuth_message());
 
             // SIGNING IN AND GETTING AUTHENTICATION
-            none.authenticate("mlewis","1403730359");
+            none.authenticate("mlewis","password123");
             System.out.println("'none' authenticated: " + none.getAuth_message());
             return none;
             

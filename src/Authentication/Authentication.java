@@ -64,7 +64,7 @@ public class Authentication implements Operations{
             try{
                 PreparedStatement p = getDbConn().prepareStatement(sql);
                 p.setString(1,user);
-                p.setString(2,pw);
+                p.setString(2,String.valueOf(this.pw));
                 ResultSet roles = p.executeQuery();
                 if (roles.next()){
                     role = roles.getString("privilege");
