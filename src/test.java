@@ -162,5 +162,5 @@ class test {
         /*        * END OF TESTS. CLOSING       */       
         System.out.println(t.confirmations(a,b,c,d,e,f));
         // PRINTING CONFIRMATIONS
-}
+    }
 }
