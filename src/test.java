@@ -79,8 +79,9 @@ class test {
 
         /*user test*/
        
-        User user = new User ("Callay", "lovelyyy","Admin");
-        user.updateUser("Callay", "role", "Manager");
+        User user = new User ("Calzy", "beautiful","Admin");
+        //user.addUser();
+        user.addUser();
 
 }
 

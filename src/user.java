@@ -2,6 +2,7 @@ import java.util.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import Authentication.Authentication;
+import java.sql.ResultSet;
 
 class User
 {
@@ -53,12 +54,28 @@ class User
     {
       
       Connection conn = Authentication.getDbConn();
-      String query = "insert into users (username, password, role)" + " values (?, ?, ?)";
-      PreparedStatement preparedStmt = conn.prepareStatement(query);
-      preparedStmt.setString(1, this.getUserName());
-      preparedStmt.setString(2, this.getPassword() );
-      preparedStmt.setString(3, this.getRole());
-      preparedStmt.execute();  
+
+      String checkname = this.getUserName();
+      String namecheck = "select username from users where username = ?";
+
+      PreparedStatement statement = conn.prepareStatement(namecheck);
+      statement.setString(1, checkname);
+      ResultSet result = statement.executeQuery();
+
+      if (!(result.next()))
+      {
+        String query = "insert into users (username, password, role)" + " values (?, ?, ?)";
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        preparedStmt.setString(1, this.getUserName());
+        preparedStmt.setString(2, this.getPassword() );
+        preparedStmt.setString(3, this.getRole());
+        preparedStmt.execute(); 
+      }
+      else
+      {
+        System.out.println("Username already exists");
+      }
+       
     }
     catch(Exception e)
     {
