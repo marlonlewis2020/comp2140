@@ -84,7 +84,9 @@ class test {
             //Creating bracelet objects
             Bracelet bracelet1 = new Bracelet("King", 1200, "Gibbits-5;Panther-5","Gibbits-7;Panther-7","Gibbits-10;Panther-10","Royalty");
             Bracelet bracelet2= new Bracelet("Roots", 2200, "Gibbits-5;Bark-5","Gibbits-7;Bark-7","Gibbits-10;Bark-10","Nature");
-            Bracelet bracelet3 = new Bracelet("Summer", 5000, "Bark-5;Panther-5","Bark-7;Panther-7","Bark-10;Panther-10","Seasons");
+            Bracelet bracelet3 = new Bracelet("River", 5000, "Bark-5;Panther-5","Bark-7;Panther-7","Bark-10;Panther-10","Nature");
+            Bracelet bracelet4 = new Bracelet("Summer", 5000, "Bark-5;Panther-5","Bark-7;Panther-7","Bark-10;Panther-10","Seasons");
+            Bracelet bracelet5 = new Bracelet("Summer", 5000, "Bark-5;Panther-5","Bark-7;Panther-7","Bark-10;Panther-10","Seasons");
             
 
             
@@ -92,6 +94,8 @@ class test {
             bracelet1.addToDatabase();
             bracelet2.addToDatabase();
             bracelet3.addToDatabase();
+            bracelet4.addToDatabase();
+            bracelet5.addToDatabase();
 
 
             //Estimate quantity of bracelets that can be made based on avalaible beads.

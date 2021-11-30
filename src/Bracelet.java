@@ -230,7 +230,9 @@ public class Bracelet{
                 Bracelet b = new Bracelet(name,cost,bead_quantity_small,bead_quantity_medium,bead_quantity_large,collection);
                 b.setID(id);
                 bracelets.add(b);
-                nextID++;
+                if(b.getID()>=nextID){
+                    nextID = b.getID()+1;
+                }
             }
 
         }
