@@ -62,5 +62,24 @@ class test {
         System.out.println(b.getMedBeadQty());
         //Bracelet.deleteBracelet("b1");
 
+
+        /**
+         * Customer Class
+         */
+        Customer mercedes = new Customer(Long.valueOf("8768164681"), "Mercedes", "Sedecrem");
+        Customer marlon = new Customer(Long.valueOf("8764385612"), "Marlon", "Sovereign");
+        Customer gabriel = new Customer(Long.valueOf("8768964681"), "Gabriel", "Portmore");
+
+        mercedes.addToDatabase();
+        marlon.addToDatabase();
+        gabriel.addToDatabase();
+
+        
+
+
+
+
 }
 }
+
+
