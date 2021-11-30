@@ -166,7 +166,7 @@ class test {
         Authentication a = t.authenticationTests(); //Authentication
         String b = t.stockTests(); //Stock
         String c = t.braceletTests(); //Bracelet
-        String d = "[ORDER TEST PENDING]; \n"; //t.orderTests(); //Order
+        String d = t.orderTests(); //Order//"[ORDER TEST PENDING]; \n"; //
         String e = "[CUSTOMER TEST PENDING]; \n"; //t.stockTests(); //Stock
         String f = "[ORDER TEST PENDING]; \n"; //t.stockTests(); //Stock
 

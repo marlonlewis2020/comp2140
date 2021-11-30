@@ -65,8 +65,8 @@ public class Order
       ArrayList<String> qtys = new ArrayList<String>();
       qtys.addAll(Arrays.asList(braceletQuantities.split(",")));
       for(int i = 0; i<items.size();i++){
-        total = 100.00;
-        //total+=Bracelet.getCost(items.get(i))*Integer.valueOf(qtys.get(i)); // call a static function from Taye-Vaughn bracelet that gets the cost of a specific bracelet by name
+        Bracelet bracelet = Bracelet.searchByName(items.get(i));
+        total+=bracelet.getCost()*Integer.valueOf(qtys.get(i));
       }
       return total;
     }
