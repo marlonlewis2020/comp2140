@@ -122,9 +122,20 @@ class test {
         }
     }
 
-    // private String orderTests(){
-    //     return "";
-    // }
+    private String orderTests(){
+        try {
+            // CREATING ORDER 
+            Order fdr = new Order("8764385612", "Marlon Lewis", "2,3,4", "rock1,rockingb,rocknroll", "Half Way Tree"); // Requires a public static getCost(String braceletName) method from Bracelet to test and run        System.out.println("[Order object created]");
+            
+            // ADDING ORDER TO THE DATABASE
+            System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
+
+            return "Order Tests completed successfully; \n";
+        } catch (Exception e) {
+            System.out.println("!!!!!ORDER EXCEPTION ENCOUNTERED!!!!!");
+            return "Order Tests failed; \n";
+        }
+    }
 
     // private String customerTests(){
     //     return "";
@@ -155,7 +166,7 @@ class test {
         Authentication a = t.authenticationTests(); //Authentication
         String b = t.stockTests(); //Stock
         String c = t.braceletTests(); //Bracelet
-        String d = "[USER TEST PENDING]; \n"; //t.stockTests(); //Stock
+        String d = "[ORDER TEST PENDING]; \n"; //t.orderTests(); //Order
         String e = "[CUSTOMER TEST PENDING]; \n"; //t.stockTests(); //Stock
         String f = "[ORDER TEST PENDING]; \n"; //t.stockTests(); //Stock
 
