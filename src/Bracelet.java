@@ -322,7 +322,7 @@ public class Bracelet{
     public ArrayList <Integer> estimateQty(){        
         int smallMin = 999999999;
         int medMin = 999999999;
-        int largeMin = 99999;
+        int largeMin = 999999999;
         String [] beadTypesSmall;
         String [] beadTypesMed;
         String [] beadTypesLg;

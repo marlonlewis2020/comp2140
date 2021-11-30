@@ -100,6 +100,12 @@ class test {
             System.out.println(bracelet1.estimateQty());
             System.out.println(bracelet2.estimateQty());
             System.out.println(bracelet3.estimateQty());
+            
+            //Update Bracelet
+            Bracelet.updateBracelet("Roots", new Bracelet("Roots",2200, "Gibbits-5;Bark-5","Gibbits-7;Bark-7","Gibbits-10;Bark-10","Rasta"));
+
+            //Delete Bracelet
+            Bracelet.deleteBracelet("King");
 
             return "Bracelet Tests completed successfully; \n";
 
