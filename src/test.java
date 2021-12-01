@@ -34,6 +34,8 @@ class test {
         {
             System.out.println(Customer.getCustomers().get(i).getcustomerName());
         } 
+
+        //Testing update customer()
     
 
 

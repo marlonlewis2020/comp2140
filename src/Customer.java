@@ -47,6 +47,7 @@ public class Customer
   
           // execute the preparedstatement
           preparedStmt.execute();
+          customers.add(this);
           }
           
         catch(Exception e)
@@ -188,7 +189,7 @@ public static int getCusId(String cusName,String cusPhoneNumber, String pickupLo
     else{
       Customer c = new Customer(cusPhoneNumber, cusName, pickupLocation);
       c.addToDatabase();
-      customers.add(c);
+      //customers.add(c);
       sql = "select * from customers where name = ? and telephone = ?";
       p = conn.prepareStatement(sql);
       p.setString(1, cusName);
