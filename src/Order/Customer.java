@@ -15,6 +15,8 @@ public class Customer
     private Connection conn = Authentication.getDbConn(); //Connection object created
     private int id;
 
+
+
     
 
     public Customer(String phoneNumber, String customerName, String pickupLocation)
@@ -71,6 +73,20 @@ public class Customer
       this.id = id;
     }
 
+    public void setName(String name)
+    {
+      this.customerName = name;
+    }
+
+    public void setNumber(String number)
+    {
+      this.phoneNumber = number;
+    }
+
+    public void setLocation(String location)
+    {
+      this.pickupLocation = location;
+    }
 
     // public void updateCustomer(int customerID, String fields, String values)
     // {
@@ -99,6 +115,55 @@ public class Customer
     //         }
     // }
     
+    public void updateCustomer(String oldName, String oldNumber, String newName, String newNumber, String newPickupLocation)
+    {
+      String editedName = newName;
+      String editedNumber = newNumber;
+      String editedLocation = newPickupLocation;
+      Customer c = search(oldName,oldNumber);
+      if((newName.equals(""))){
+          editedName = c.getcustomerName();
+      }
+      if((newNumber.equals(""))){
+          editedNumber = c.getphoneNumber();
+      }
+      if((newPickupLocation.equals(""))){
+          editedLocation = c.getpickupLocation();
+      }
+      try {  
+          Connection conn = Authentication.getDbConn();
+          PreparedStatement st = conn.prepareStatement("UPDATE customers SET name = ?, telephone = ?, pickup_location = ? where name = ? AND telephone = ?");
+          st.setString(1,editedName);
+          st.setString(2,editedNumber);
+          st.setString(3,editedLocation);
+          st.setString(4,c.getcustomerName());
+          st.setString(5,c.getphoneNumber());
+          st.executeUpdate();
+          c.setName(editedName);
+          c.setNumber(editedNumber);
+          c.setLocation(editedLocation);
+          System.out.println("Customer Updated!");
+          } 
+
+         catch(Exception e) 
+         {
+          System.out.println(e);
+          e.printStackTrace();
+         } 
+    }
+
+    public static Customer search(String name, String phoneNumber)
+    {
+      for (int i = 0; i < getCustomers().size(); i++)
+      {
+        if (getCustomers().get(i).getcustomerName().equals(name) && getCustomers().get(i).getphoneNumber().equals(phoneNumber))
+        {
+          return getCustomers().get(i);
+        }
+      
+      }
+      return null;
+    }
 
 
     public static void deleteCustomer(int customerID)
