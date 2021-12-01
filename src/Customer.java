@@ -6,7 +6,7 @@ import Authentication.Authentication;
 
 public class Customer
 {
-    private long phoneNumber;
+    private String phoneNumber;
     private String customerName;
     private String pickupLocation;
     //private ArrayList <Customer> customers = new ArrayList <Customer>();
@@ -14,7 +14,7 @@ public class Customer
 
     
 
-    public Customer(long phoneNumber, String customerName, String pickupLocation)
+    public Customer(String phoneNumber, String customerName, String pickupLocation)
     {
         this.phoneNumber = phoneNumber;
         this.customerName = customerName;
@@ -22,7 +22,7 @@ public class Customer
     }
 
 
-    public long getphoneNumber() {return this.phoneNumber;}
+    public String getphoneNumber() {return this.phoneNumber;}
     public String getcustomerName() {return this.customerName;}
     public String getpickupLocation() {return this.pickupLocation;}
     
@@ -37,7 +37,7 @@ public class Customer
           // create the mysql insert prepared statement
           PreparedStatement preparedStmt = conn.prepareStatement(query); 
           preparedStmt.setString(1, getcustomerName());
-          preparedStmt.setLong(2, getphoneNumber());
+          preparedStmt.setString(2, getphoneNumber());
           preparedStmt.setString(3, getpickupLocation());
           
   
