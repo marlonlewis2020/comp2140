@@ -4,7 +4,6 @@
  * @author Kimani Munn,Marlon Lewis
  */
 
-import ClassInterface.DBAccess;
 import java.sql.*;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -24,8 +23,6 @@ class Stock{
         // auth.setRequest("view stock");
         // DBAccess dba;
         // dba = new DBAccess(auth);
-
-       
 
          /**
           * overloaded constructor to load stock item from database into object for handling.
@@ -87,13 +84,10 @@ class Stock{
      */
     public static int getQuantity(String name){
         try{
-            auth.setRequest("view stock");
-            DBAccess dba;
-            dba = new DBAccess(auth);
-            // System.out.println("[Stock - getQuantity method] view stock: "+auth.getRequest());
-            ResultSet r = dba.viewSpecific("stock",name);
-            if(r!=null){
-                r.next();
+            PreparedStatement sql = Authentication.getDbConn().prepareStatement("SELECT * FROM `stock` WHERE name=?");
+            sql.setString(1, name);
+            ResultSet r = sql.executeQuery();
+            if(r.next()){
                 return r.getInt("quantity");
             }
                 return 0;
@@ -113,18 +107,28 @@ class Stock{
      * @return boolean true if quantity successfully updated
      */
     public static boolean updateStock(char ch,int qty, String name){
-        DBAccess dba;
+        String sql;
         if (ch=='+'){
-            auth.setRequest("edit stock");
+            sql = "update `stock` set quantity=quantity+? where name=?";
         }
         else if(ch=='-'){
-            auth.setRequest("use stock");
+            sql = "update `stock` set quantity=quantity-? where name=?";
         }
         else{
             return false;
         }
-        dba = new DBAccess(auth);
-        return dba.update(qty,name);
+        try{
+            PreparedStatement stmt = Authentication.getDbConn().prepareStatement(sql);
+            stmt.setInt(1,qty);
+            stmt.setString(2,name);
+            stmt.execute();
+            return true;
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /**
@@ -155,18 +159,27 @@ class Stock{
     /**
      * function writes a new stock item to database
      */
-    public void createStock(){
+    public boolean createStock(){
         // System.out.println(this.name+": "+"[esists method status] "+exists(this.name));
         if(exists(this.name)){
             updateStock('+',quantity, name);
             // System.out.println("updated");
+            return true;
         }
         else{
             auth.setRequest("create stock");
-            DBAccess dba;
-            dba = new DBAccess(auth);
-            dba.create(String.valueOf(this.stockType),this.name,this.quantity,this.level);
-            // System.out.println("created");
+            try {
+                PreparedStatement sql = Authentication.getDbConn().prepareStatement("INSERT INTO `stock` (`type`, `name`, `quantity`, `limit`) VALUES (?, ?, ?, ?)");
+                sql.setString(1, String.valueOf(this.stockType));
+                sql.setString(2, this.name);
+                sql.setInt(3, this.quantity);
+                sql.setInt(4, this.level);
+                sql.execute();
+                return true;
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                return false;
+            }
         }
     }
 
@@ -177,11 +190,12 @@ class Stock{
     public static ArrayList<Stock> viewStock(int filter){
         //filter by level
         inventory = new ArrayList<Stock>();
-        auth.setRequest("view inventory");
-        DBAccess dba;
-        dba = new DBAccess(auth);
+        String stmt = "select * from `stock`";
+        
         try {
-            ResultSet r = dba.viewAll();
+            PreparedStatement sql = Authentication.getDbConn().prepareStatement(stmt);
+            ResultSet r = sql.executeQuery();
+            
             while(r.next()){
                 Stock e = new Stock(r.getInt("id"),StockType.valueOf(r.getString("type")),r.getString("name"),r.getInt("quantity"),r.getInt("limit"));
                 inventory.add(e);
@@ -231,15 +245,17 @@ class Stock{
      * @return boolean true if the stock item is found to match the name
      */
     private boolean exists(String sname){
-        auth.setRequest("view stock");
+        // auth.setRequest("view stock");
         // System.out.println("[Stock - exists method] request: "+auth.getRequest());
-        DBAccess dba;
-        dba = new DBAccess(auth);
-        ResultSet res = dba.viewSpecific("stock",sname);
-        try{
-            return res.next();
+        ResultSet result;
+        try {
+            PreparedStatement sql = Authentication.getDbConn().prepareStatement("SELECT * FROM `stock` WHERE name=?");
+            sql.setString(1, sname);
+            result = sql.executeQuery();
+            return result.next();
         }
         catch(SQLException e){
+            e.printStackTrace();
             return false;
         }
     }
