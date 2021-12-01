@@ -29,10 +29,10 @@ class test {
         //System.out.println("'none' authenticated: "+none.getAuth_message());
 
             // VIEWING ALL STOCK
-            System.out.println("\n\n[ALL STOCK]");
-            for(Stock s:Stock.viewStock(1)){
-                System.out.println(s.toString());
-            }
+            // System.out.println("\n\n[ALL STOCK]");
+            // for(Stock s:Stock.viewStock(1)){
+            //     System.out.println(s.toString());
+            // }
 
         /**
         * Stock class test
@@ -49,62 +49,62 @@ class test {
     /**
      * Bracelet Tests
      */
-    private String braceletTests(){
-        try{
-            Bracelet.populate();
-            Bracelet b; 
-            b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
-            //System.out.println(b.getName());
-            //System.out.println(b.getBracelets());
-            //System.out.println(b.getID());
-            //System.out.println(b.getCollection());
-            //System.out.println(Bracelet.getBraceletIndex("b1"));
-            // Bracelet b = Bracelet.searchByName("b1");
-            Bracelet.addToArray(b);
-            b.addToDatabase();
-            System.out.println(b.getName());
-            System.out.println(b.getSmallBeadQty());
-            System.out.println(b.getLgBeadQty());
-            System.out.println(b.getMedBeadQty());
-            //Bracelet.deleteBracelet("b1");
-            return "Bracelet Tests completed successfully; \n";
-        }
-        catch(Exception e){
-            // System.out.println(e.getMessage()); 
-            System.out.println("!!!!!BRACELET EXCEPTION ENCOUNTERED!!!!!");
-            return "Bracelet Tests failed; \n";
-        }
-    }
+    // private String braceletTests(){
+    //     try{
+    //         Bracelet.populate();
+    //         Bracelet b; 
+    //         b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
+    //         //System.out.println(b.getName());
+    //         //System.out.println(b.getBracelets());
+    //         //System.out.println(b.getID());
+    //         //System.out.println(b.getCollection());
+    //         //System.out.println(Bracelet.getBraceletIndex("b1"));
+    //         // Bracelet b = Bracelet.searchByName("b1");
+    //         Bracelet.addToArray(b);
+    //         b.addToDatabase();
+    //         System.out.println(b.getName());
+    //         System.out.println(b.getSmallBeadQty());
+    //         System.out.println(b.getLgBeadQty());
+    //         System.out.println(b.getMedBeadQty());
+    //         //Bracelet.deleteBracelet("b1");
+    //         return "Bracelet Tests completed successfully; \n";
+    //     }
+    //     catch(Exception e){
+    //         // System.out.println(e.getMessage()); 
+    //         System.out.println("!!!!!BRACELET EXCEPTION ENCOUNTERED!!!!!");
+    //         return "Bracelet Tests failed; \n";
+    //     }
+    // }
 
-    private String confirmations(Authentication a,String b, String c, String d, String e, String f){
-        String x = "\n\nAuthentication Tests failed; \n";
-        if(a!=null){x = "\n\nAuthentication Tests completed successfully; \n";}
-        a.logout();
-        return x+b+c+d+e+f;
-    }
+    // private String confirmations(Authentication a,String b, String c, String d, String e, String f){
+    //     String x = "\n\nAuthentication Tests failed; \n";
+    //     if(a!=null){x = "\n\nAuthentication Tests completed successfully; \n";}
+    //     a.logout();
+    //     return x+b+c+d+e+f;
+    // }
     
-    public static void main(String[] args) {
-        /**
-         * -----  COMMENT OUT TEST METHODS YOU DO NOT WANT TO RUN!!!!!              -----
-         * -----  ENSURE AUTHENTICATIONTESTS() ALWAYS RUNS BEFORE YOUR CODE!!!!!    -----
-         * System.out.println("password123".hashCode());
-        */
+    // public static void main(String[] args) {
+    //     /**
+    //      * -----  COMMENT OUT TEST METHODS YOU DO NOT WANT TO RUN!!!!!              -----
+    //      * -----  ENSURE AUTHENTICATIONTESTS() ALWAYS RUNS BEFORE YOUR CODE!!!!!    -----
+    //      * System.out.println("password123".hashCode());
+    //     */
 
-        Bracelet.populate();
-        //Bracelet b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
-        //Bracelet.addToArray(b);
-        //b.addToDatabase();
-        //System.out.println(b.getName());
-        //System.out.println(b.getBracelets());
-        //System.out.println(b.getID());
-        //System.out.println(b.getCollection());
-        //System.out.println(Bracelet.getBraceletIndex("b1"));
-        // Bracelet b = Bracelet.searchByName("b1");
-        // System.out.println(b.getName());
-        // System.out.println(b.getSmallBeadQty());
-        // System.out.println(b.getLgBeadQty());
-        // System.out.println(b.getMedBeadQty());
-        //Bracelet.deleteBracelet("b1");
+    //     Bracelet.populate();
+    //     //Bracelet b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
+    //     //Bracelet.addToArray(b);
+    //     //b.addToDatabase();
+    //     //System.out.println(b.getName());
+    //     //System.out.println(b.getBracelets());
+    //     //System.out.println(b.getID());
+    //     //System.out.println(b.getCollection());
+    //     //System.out.println(Bracelet.getBraceletIndex("b1"));
+    //     // Bracelet b = Bracelet.searchByName("b1");
+    //     // System.out.println(b.getName());
+    //     // System.out.println(b.getSmallBeadQty());
+    //     // System.out.println(b.getLgBeadQty());
+    //     // System.out.println(b.getMedBeadQty());
+    //     //Bracelet.deleteBracelet("b1");
 
 
         /**

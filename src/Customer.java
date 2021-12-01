@@ -1,7 +1,7 @@
 import java.sql.Connection;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+//import java.sql.ResultSet;
 import Authentication.Authentication;
 
 public class Customer
@@ -9,7 +9,7 @@ public class Customer
     private long phoneNumber;
     private String customerName;
     private String pickupLocation;
-    private ArrayList <Customer> customers = new ArrayList <Customer>();
+    //private ArrayList <Customer> customers = new ArrayList <Customer>();
     private Connection conn = Authentication.getDbConn(); //Connection object created
 
     
@@ -51,6 +51,7 @@ public class Customer
           System.out.println(e.getMessage());
         }
     }
+  }
 //}
 
 //     public void updateCustomer(int customerID, String fields, String values)
@@ -134,26 +135,26 @@ public class Customer
 
 
 
-private int getCusId(String cusName,String cusPhoneNumber){
-  String sql = "select * from customers where name = ? and telephone = ?";
-  try {
+// private int getCusId(String cusName,String cusPhoneNumber){
+//   String sql = "select * from customers where name = ? and telephone = ?";
+//   try {
     
-    PreparedStatement p = conn.prepareStatement(sql);
-    p.setString(1, cusName);
-    p.setLong(2, Long.parseLong(cusPhoneNumber));
-    ResultSet r = p.executeQuery();
-    if(r.next()){
-      return r.getInt("id");
-    }
-    else{
-      // call create Customer
-      // get customer id
-      // return customer id
-      return 0;
-    }
-  } catch (Exception e) {
-    e.printStackTrace();
-    return 0;
-  }
-}
-}
+//     PreparedStatement p = conn.prepareStatement(sql);
+//     p.setString(1, cusName);
+//     p.setLong(2, Long.parseLong(cusPhoneNumber));
+//     ResultSet r = p.executeQuery();
+//     if(r.next()){
+//       return r.getInt("id");
+//     }
+//     else{
+//       // call create Customer
+//       // get customer id
+//       // return customer id
+//       return 0;
+//     }
+//   } catch (Exception e) {
+//     e.printStackTrace();
+//     return 0;
+//   }
+// }
+// }
