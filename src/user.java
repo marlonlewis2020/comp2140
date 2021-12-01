@@ -118,7 +118,7 @@ class User
    * deletes a user from the system using the username
    * @param username user name of the user to be deleted
    */
-  public void deleteUser(String username)
+  public static void deleteUser(String username)
   {
     try{
   
@@ -144,7 +144,7 @@ class User
    * @param field column heading to be updated (username,password,role)
    * @param value updated version of the username, password or role
    */
-  public void updateUser(String username, String field, String value)
+  public static void updateUser(String username, String field, String value)
   {
     Connection conn = Authentication.getDbConn();
 

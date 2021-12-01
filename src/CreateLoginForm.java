@@ -165,13 +165,15 @@ class CreateLoginForm extends JPanel implements ActionListener
       
         String userValue = user_txtField.getText();        //get user entered username from the textField1  
         String passValue = pass_txtField.getText(); //get user entered pasword from the textField2  
+        System.out.println(auth.authenticate("mlewis","password123"));
+        
         //String roleVal = role_txtField.getText();
         //Authentication newAuth = new Authentication();
         //newAuth.authenticate(userValue,String.valueOf(passValue.hashCode()));
         //Bracelet.populate();
 
-     // if (userValue.equals("mlewis") && passValue.equals("password123") && (roleVal.equals("ADMIN"))){  //if Authenticate(userValue,passValue) != ("") and passValue !=("temp")
-      if (auth.authenticate("mlewis","password123").equals("admin")){
+
+    if (auth.authenticate(userValue,passValue).equals ("admin") && passValue !=("temp")){
         System.out.println("Authenticating admin");
           //String role = (auth.authenticate(userValue,String.valueOf(passValue.hashCode())));
           //System.out.println(role);
@@ -186,6 +188,10 @@ class CreateLoginForm extends JPanel implements ActionListener
     }else if (auth.authenticate(userValue,passValue).equals("BUSINESS_OWNER") && passValue.equals("temp")){
         CreatePass newPass = new CreatePass();
         newPass.setVisible(true);
+    }else{
+      System.out.println("Faled multiple");
+      System.out.println(auth.authenticate(userValue,passValue));
+      
     }
   }  
 } 

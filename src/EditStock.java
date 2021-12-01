@@ -18,8 +18,8 @@ public class EditStock extends JFrame {
     private String sName ;
     private String sLevel ;
 
-    private JLabel sNameLabel;
-    private JLabel lLabel;
+    private JLabel sNLabel;
+    private JLabel lvlLabel;
 
     
     private JLabel notFound;
@@ -29,7 +29,11 @@ public class EditStock extends JFrame {
     private JTextField newNameStck;
     private JLabel newQuant;
     private JLabel stckUpdate;
+    private JLabel stckNUpdate;
     private JTextField newQ;
+    private JRadioButton addTo;
+    private JRadioButton takeFrom;
+
 
     private JButton closeBtn;
 
@@ -54,18 +58,6 @@ public class EditStock extends JFrame {
         finds.setBounds(160,155,100,35);
         finds.addActionListener(new findSListener());
 
-        this.sName  = "ITEM Name" ;
-        this.sLevel = "ITEM LEVEL";
-
-        sNameLabel = new JLabel(sName);
-        sNameLabel.setBounds(160,180,200,35);
-        sNameLabel.setVisible(false);
-
-
-        lLabel = new JLabel(sLevel);
-        lLabel.setBounds(160,250,200,35);
-        lLabel.setVisible(false);
-
         notFound = new JLabel("Stock Item Not Found!");
         notFound.setBounds(140,195,200,50);
         notFound.setFont(notFound.getFont().deriveFont(15f));
@@ -76,36 +68,56 @@ public class EditStock extends JFrame {
         tryAgain.setFont(tryAgain.getFont().deriveFont(15f));
         tryAgain.setVisible(false);
 
-        editStck = new JLabel("EDIT DESIRED FIELDS");
-        editStck.setBounds(160,300,300,35);
+        sNLabel = new JLabel(sName);
+        sNLabel.setBounds(160,180,200,35);
+        sNLabel.setVisible(false);
 
-        newSName = new JLabel("Bracelet Name");
-        newSName.setBounds(160,320,200,40);
+
+        lvlLabel = new JLabel(sLevel);
+        lvlLabel.setBounds(160,250,200,35);
+        lvlLabel.setVisible(false);
+
+        editStck = new JLabel("SELECT ADD OR TAKE FROM STOCK");
+        editStck.setBounds(160,300,300,35);
+        editStck.setFont(editStck.getFont().deriveFont(15f));
+
+        addTo = new JRadioButton("ADD TO QUANTITY");
+        addTo.setBounds(160,330,300,40);
+
+        takeFrom = new JRadioButton("TAKE FROM QUANTITY");
+        takeFrom.setBounds(160,360,300,35);
+
+
+        newSName = new JLabel("ENSURE ONLY ONE IS SELECTED");
+        newSName.setBounds(160,390,200,40);
         newSName.setFont(newSName.getFont().deriveFont(15f));
 
-        newNameStck = new JTextField();
-        newNameStck.setBounds(140,350,150,20);
-
-
-        newQuant = new JLabel("Collection");
-        newQuant.setVisible(true);
-        newQuant.setBounds(140,380,200,40);
+        newQuant = new JLabel("ENTER THE QUANTITY BY WHICH IT IS TO BE UPDATED BY");
+        newQuant.setBounds(160,420,200,40);
+        newQuant.setFont(newQuant.getFont().deriveFont(15f));
 
         newQ = new JTextField(10);
-        newQ.setBounds(140,410,150,20);
+        newQ.setBounds(140,440,150,20);
         
         upStck = new JButton("UPDATE");
-        upStck.setBounds (160,450,200,40);
+        upStck.setBounds (160,480,200,40);
         upStck.addActionListener(new updateStockListener());
+        upStck.setVisible(false);
 
         stckUpdate = new JLabel ("Stock Item Successfully UPDATED!");
-        stckUpdate.setBounds(110,490,250,50);
+        stckUpdate.setBounds(110,520,250,50);
         stckUpdate.setFont(stckUpdate.getFont().deriveFont(15f));
         stckUpdate.setVisible(false);
 
+        stckNUpdate = new JLabel ("Stock Item Not UPDATED!");
+        stckNUpdate.setBounds(110,520,250,50);
+        stckNUpdate.setFont(stckUpdate.getFont().deriveFont(15f));
+        stckNUpdate.setVisible(false);
+
+
 
         closeBtn = new JButton("CLOSE RETURN TO STOCK MENU");
-        closeBtn.setBounds(110,520,300,35);
+        closeBtn.setBounds(110,550,300,35);
         closeBtn.addActionListener(new closeTabListener());
 
 
@@ -113,45 +125,72 @@ public class EditStock extends JFrame {
         add(stckFind);
         add(stckEntry);
         add(finds);
-        add(sNameLabel);
-        add(lLabel);
         add(notFound);
         add(tryAgain);
+        add(sNLabel);
+        add(lvlLabel);
         add(editStck);
+        add(addTo);
+        add(takeFrom);
         add(newSName);
-        add(newNameStck);
         add(newQuant);
         add(newQ);
         add(upStck);
         add(stckUpdate);
+        add(stckNUpdate);
         add(closeBtn);
 
     }
 
     public class findSListener implements ActionListener
     {
-        public void actionPerformed(ActionEvent e)
-        {
-            if (stckEntry.getText().equals("TEST")) 
+        public void actionPerformed(ActionEvent e){
+        if (Stock.viewItem(stckEntry.getText()) == null)
+            //if (stckEntry.getText().equals("TEST")) 
             {
-                sNameLabel.setVisible(true);
-                lLabel.setVisible(true);
-                notFound.setVisible(false);
-                tryAgain.setVisible(false);
-            }else{
+                sNLabel.setVisible(false);
+                lvlLabel.setVisible(false);
                 notFound.setVisible(true);
                 tryAgain.setVisible(true);
-                sNameLabel.setVisible(false);
-                lLabel.setVisible(false);
+            }else{
+                String stk = Stock.viewItem(stckEntry.getText()).getStockName();
+                sNLabel.setText(stk);
+                sNLabel.setVisible(true);
+                int qLvl = Stock.getQuantity(stk);
+                String qtyLvl = String.valueOf(qLvl);
+                lvlLabel.setText(qtyLvl);
+                lvlLabel.setVisible(true);
+                notFound.setVisible(false);
+                tryAgain.setVisible(false);
+                upStck.setVisible(true);
+                
             }
-
         }
+
     }
 
     public class updateStockListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e){
-            stckUpdate.setVisible(true);
+            if (addTo.isSelected()){
+                String ops = "+";
+                char operation =  ops.charAt(0);
+                int newQty = Integer.parseInt(newQ.getText());
+                Stock.updateStock(operation,newQty,stckEntry.getText());
+                stckUpdate.setVisible(true);
+                stckNUpdate.setVisible(false);
+
+
+            }else if (takeFrom.isSelected()){
+                String opts = "-";
+                char upOp =  opts.charAt(0);
+                int newQy = Integer.parseInt(newQ.getText());
+                Stock.updateStock(upOp,newQy,stckEntry.getText());
+                stckUpdate.setVisible(true);
+                stckNUpdate.setVisible(false);
+            }else{
+                stckNUpdate.setVisible(false);
+            }
         }
     }
 

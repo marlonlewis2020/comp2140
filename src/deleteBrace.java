@@ -67,7 +67,7 @@ public class deleteBrace extends JFrame {
 
         deleteBtn = new JButton("DELETE");
         deleteBtn.setBounds (160,380,200,40);
-        deleteBtn.addActionListener(new deleteUserListener());
+        deleteBtn.addActionListener(new deleteBraceListener());
         deleteBtn.setVisible(false);
 
 
@@ -145,7 +145,7 @@ public class deleteBrace extends JFrame {
 
 
 
-    public class deleteUserListener implements ActionListener
+    public class deleteBraceListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e){
             Bracelet.deleteBracelet(bEntry.getText());

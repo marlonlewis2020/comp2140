@@ -12,8 +12,8 @@ class CreatePass extends JFrame
     int PREF_H = PREF_W;
     JButton change_btn;  
     JPanel newPanel;  
-    JLabel userLabel, passLabel, errorLabel, titleLabel;  
-    final JTextField  newPass_txtField, confirmPass_txtField;  
+    JLabel userLabel, passLabel, errorLabel, titleLabel,useLabel;  
+    final JTextField  newPass_txtField, confirmPass_txtField,use_txtField;  
       
     //calling constructor  
     public CreatePass()  
@@ -24,18 +24,26 @@ class CreatePass extends JFrame
           
         titleLabel = new JLabel("BEADITUP.JA CREATE NEW PASSWORD");  //set label value for textField1  
         titleLabel.setBounds(120,30,500,40);
-        titleLabel.setFont(titleLabel.getFont().deriveFont(18f));   
+        titleLabel.setFont(titleLabel.getFont().deriveFont(18f)); 
+        
+        useLabel = new JLabel("PLEASE ENTER YOUR USERNAME");  //set label value for textField1  
+        useLabel.setBounds(120,80,500,40);
+        useLabel.setFont(useLabel.getFont().deriveFont(15f)); 
+
+        use_txtField = new JTextField();    //set length of the text  
+        use_txtField.setBounds(230,120,150,20);
+        
         
         //enter your username
           
         //create label for username 
         userLabel = new JLabel("Please Enter New Password");
-        userLabel.setBounds(230,90,280,40);
+        userLabel.setBounds(230,140,280,40);
         userLabel.setFont(userLabel.getFont().deriveFont(15f)); 
 
         //create text field to get username from the user  
         newPass_txtField = new JTextField();    //set length of the text  
-        newPass_txtField.setBounds(230,120,150,20);
+        newPass_txtField.setBounds(230,160,150,20);
         
         //create label for password  
         passLabel = new JLabel("Confirm New Password");  //set label value for password 
@@ -90,9 +98,12 @@ class CreatePass extends JFrame
       public void  actionPerformed(ActionEvent event)
       {
         if (passValue.equals(newPassValue)){
+            User.updateUser(use_txtField.getText(),"password",newPassValue);
             dispose();
             MenuScreen screen = new MenuScreen();
             screen.setVisible(true);
+
+            
 
         }else{
             errorLabel.setVisible(true);

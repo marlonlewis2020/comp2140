@@ -6,11 +6,11 @@ import java.awt.event.ActionEvent;
 public class CreateStock extends JFrame
 {
     private JTextField  itemName;      //name
-    private JTextField stckType;
     private JTextField  quantity;        //age
     private JTextField  lowLevel;        //age
     private JButton     cmdSave;
     private JButton     cmdClose;
+    private JComboBox<StockType> sType;
 
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
@@ -19,7 +19,7 @@ public class CreateStock extends JFrame
     {
         //this.plisting = plisting;
         //entry = this;
-        setTitle("ADD NEW USER TO SYSTEM");
+        setTitle("ADD NEW ITEM TO SYSTEM");
         pnlCommand = new JPanel(); //NEW PANEL FOR ENERTING INFOR INTO FIELDS
         pnlDisplay = new JPanel(); //NEW PANEL FOR Saving and closing info
 
@@ -29,8 +29,8 @@ public class CreateStock extends JFrame
         pnlDisplay.add(itemName);
 
         pnlDisplay.add(new JLabel("TYPE")); 
-        stckType = new JTextField();
-        pnlDisplay.add(stckType);
+        sType = new JComboBox(StockType.values());
+        pnlDisplay.add(sType);
 
 
         pnlDisplay.add(new JLabel("QUANTITY"));
@@ -40,8 +40,8 @@ public class CreateStock extends JFrame
         pnlDisplay.add(new JLabel("LOW-LEVEL NUMBER (OPTIONAL)"));
         lowLevel = new JTextField();
         pnlDisplay.add(lowLevel);
-        
-        pnlDisplay.setLayout(new GridLayout(3,4));
+
+        pnlDisplay.setLayout(new GridLayout(4,5));
 
        
         cmdSave   = new JButton("Save");
@@ -74,7 +74,12 @@ public class CreateStock extends JFrame
     {
         public void actionPerformed (ActionEvent event)
         {
-            cmdSave.setVisible(false);
+            String sName = itemName.getText();
+            int qty = Integer.parseInt(quantity.getText());
+            int sLevel = Integer.parseInt(lowLevel.getText());
+            String stkType = String.valueOf(sType.getSelectedItem());
+            Stock newStock = new Stock(StockType.valueOf(stkType),sName,qty,sLevel);
+            newStock.createStock();
         }
     }
 }

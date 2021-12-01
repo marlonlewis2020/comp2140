@@ -105,7 +105,7 @@ public class CreateNewBrace extends JFrame
         JLabel lb2 = new JLabel("BEAD TYPE");
         lb2.setVisible(true);
         pnlDisplay.add(lb2);
-        String[] choices_2 = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
+        //String[] choices_2 = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
         cb_2 = new JComboBox<String>(braceChoices);
         cb_2.setVisible(true);
         pnlDisplay.add(cb_2);
@@ -132,7 +132,7 @@ public class CreateNewBrace extends JFrame
         JLabel lb3 = new JLabel("BEAD TYPE");
         lb3.setVisible(true);
         pnlDisplay.add(lb3);
-        String[] choices_3 = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
+        //String[] choices_3 = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
         cb_3 = new JComboBox<String>(braceChoices);
         cb_3.setVisible(true);
         pnlDisplay.add(cb_3);

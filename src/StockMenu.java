@@ -42,7 +42,7 @@ public class StockMenu extends JFrame
         createStock.setBackground(Color. yellow);
         createStock.addActionListener(new createStockListener());
 
-        searchStock = new JButton("FIND A BRACELET");   
+        searchStock = new JButton("FIND An ITEM");   
         searchStock.setBounds(200,260,220,40);
         searchStock.setFont(searchStock.getFont().deriveFont(15f)); 
         searchStock.addActionListener(new findStockListener());
@@ -71,7 +71,8 @@ public class StockMenu extends JFrame
         //newPanel = new JPanel(new GridLayout(3, 1));  
         add(titleLabel);
         add(displayStock);    //set username label to panel  
-        add(createStock);   //set text field to panel  
+        add(createStock);   //set text field to panel
+        add(searchStock);  
         add(updateStock);   //set text field to panel  
         add(deleteStock);           //set button to panel  
         add(returnMain);
@@ -92,6 +93,8 @@ public class StockMenu extends JFrame
   {
       public void  actionPerformed(ActionEvent event)
       {
+          DisplayAllStock newAll = new DisplayAllStock();
+          newAll.setVisible(true);
       }
       
   }

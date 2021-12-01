@@ -20,36 +20,36 @@ import java.util.Collections;
 import java.awt.Color;
 
 
-public class DisplayAllBrace extends JFrame {
+public class DisplayAllStock extends JFrame {
     private JButton     cmdAddPerson;
     private JButton     cmdClose;
     private JButton     cmdSortAge;
     private JButton cmdSortName;
   
 
-    private ArrayList<Bracelet> bracePop;
+    private ArrayList<Stock> allStock;
     //private PersonListing thisForm;
     private  JScrollPane scrollPane;
 
     private JTable table;
     private DefaultTableModel model;
 
-    public DisplayAllBrace() {
+    public DisplayAllStock() {
 
 
-        String[] columnNames=  {"Name","COST","SMALL BEAD","MED BEAD", "LARGE BEAD","COLLECTION"};
+        String[] columnNames=  {"NAME","TYPE","QUANTITY","LOW LEVEL NUMBER"};
         model=new DefaultTableModel(columnNames,0);
         table = new JTable(model);
         model.addRow(columnNames);
-        bracePop = Bracelet.getBracelets();
-        for (int i = 0 ;i < bracePop.size();i++){
-            String name= bracePop.get(i).getName();
-            String collection = bracePop.get(i).getCollection();
-            String small = bracePop.get(i).getSmallBeadQty();
-            String med  = bracePop.get(i).getMedBeadQty();
-            String large = bracePop.get(i).getLgBeadQty();
-            String cost  =String.valueOf(bracePop.get(i).getCost());
-            String[] item={name,cost,small,med,large,collection};
+        allStock = Stock.viewStock(1);
+        for (int i = 0 ;i < allStock.size();i++){
+            String name= allStock.get(i).getStockName();
+            String type = allStock.get(i).getType();
+
+            Stock stk = allStock.get(i);
+            String quant = String.valueOf(Stock.getQuantity(stk.getStockName()));
+            String lowLevel = String.valueOf(allStock.get(i).getLevel());
+            String[] item={name,type,quant,lowLevel};
             model.addRow(item);        
         }
         table.setVisible(true);
@@ -63,3 +63,4 @@ public class DisplayAllBrace extends JFrame {
 
 
 }
+

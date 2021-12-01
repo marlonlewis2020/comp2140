@@ -47,8 +47,8 @@ public class FindStock extends JFrame {
         finds.setBounds(160,155,100,35);
         finds.addActionListener(new findSListener());
 
-        this.sName  = "ITEM Name" ;
-        this.sLevel = "ITEM LEVEL";
+        //this.sName  = "ITEM Name" ;
+        //this.sLevel = "ITEM LEVEL";
 
         sNameLabel = new JLabel(sName);
         sNameLabel.setBounds(160,180,200,35);
@@ -56,7 +56,7 @@ public class FindStock extends JFrame {
 
 
         lLabel = new JLabel(sLevel);
-        lLabel.setBounds(160,250,200,35);
+        lLabel.setBounds(160,200,50,35);
         lLabel.setVisible(false);
         
 
@@ -93,17 +93,24 @@ public class FindStock extends JFrame {
     {
         public void actionPerformed(ActionEvent e)
         {
-            if (stckEntry.getText().equals("TEST")) 
+            if (Stock.viewItem(stckEntry.getText()) == null)
+            //if (stckEntry.getText().equals("TEST")) 
             {
+                sNameLabel.setVisible(false);
+                lLabel.setVisible(false);
+                notFound.setVisible(true);
+                tryAgain.setVisible(true);
+            }else{
+                String stkName = Stock.viewItem(stckEntry.getText()).getStockName();
+                sNameLabel.setText(stkName);
                 sNameLabel.setVisible(true);
+                int qLevel = Stock.getQuantity(stkName);
+                String qtyLevel = String.valueOf(qLevel);
+                lLabel.setText(qtyLevel);
                 lLabel.setVisible(true);
                 notFound.setVisible(false);
                 tryAgain.setVisible(false);
-            }else{
-                notFound.setVisible(true);
-                tryAgain.setVisible(true);
-                sNameLabel.setVisible(false);
-                lLabel.setVisible(false);
+                
             }
 
         }

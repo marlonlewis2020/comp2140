@@ -11,6 +11,8 @@ public class EstimateBracelet extends JFrame {
     private JLabel titleLabel;
     private JLabel findBrace;
     private JLabel showEst;
+    private JLabel EstShw;
+    private JLabel EstShw1;
     private String [] dropChoices;
     private ArrayList<String>choices  = new ArrayList<String>();
 
@@ -29,9 +31,10 @@ public class EstimateBracelet extends JFrame {
         titleLabel.setBounds(120,30,220,40);
         titleLabel.setFont(titleLabel.getFont().deriveFont(18f));
 
-        findBrace = new JLabel("Please Choose which BRACELET to get an Estimate for:");
-        findBrace.setBounds(140,90,200,40);
-        findBrace.setFont(findBrace.getFont().deriveFont(15f));
+        showEst = new JLabel("Please Choose which BRACELET to get an Estimate for:");
+        showEst.setBounds(140,90,200,40);
+        showEst.setFont(showEst.getFont().deriveFont(15f));
+
 
         for (int i = 0; i < Bracelet.getBracelets().size(); i++){
             choices.add (Bracelet.getBracelets().get(i).getName());
@@ -46,22 +49,27 @@ public class EstimateBracelet extends JFrame {
         estBtn.setBounds(140,150,200,40);
         estBtn.addActionListener(new EstimateListener());
 
-        showEst = new JLabel("Please Choose which BRACELET to get an Estimate for:");
-        showEst.setBounds(140,200,200,40);
-        showEst.setFont(showEst.getFont().deriveFont(15f));
+        EstShw = new JLabel("Showing estimate for small medium and large, (small,medium,large");
+        EstShw.setBounds(140,220,200,40);
+        EstShw.setFont(EstShw.getFont().deriveFont(15f));
 
-
+        EstShw1 = new JLabel("SMALL,MEDIUM,LARGE");
+        EstShw1.setBounds(140,260,200,40);
+        EstShw1.setFont(EstShw1.getFont().deriveFont(15f));
+        EstShw1.setVisible(false);
 
 
         returnMen  = new JButton("Return to Bracelet Menu");
-        returnMen.setBounds(140,250,200,40);
+        returnMen.setBounds(140,290,200,40);
         returnMen.addActionListener(new returnListener());
 
 
         add(titleLabel);
-        add(findBrace);
+        add(showEst);
         add(braceletOps);
         add(estBtn);
+        add(EstShw);
+        add(EstShw1);
         add(returnMen);
 
     }
@@ -89,10 +97,11 @@ public class EstimateBracelet extends JFrame {
             qty = brace.estimateQty();
 
             for (int x = 0; x < qty.size(); x++){
-                estimateTxt += String.valueOf(qty.get(x));
+                estimateTxt += String.valueOf(qty.get(x)) + ",";
             }
 
-            showEst.setText(estimateTxt);
+            EstShw1.setText(estimateTxt);
+            EstShw1.setVisible(true);
         }
 
         }

@@ -12,14 +12,6 @@ public class DeleteStock extends JFrame {
     private JLabel sFind;
     private JTextField sEntry;
 
-    private JButton findstck;
-
-    private String stckName ;
-    private String stckLevel ;
-
-    private JLabel stckNameLabel;
-    private JLabel lvlLabel;
-
     private JButton deleteBtn;
     
     private JLabel notFound;
@@ -45,27 +37,10 @@ public class DeleteStock extends JFrame {
         sEntry = new JTextField();
         sEntry.setBounds(140,120,150,20);
         
-        findstck = new JButton("FIND");
-        findstck.setBounds(160,155,100,35);
-        findstck.addActionListener(new findStckListener());
-
-        this.stckName  = "ITEM Name" ;
-        this.stckLevel = "ITEM LEVEL";
-
-        stckNameLabel = new JLabel(stckName);
-        stckNameLabel.setBounds(160,180,200,35);
-        stckNameLabel.setVisible(false);
-
-
-        lvlLabel = new JLabel(stckLevel);
-        lvlLabel.setBounds(160,250,200,35);
-        lvlLabel.setVisible(false);
-        
-
         deleteBtn = new JButton("DELETE");
         deleteBtn.setBounds (160,380,200,40);
         deleteBtn.addActionListener(new deleteItemListener());
-        deleteBtn.setVisible(false);
+        deleteBtn.setVisible(true);
 
 
         notFound = new JLabel("Stock Item Not Found!");
@@ -92,9 +67,6 @@ public class DeleteStock extends JFrame {
         add(titleLabel);
         add(sFind);
         add(sEntry);
-        add(findstck);
-        add(stckNameLabel);
-        add(lvlLabel);
         add(deleteBtn);
         add(notFound);
         add(tryAgain);
@@ -103,35 +75,22 @@ public class DeleteStock extends JFrame {
 
     }
 
-    public class findStckListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-            if (sEntry.getText().equals("TEST")) 
-            {
-                stckNameLabel.setVisible(true);
-                lvlLabel.setVisible(true);
-                notFound.setVisible(false);
-                tryAgain.setVisible(false);
-                deleteBtn.setVisible(true);
-            }else{
-                notFound.setVisible(true);
-                tryAgain.setVisible(true);
-                stckNameLabel.setVisible(false);
-                lvlLabel.setVisible(false);
-                deleteBtn.setVisible(false);
-                //succDeleted.setVisible(false);
-                
-            }
-
-        }
-    }
 
     public class deleteItemListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e){
-            stckDeleted.setVisible(true);
-            closeBtn.setVisible(true);
+            if (Stock.viewItem(sEntry.getText()) == null){
+                notFound.setVisible(true);
+                tryAgain.setVisible(true);
+                stckDeleted.setVisible(false);
+            }else{
+                Stock.deleteStock(Stock.viewItem(sEntry.getText()).getStockName());
+                notFound.setVisible(false);
+                tryAgain.setVisible(false);
+                stckDeleted.setVisible(true);
+                closeBtn.setVisible(true);
+
+            }
         }
     }
 
@@ -143,5 +102,7 @@ public class DeleteStock extends JFrame {
     }
 
 }
+
+
 
 

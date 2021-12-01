@@ -17,6 +17,7 @@ public class UpdateUser extends JFrame {
     private JLabel newUser;
     private JLabel passLabel;
     private JLabel succUpdated;
+    private JComboBox<Role> roles;
 
 
     
@@ -34,20 +35,13 @@ public class UpdateUser extends JFrame {
         titleLabel.setBounds(120,30,220,40);
         titleLabel.setFont(titleLabel.getFont().deriveFont(18f));
 
-        findUser = new JLabel("Please Enter Username:");
+        findUser = new JLabel("Please Enter the Username of the Person to be Updated:");
         findUser.setBounds(140,90,200,40);
         findUser.setFont(findUser.getFont().deriveFont(15f));
 
         userEntry = new JTextField();
         userEntry.setBounds(140,120,150,20);
-        
-        findPerson = new JButton("FIND");
-        findPerson.setBounds(160,155,100,35);
-        findPerson.addActionListener(new FindPersonListener());
-
-        this.username  = "username" ;
-        this.role = "role";
-        this.password = "password";
+    
 
         nameLabel = new JLabel(username);
         nameLabel.setBounds(160,180,200,35);
@@ -77,10 +71,14 @@ public class UpdateUser extends JFrame {
         newRole.setVisible(true);
         newRole.setBounds(140,380,200,40);
 
-        String[] empRoles = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
-        final JComboBox<String> roles = new JComboBox<String>(empRoles);
+        roles = new JComboBox(Role.values());
         roles.setVisible(true);
         roles.setBounds (160,430,200,40);
+
+        //String[] empRoles = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
+        //final JComboBox<String> roles = new JComboBox<String>(empRoles);
+        //roles.setVisible(true);
+        //roles.setBounds (160,430,200,40);
 
         JButton updateBtn = new JButton("UPDATE");
         updateBtn.setBounds (160,480,200,40);
@@ -110,7 +108,6 @@ public class UpdateUser extends JFrame {
         add(titleLabel);
         add(findUser);
         add(userEntry);
-        add(findPerson);
         add(nameLabel);
         add(roleLabel);
         add(passLabel);
@@ -125,37 +122,31 @@ public class UpdateUser extends JFrame {
         
 
     }
-
-    public class FindPersonListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-            if (userEntry.getText().equals("TEST")) 
-            {
-                nameLabel.setVisible(true);
-                roleLabel.setVisible(true);
-                passLabel.setVisible(true);
-            }else{
-                notFound.setVisible(true);
-                tryAgain.setVisible(true);
-                nameLabel.setVisible(false);
-                roleLabel.setVisible(false);
-                passLabel.setVisible(false);
-                //delPerson.setVisible(false);
-                //succDeleted.setVisible(false);
-                
-            }
-
-        }
-    }
+   
 
     public class updateUserListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e){
-            succUpdated.setVisible(true);
-            dispose();
+            String newUse = newUser.getText();
+            String roleVal = String.valueOf(roles.getSelectedItem());
+
+            if ((newUse == "") && (roleVal == "")){
+                succUpdated.setVisible(true);
+
+            }else if ((newUse == "") && ((!roleVal.equals("")))){
+                User.updateUser(userEntry.getText(),"role", roleVal);
+                succUpdated.setVisible(true);
+            }else if ((!(newUse == "") )&& ((!roleVal.equals(""))))
+
+                User.updateUser(userEntry.getText(),"role", roleVal);
+                User.updateUser(userEntry.getText(),"username", newUse);
+                succUpdated.setVisible(true);
+
+            }{
+                String newUse = newUser.getText();
+                User.updateUser(userEntry.getText(),"username", newUse);
+            }
         }
-    }
 
     @Override
     public Dimension getPreferredSize() {
