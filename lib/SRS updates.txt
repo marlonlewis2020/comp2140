@@ -1,3 +1,7 @@
+PRODUCTION_MANAGER, ADMIN
+
+create user, create stock, create bracelet, create customer, edit user, edit stock, use stock, edit bracelet, edit customer, view users, view user, view inventory, view stock, view bracelets, view bracelet, view customers, view customer
+
 Removing:
 The system will also backup critical business data in a relational MySQL version 8.0 
 remote database as a recovery option.

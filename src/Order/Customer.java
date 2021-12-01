@@ -34,7 +34,7 @@ public class Customer
     {
         try{
       
-          String query = "insert into customers (name,telephone,order_address)"
+          String query = "insert into customers (name,telephone,pickup_location)"
             + " values (?, ?, ?)";
 
           // create the mysql insert prepared statement
@@ -152,7 +152,7 @@ public class Customer
 
             while (result.next()) 
             {
-                Customer e = new Customer(result.getString("telephone"), result.getString("name"), result.getString("order_address"));
+                Customer e = new Customer(result.getString("telephone"), result.getString("name"), result.getString("pickup_location"));
                 customers.add(e);
                 e.setID(result.getInt("id"));
             }

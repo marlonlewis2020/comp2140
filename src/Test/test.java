@@ -1,31 +1,30 @@
 package Test;
+
 import java.util.ArrayList;
-import Order.Customer;
-import Authentication.Authentication;
-import Authentication.Role;
-import Authentication.User;
-import Inventory.Bracelet;
-import Inventory.Stock;
-import Inventory.StockType;
-import Order.Order;
+import Order.*;
+import Authentication.*;
+import Inventory.*;
 
 class test {
-
+    String teststring = "[-----  %s  -----]";
     /**
      * Authentication Tests
      */
     private Authentication authenticationTests(){
+        String c = "AUTHENTICATION TESTS\n\n";
+        System.out.println(String.format(teststring,c));
         try {
             //testing login feature
             Authentication auth = new Authentication();
             System.out.println("[AUTHENTICATED USER] role: "+auth.authenticate("mlewis","password123"));
+            System.out.println("\nuser authenticated: " + auth.getAuth_message());
 
             Authentication none = new Authentication(); 
             // System.out.println("[ANON USER] role: "+none.authenticate("user", "pw"));
             
             // displating user's menu options
             for(String s : auth.getUserMenu()){
-                System.out.println("AUTHENTICATED USER'S] Menu option: "+s);
+                System.out.println("[AUTHENTICATED USER] Menu option: "+s);
             }
 
             // CHECKING AUTHENTICATION STATUS
@@ -34,16 +33,25 @@ class test {
 
             // SIGNING OUT AND GETTING AUTHENTICATION STATUS MESSAGE
             auth.authenticate("", "");
-            System.out.println("auth signed out: " + auth.getAuth_message());
+            System.out.println( auth.getAuth_message()+"\n");
 
             // SIGNING IN AND GETTING AUTHENTICATION
-            none.authenticate("mlewis","password123");
-            System.out.println("'none' authenticated: " + none.getAuth_message());
+            //none.authenticate("Calzy","beautiful");
+            System.out.println("\n[AUTHENTICATED USER] role: "+none.authenticate("mlewis","password123"));
+            System.out.println("user authenticated: " + none.getAuth_message());
+            // displating user's menu options
+            for(String s : none.getUserMenu()){
+                System.out.println("[AUTHENTICATED USER] Menu option: "+s);
+            }
+
+            // CHECKING AUTHENTICATION STATUS
+            System.out.println("[AUTHENTICATED] MESSAGE: " + none.getAuth_message()+"\n\n");
+            //System.out.println("[NOT AUTHENTICATED] MESSAGE: " + none.getAuth_message());
             return none;
             
         } catch (Exception e) {
             // System.out.println(e.getMessage()); 
-            System.out.println("\n!!!!!AUTHENTICATION EXCEPTION ENCOUNTERED!!!!!\n");
+            System.out.println("\n!!!!!AUTHENTICATION EXCEPTION ENCOUNTERED!!!!!\n\n");
             return null;
         }
     }
@@ -52,21 +60,26 @@ class test {
     * Stock class test            
     */
     private String stockTests(){
+        String c = "STOCK TESTS\n\n";
+        System.out.println(String.format(teststring,c));
         try {
+            // CREATING BEAD IN DB
             Stock gibbs = new Stock (StockType.Beads,"Gibbits", 150,50);
             gibbs.createStock();
             
+            // PRINTING UPDATING AND REPRINTING BEAD QUANITY
             System.out.println("Gibbits Quantity = "+ Stock.getQuantity("Gibbits"));
             System.out.println("Panther Quantity = "+ Stock.getQuantity("Panther")); 
             Stock.updateStock('+',499, "Gibbits"); 
             Stock.updateStock('+',499, "Panther"); 
             Stock.updateStock('-',500, "Gibbits");
             Stock.updateStock('-',500, "Panther");
+            System.out.println("\nUPDATED STOCK QUANTITY");
             System.out.println("Gibbits Quantity = "+ Stock.getQuantity("Gibbits")); 
             System.out.println("Panther Quantity = "+ Stock.getQuantity("Panther")); 
 
             // VIEWING ALL STOCK
-            System.out.println("\n\n[ALL STOCK]");
+            System.out.println("\n[ALL STOCK]");
             for(Stock s:Stock.viewStock(1)){
                 System.out.println(s.toString());
             }
@@ -103,12 +116,12 @@ class test {
             ;
             System.out.println("\n\n[TOSTRING() FROM CLASS TEST]: "+sec.toString());
             sec.createStock();
-            System.out.println("[VIEWITEM(STOCKNAME) TEST]" + Stock.viewItem(sec.getStockName()).toString());
-            return "Stock Tests completed successfully; \n";
+            System.out.println("[VIEWITEM(STOCKNAME) TEST]" + Stock.viewItem(sec.getStockName()).toString()+"\n\n");
+            return "Stock Tests completed successfully;";
         } catch (Exception e) {
             // System.out.println(e.getMessage()); 
-            System.out.println("\n!!!!!STOCK EXCEPTION ENCOUNTERED!!!!!\n");
-            return "Stock Tests failed; \n";
+            System.out.println("\n!!!!!STOCK EXCEPTION ENCOUNTERED!!!!!\n\n");
+            return "Stock Tests failed;";
         }
     }
 
@@ -116,6 +129,8 @@ class test {
      * Bracelet Tests
      */
     private String braceletTests(){
+        String c = "BRACELET TESTS\n\n";
+        System.out.println(String.format(teststring,c));
         try{
             Bracelet.populate();
             Bracelet b; 
@@ -142,6 +157,8 @@ class test {
     }
 
     private String orderTests(){
+        String c = "ORDER TESTS\n\n";
+        System.out.println(String.format(teststring,c));
         try {
             // CREATING ORDER 
             Order fdr = new Order("8764385612", "Marlon Lewis", "2,3,4", "b1,b1,b1", "Half Way Tree"); // Requires a public static getCost(String braceletName) method from Bracelet to test and run        System.out.println("[Order object created]");
@@ -156,12 +173,13 @@ class test {
                 System.out.println(o.toString());
             }
 
-            System.out.println("[DELETING ORDER]");
+            
             int n = orders.size();
             System.out.println("[There are now "+n+" orders in the database!");
             if (n>4){
+                System.out.println("\n[DELETING ORDER/S]");
                 for(int i = 2; i < n; i++){
-                    Order.deleteOrder(i);
+                    Order.deleteOrder(Order.orders.get(i).getOrderNo());
                     System.out.println(String.format("[ORDER # %d DELETED]",i));
                 }
             }
@@ -176,6 +194,8 @@ class test {
     }
 
     private String userTests(){
+        String c = "USER TESTS\n\n";
+        System.out.println(String.format(teststring,c));
         try{
             Authentication auth = new Authentication();
             // Adding Users
@@ -199,17 +219,20 @@ class test {
     }
 
     private String customerTests(){
+        String c = "CUSTOMER TESTS\n\n";
+        System.out.println(String.format(teststring,c));
         try {
             //Testing getcusID Preventing Duplication
             // mercedes.addToDatabase();
             // marlon.addToDatabase();
             // gabriel.addToDatabase();
-            System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
-            System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
-            System.out.println(Customer.getCusId("Callay", "8769654681", "Spanish"));
-            System.out.println(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
-            System.out.println(Customer.getCusId("Kimani", "8769654781", "Mobay"));
-            System.out.println(Customer.getCusId("Gabriel", "8769654781", "Mobay"));
+            
+            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Callay", "8769654681", "Spanish"));
+            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
+            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Kimani", "8769654781", "Mobay"));
+            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Gabriel", "8769654781", "Mobay"));
 
             //Deleting customer
             Customer.deleteCustomer(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
@@ -248,6 +271,5 @@ class test {
         Customer.populate();
 
         t.confirmations(a,b,c,d,e,f);
-
-}
+    }
 }

@@ -17,7 +17,7 @@ import java.sql.Date;
 public class Order
 {
     private int orderNo;
-    private static ArrayList <Order> orders = new ArrayList <Order>();
+    public static ArrayList <Order> orders = new ArrayList <Order>();
     private Date orderDate;
     private int customerID;
     private String bracelets = "";
@@ -144,6 +144,7 @@ public class Order
          PreparedStatement preparedStmt = Authentication.getDbConn().prepareStatement(query);
           preparedStmt.setInt(1, orderNo); 
           preparedStmt.execute();
+          for (Order o:orders){if(o.orderNo==orderNo){orders.remove(orders.indexOf(o));}}
         }
         catch(Exception e)
         {
@@ -258,7 +259,7 @@ public class Order
      * @return object String
      */ 
     public String toString(){
-      String s = "\nCustomer name: "+this.customerID+"\nPickup: "+this.pickupLocation+"\nOrder #";
+      String s = "\nCustomer id: "+this.customerID+"\nPickup: "+this.pickupLocation+"\nOrder #";
       return s+getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getCost());
     }
 

@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class User{
-  private int userID;
+    private int userID;
   private static int nextid =0;
   private String userName;
   private int passWord;
@@ -186,4 +186,4 @@ public class User{
 
         }
       }
-    }
+}

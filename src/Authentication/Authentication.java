@@ -20,6 +20,9 @@ import java.sql.ResultSet;
 // import Customer;
 
 import ClassInterface.Operations;
+import Inventory.Stock;
+import Order.Customer;
+import Order.Order;
 
 
 public class Authentication implements Operations{
@@ -73,9 +76,9 @@ public class Authentication implements Operations{
                     String[] items = role.split(",");
                     userMenu.addAll(Arrays.asList(items));
                     login();
-                    // Stock.viewStock();
-                    // Order.populate();
-                    // Customer.populate();
+                    Stock.viewStock(1);
+                    Order.populate();
+                    Customer.populate();
                     return roles.getString("name");
                 }else{
                     //logout();
