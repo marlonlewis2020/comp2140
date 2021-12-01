@@ -9,8 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class User
-{
+public class User{
   private int userID;
   private static int nextid =0;
   private String userName;
