@@ -37,7 +37,8 @@ Stock CLASS (uses Authentication, aggregates DBAccess):
     + getLevel() :int
     + toString() :String
 
-S
+Stock Test Case
+
 
 Authentication CLASS (uses DBConnect, implements Operations):
     - static conn :DBConnect 
@@ -86,14 +87,6 @@ if no match found, closes connection. returns empty string.
 Outcome: "" role returned, closes database connectoion.
 
 
-DBAccess CLASS:
-    - auth :Authentication 
-
-    + DBAccess(Authentication) (Constructor)
-    + update(int, String) :boolean
-    + create(String, String, int, int) :void
-    + viewAll() :ResultSet
-    + viewSpecific(String, String) :ResultSet
 
 Operations INTERFACE:
     + [static] menuHashMap :HashMap<String,String>
@@ -105,6 +98,7 @@ Operations INTERFACE:
     + VIEWBYNAME :String
     + VIEWBYNAMEPHONE:String
 
+
 DBConnect Class:
     - [static] DB :String
     - [static] USER :String
@@ -115,5 +109,6 @@ DBConnect Class:
     + DBConnect() (Constructor)
     # dbconnection() :Connection
     + close() :void
+
 
 Order class:

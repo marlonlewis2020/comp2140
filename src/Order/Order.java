@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.sql.PreparedStatement;
 import Authentication.Authentication;
 import Inventory.Bracelet;
@@ -27,17 +28,53 @@ public class Order
     
     private Connection conn = Authentication.getDbConn(); //Connection object created
 
+    /**
+     * Function used to create new orders and add it to the database
+     * @param cusPhoneNumber - phone number for customer
+     * @param cusName - name of customer
+     * @param braceletQuantities - quantities for each bracelet in the order, in the same order of the string of bracelets in the order
+     * @param bracelets - the string of bracelets in the order
+     * @param pickupLocation - customer's pickup location
+     */
     public Order(String cusPhoneNumber, String cusName, String braceletQuantities, String bracelets, String pickupLocation)
     {
-      this.bracelets = bracelets;
-      this.braceletQuantities = braceletQuantities;
+      reducer(bracelets,braceletQuantities);
       this.pickupLocation = pickupLocation;
       this.orderDate = new java.sql.Date(new java.util.Date().getTime());
       this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
       this.customerID = getCusId(cusName,cusPhoneNumber);
-      // Customer c = Customer(cusPhoneNumber, cusName, pickupLocation);
-      // c.addToDatabase();
-      // addToDatabase();
+      addToDatabase();
+    }
+
+    /**
+     * consolidates duplicate order items to prevent duplicate items showing in orders
+     */
+    private void reducer(String b, String q){
+      String x="";
+      String y="";
+      HashMap<String,Integer> c = new HashMap<String,Integer>();
+
+      String[] bs = b.split(",");
+      String[] qs = q.split(",");
+      for(int i = 0; i < bs.length; i++){
+        c.put(bs[i],0);
+      }
+      for(int i = 0; i < bs.length; i++){
+        c.put(bs[i],c.get(bs[i])+Integer.valueOf(qs[i]));
+      }
+      String r = c.toString().substring(1).replace('}', ' ').strip();
+      // System.out.println("[REDUCER ========== ]"+r);
+      String[] bqp = r.split(",");
+      for(String pair: bqp){
+        String[] par = pair.split("=");
+        x+=par[0]+",";
+        y+=par[1]+",";
+      }
+      bracelets=x.substring(0, x.length()-1);
+      braceletQuantities=y.substring(0, y.length()-1);
+      // System.out.println("[bracelets ========== ]"+this.bracelets);
+      // System.out.println("[quantities ========== ]"+this.braceletQuantities);
+
     }
 
     /**
@@ -53,8 +90,7 @@ public class Order
     public Order(int cus_id, String order_quantity, String bracelets, String pickup_location,int order_number, Double total, Date order_date){
       this.customerID = cus_id;
       this.orderNo = order_number;
-      this.braceletQuantities = order_quantity;
-      this.bracelets = bracelets;
+      reducer(bracelets, order_quantity);
       this.pickupLocation = pickup_location;
       this.orderDate = order_date;
       this.cost = total;
@@ -83,33 +119,19 @@ public class Order
 
     /**
      * function gets the customer id for the order from the database
-     * @param cusName
-     * @param cusPhoneNumber
-     * @return
+     * @param cusName - name of customer
+     * @param cusPhoneNumber - customer's phone number
+     * @return customer id
      */
-    private int getCusId(String cusName,String cusPhoneNumber){
-      String sql = "select * from customers where name = ? and telephone = ?";
-      try {
+    private int getCusId(String cusName,String cusPhoneNumber){     
+      return Customer.getCusId(cusName, cusPhoneNumber, this.pickupLocation);
         
-        PreparedStatement p = conn.prepareStatement(sql);
-        p.setString(1, cusName);
-        p.setLong(2, Long.parseLong(cusPhoneNumber));
-        ResultSet r = p.executeQuery();
-        if(r.next()){
-          return r.getInt("id");
-        }
-        else{
-          // call create Customer
-          // get customer id
-          // return customer id
-          return 0;
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
-        return 0;
-      }
     }
 
+    /**
+     * adds an order to the database
+     * @return boolean true if added to the database, false if unsuccessful
+     */
     public boolean addToDatabase()
     {
         try{
@@ -137,8 +159,13 @@ public class Order
         }
     }
 
+    /**
+     * deletes order from database
+     * @param orderNo - order number of order to delete
+     */
     public static void deleteOrder(int orderNo)
     {
+      populate();
        try{
          String query = "Delete from Orders where order_number = ?";
          PreparedStatement preparedStmt = Authentication.getDbConn().prepareStatement(query);
@@ -149,10 +176,17 @@ public class Order
         catch(Exception e)
         {
           e.printStackTrace();
-          System.out.println(e.getMessage());
+          System.out.println("ORDER NUMBER "+orderNo+": "+e.getMessage());
         }
     }
 
+    /**
+     * function updates an order
+     * @param orderNo - order number of the order to be updated
+     * @param fields - fields of the table for the record that should be updated. string separated with comma delimiters
+     * @param values - values to enter into the fields in the same order as the fields were specified
+     * @return boolean confirming successful update or not
+     */
     public boolean updateOrder(int orderNo, String fields, String values)
     { 
       boolean result = true;

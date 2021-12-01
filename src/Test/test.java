@@ -37,7 +37,7 @@ class test {
 
             // SIGNING IN AND GETTING AUTHENTICATION
             //none.authenticate("Calzy","beautiful");
-            System.out.println("\n[AUTHENTICATED USER] role: "+none.authenticate("mlewis","password123"));
+            System.out.println("\n[AUTHENTICATED USER] role: "+none.authenticate("Calzy","beautiful"));
             System.out.println("user authenticated: " + none.getAuth_message());
             // displating user's menu options
             for(String s : none.getUserMenu()){
@@ -146,7 +146,7 @@ class test {
             System.out.println(b.getName());
             System.out.println(b.getSmallBeadQty());
             System.out.println(b.getLgBeadQty());
-            System.out.println(b.getMedBeadQty());
+            System.out.println(b.getMedBeadQty()+"\n\n");
             //Bracelet.deleteBracelet("b1");
             return "Bracelet Tests completed successfully; \n";
         }
@@ -178,13 +178,14 @@ class test {
             System.out.println("[There are now "+n+" orders in the database!");
             if (n>4){
                 System.out.println("\n[DELETING ORDER/S]");
-                for(int i = 2; i < n; i++){
-                    Order.deleteOrder(Order.orders.get(i).getOrderNo());
-                    System.out.println(String.format("[ORDER # %d DELETED]",i));
+                for(int i = 1; i < n; i++){
+                    int m=Order.orders.get(i).getOrderNo();
+                    Order.deleteOrder(m);
+                    System.out.println(String.format("[ORDER # %d DELETED]\n\n",m));
                 }
             }
             
-
+            System.out.println("\n\n");
             return "Order Tests completed successfully; \n";
         } catch (Exception e) {
             e.printStackTrace();
@@ -209,6 +210,11 @@ class test {
             marlon.addUser();
             System.out.println("[USER ADDED] "+marlon.getUserName().toUpperCase()+" ADDED TO DATABASE");
             System.out.println(String.format("USER '%s'] ROLE: %s",marlon.getUserName().toUpperCase(),auth.authenticate("Marly", "blessed")));
+
+            User bob = new User ("bob", "marley", Role.PRODUCTION_MANAGER);
+            bob.addUser();
+            System.out.println("[USER ADDED] "+bob.getUserName().toUpperCase()+" ADDED TO DATABASE");
+            System.out.println(String.format("USER '%s'] ROLE: %s",bob.getUserName().toUpperCase(),auth.authenticate("Marly", "blessed")));
 
             return "User Tests completed successfully; \n";
         }
@@ -242,6 +248,7 @@ class test {
             {
                 System.out.println(Customer.getCustomers().get(i).getcustomerName());
             } 
+            System.out.println("\n\n");
             return "Customer Tests completed successfully; \n";
         } catch (Exception e) {
             System.out.println("\n!!!!!CUSTOMER EXCEPTION ENCOUNTERED!!!!!\n");
