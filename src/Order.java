@@ -255,7 +255,7 @@ public class Order
      * @return object String
      */ 
     public String toString(){
-      String s = "\nCustomer name: "+this.customerID+"\nPickup: "+this.pickupLocation+"\n";
+      String s = "\nCustomer name: "+this.customerID+"\nPickup: "+this.pickupLocation+"\nOrder #";
       return s+getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getCost());
     }
 
