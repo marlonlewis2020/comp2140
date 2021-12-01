@@ -64,10 +64,18 @@ Acceptance Criteria: User shall be able to sign in
 with correct username and password combination.
 
 Input: "mlewis","password123"
-Process: creates database connection.
+Process: starts a database connection.
 verifies username and hashed password in database.
 If username password matches, returns the user's role.
-if no match found, closes
+if no match found, closes connection. returns empty string.
+Outcome: "Admin" role returned, sets the dbconnector.
+
+Input: "mlewis","pword123"
+Process: starts a database connection.
+verifies username and hashed password in database.
+If username password matches, returns the user's role.
+if no match found, closes connection. returns empty string.
+Outcome: "" role returned, closes database connectoion.
 
 
 DBAccess CLASS:

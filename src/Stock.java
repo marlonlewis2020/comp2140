@@ -77,6 +77,10 @@ class Stock{
         return this.stockID;
     }
 
+    public String getType(){
+        return String.valueOf(this.stockType);
+    }
+
     /**
      * getter method for Stock item's quantity
      * @return integer quantity of the named stock item
