@@ -206,14 +206,15 @@ class test {
     }
     
     public static void main(String[] args) {
+        // System.out.println("password123".hashCode());
         /**
-         * -----  COMMENT OUT TEST METHODS YOU DO NOT WANT TO RUN!!!!!              -----
-         * -----  ENSURE AUTHENTICATIONTESTS() ALWAYS RUNS BEFORE YOUR CODE!!!!!    -----
-         * System.out.println("password123".hashCode());
-        */
+         * Authentication Tests
+         */
+        Authentication auth = new Authentication();
+        //Authentication none = new Authentication();
+        auth.authenticate("mlewis","password123");
+        // //none.authenticate("user", "pw");
 
-        /*        * CREATING TEST OBJECT        */
-        test t = new test();
         
         /*        * RUNNING TESTS               */
         Authentication a = t.authenticationTests(); //Authentication
@@ -222,9 +223,37 @@ class test {
         String d = t.orderTests(); //"[ORDER TEST PENDING]; \n"; //t.orderTests(); //Order//"[ORDER TEST PENDING]; \n"; //Order
         String e = "[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //Customer
         String f = t.userTests(); //"[USER TEST PENDING]; \n"; //t.userTests(); //Stock//"[USER TEST PENDING]; \n"; //User
+        Customer.populate();
 
-        /*        * END OF TESTS. CLOSING       */       
-        System.out.println(t.confirmations(a,b,c,d,e,f));
-        // PRINTING CONFIRMATIONS
-    }
+        //Testing getcusID Preventing Duplication
+        // mercedes.addToDatabase();
+        // marlon.addToDatabase();
+        // gabriel.addToDatabase();
+        System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+        System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+        System.out.println(Customer.getCusId("Callay", "8769654681", "Spanish"));
+        System.out.println(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
+        System.out.println(Customer.getCusId("Kimani", "8769654781", "Mobay"));
+        System.out.println(Customer.getCusId("Gabriel", "8769654781", "Mobay"));
+
+        //Deleting customer
+        Customer.deleteCustomer(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
+
+
+        //Testing populate()
+        for (int i = 0; i < Customer.getCustomers().size(); i++)
+        {
+            System.out.println(Customer.getCustomers().get(i).getcustomerName());
+        } 
+
+        //Testing update customer()
+    
+
+
+        auth.logout();
+
+
+
+
+}
 }
