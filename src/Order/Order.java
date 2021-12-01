@@ -1,3 +1,4 @@
+package Order;
 /**
  * class is responsible for creating order objects, querying these orders and storing the details to the database
  * @version 1.0
@@ -9,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.PreparedStatement;
 import Authentication.Authentication;
+import Inventory.Bracelet;
+
 import java.sql.Date;
 
 public class Order

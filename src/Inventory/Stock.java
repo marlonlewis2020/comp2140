@@ -1,3 +1,4 @@
+package Inventory;
 /**
  * Stock is an invertory item located in the beaditupja app.
  * @version 1.2
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 import Authentication.Authentication;
 
-class Stock{
+public class Stock{
     
     private int quantity;
     private StockType stockType;

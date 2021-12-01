@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.sql.ResultSet;
 // import  ;
-// import Bracelet;
+// import
 // import Stock;
 // import Order;
 // import Customer;
@@ -39,7 +39,7 @@ public class Authentication implements Operations{
      * 
      */
     public Authentication(){
-        // Order.populate();
+        //Orders.Order.populate();
     }
 
     /**

@@ -1,3 +1,4 @@
+package Authentication;
 /**
  * User class allows access to the system by allowing the user to create a user name and password and access a menu based on privileges assigned to a role.
  * @author Callay Jarrett
@@ -6,10 +7,9 @@
 import java.util.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import Authentication.Authentication;
 import java.sql.ResultSet;
 
-class User
+public class User
 {
   private int userID;
   private static int nextid =0;

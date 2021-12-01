@@ -1,8 +1,10 @@
+package Inventory;
 /**
  * @author Taye-Vaughn Jones
 */
 
 import Authentication.Authentication;
+
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,6 +1,13 @@
+package Test;
 import java.util.ArrayList;
 
 import Authentication.Authentication;
+import Authentication.Role;
+import Authentication.User;
+import Inventory.Bracelet;
+import Inventory.Stock;
+import Inventory.StockType;
+import Order.Order;
 
 class test {
 
