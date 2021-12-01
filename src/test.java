@@ -116,7 +116,6 @@ class test {
             return "Bracelet Tests completed successfully; \n";
         }
         catch(Exception e){
-            // System.out.println(e.getMessage()); 
             System.out.println("!!!!!BRACELET EXCEPTION ENCOUNTERED!!!!!");
             return "Bracelet Tests failed; \n";
         }
