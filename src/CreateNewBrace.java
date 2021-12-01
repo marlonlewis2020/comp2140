@@ -26,6 +26,7 @@ public class CreateNewBrace extends JFrame
     static JComboBox<String> cb_1;
     static JComboBox<String> cb_2;
     static JComboBox<String> cb_3;
+    private String [] braceChoices;
 
 
     private JPanel      pnlCommand;
