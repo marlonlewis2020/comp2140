@@ -1,8 +1,12 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
+<<<<<<< HEAD
         "c:\\Users\\Taye\\Downloads\\mysql-connector-java-8.0.27\\mysql-connector-java-8.0.27\\mysql-connector-java-8.0.27.jar",
         "c:\\Users\\Gabriel Scott\\OneDrive\\Desktop\\mysql-connector-java-8.0.27\\mysql-connector-java-8.0.27.jar"
+=======
+        "c:\\Users\\Taye\\Downloads\\mysql-connector-java-8.0.27\\mysql-connector-java-8.0.27\\mysql-connector-java-8.0.27.jar"
+>>>>>>> f00a45f751ab9e2edb37d885002f46b67b34ce18
     ],
     "java.project.sourcePaths": [
         "src"
