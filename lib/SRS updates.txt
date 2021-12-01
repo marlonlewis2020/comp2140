@@ -1,0 +1,114 @@
+PRODUCTION_MANAGER, ADMIN
+
+create user, create stock, create bracelet, create customer, edit user, edit stock, use stock, edit bracelet, edit customer, view users, view user, view inventory, view stock, view bracelets, view bracelet, view customers, view customer
+
+Removing:
+The system will also backup critical business data in a relational MySQL version 8.0 
+remote database as a recovery option.
+
+Assumptions:
+req 5e, change - the system should not have duplicates of bracelets with the same name and collection.
+multiple users may need to use the program on the same pc without signing out.
+Revised:
+Requirement 2c to dispaly the id for a selected inventory item as well. 
+Allow admin to specify role of user.
+
+Stock CLASS (uses Authentication, aggregates DBAccess):
+    - quantity :int 
+    - stockType :StockType 
+    - name :String 
+    - stockID :int 
+    - level int 
+    - [static] inventory :ArrayList<Stock> 
+    - [static] auth :Authentication 
+
+    + Stock(StockType,String,int,int) (Constructor)
+    + Stock(StockType,String,int) 
+    # Stock(int, StockType,String,int,int) (Constructor)
+    - exists(String) :boolean
+    + getID() :int
+    + getQuantity(String) :int
+    + updateStock(char,int,String) :boolean
+    + getStockName() :String
+    + deleteStock(String) :void
+    + createStock() :void
+    + viewStock(int) :ArrayList<Stock>
+    + viewItem(String) :Stock
+    + getLevel() :int
+    + toString() :String
+
+Stock Test Case
+
+
+Authentication CLASS (uses DBConnect, implements Operations):
+    - static conn :DBConnect 
+    - ps :PreparedStatement 
+    - role :String 
+    - user :String 
+    - pw :int 
+    - userMenu :ArrayList<String>
+    - request :String 
+    - auth_message :String 
+    - auth_option :String 
+
+    + Authentication() (Constructor)
+    + authenticate(String, String) :String 
+    + logout() :String 
+    - login() :String 
+    + getRequest() :String 
+    + setRequest(String) :void 
+    + getRole() :String 
+    + getPwd() :int 
+    + getUser() :String 
+    + [static] getDbConn() :Connection 
+    + getAuth_message() :String 
+    + getUserMenu() :ArrayList<String> 
+    + getAuth_option() :String 
+    + getPS() :PreparedStatement 
+    + toString() :String 
+
+Authentication Test Case
+Acceptance Criteria: User shall be able to sign in 
+with correct username and password combination.
+
+Input: "mlewis","password123"
+Expected Result: starts a database connection.
+verifies username and hashed password in database.
+If username password matches, returns the user's role.
+if no match found, closes connection. returns empty string.
+Outcome: "Admin" role returned, sets the dbconnector.
+
+
+Input: "mlewis","pword123"
+Process: starts a database connection.
+verifies username and hashed password in database.
+If username password matches, returns the user's role.
+if no match found, closes connection. returns empty string.
+Outcome: "" role returned, closes database connectoion.
+
+
+
+Operations INTERFACE:
+    + [static] menuHashMap :HashMap<String,String>
+    + CREATESTOCK :String
+    + UPDATESTOCK :String
+    + USESTOCK :String
+    + VIEW :String
+    + VIEWBYID :String
+    + VIEWBYNAME :String
+    + VIEWBYNAMEPHONE:String
+
+
+DBConnect Class:
+    - [static] DB :String
+    - [static] USER :String
+    - [static] PWD :String
+    - [static] conn :Connection
+    - [static] users :int
+
+    + DBConnect() (Constructor)
+    # dbconnection() :Connection
+    + close() :void
+
+
+Order class:

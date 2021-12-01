@@ -19,8 +19,7 @@ public class DBConnect {
      * function sets up the database connection for other classes to use
      */
     public DBConnect() {
-        users++;
-        System.out.println("[CONNECTING] active user connections: "+users);
+        
         boolean x = conn==null;
         boolean c;
 
@@ -35,11 +34,13 @@ public class DBConnect {
         else {
             c = false;
         }
-
+        // if(c){
         if(c || x){
             try {
                 Class.forName("com.mysql.cj.jdbc.Driver");
                 conn = DriverManager.getConnection(DB, USER, PWD);
+                users++;
+                System.out.println("[CONNECTION SUCCESS] USERS: "+users);
             } catch (SQLException e) {
                 // e.printStackTrace();
             } catch (Exception e) {
@@ -53,12 +54,12 @@ public class DBConnect {
         return conn;
     }
 
-    public void close(){
+    protected void close(){
         users--;
-        System.out.println("[CONNECTING] active user connections: "+users);
         if(users<1){
             try{
                 conn.close();
+                System.out.println("[CLOSING CONNECTION] active connections: "+users);
             }
             catch(Exception e){
                 e.printStackTrace();
@@ -66,5 +67,4 @@ public class DBConnect {
             }
         }
     }
-
 }
