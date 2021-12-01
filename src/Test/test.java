@@ -1,6 +1,6 @@
 package Test;
 import java.util.ArrayList;
-
+import Order.Customer;
 import Authentication.Authentication;
 import Authentication.Role;
 import Authentication.User;
@@ -198,6 +198,35 @@ class test {
         }
     }
 
+    private String customerTests(){
+        try {
+            //Testing getcusID Preventing Duplication
+            // mercedes.addToDatabase();
+            // marlon.addToDatabase();
+            // gabriel.addToDatabase();
+            System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+            System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+            System.out.println(Customer.getCusId("Callay", "8769654681", "Spanish"));
+            System.out.println(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
+            System.out.println(Customer.getCusId("Kimani", "8769654781", "Mobay"));
+            System.out.println(Customer.getCusId("Gabriel", "8769654781", "Mobay"));
+
+            //Deleting customer
+            Customer.deleteCustomer(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
+
+            //Testing populate()
+            for (int i = 0; i < Customer.getCustomers().size(); i++)
+            {
+                System.out.println(Customer.getCustomers().get(i).getcustomerName());
+            } 
+            return "Customer Tests completed successfully; \n";
+        } catch (Exception e) {
+            System.out.println("\n!!!!!CUSTOMER EXCEPTION ENCOUNTERED!!!!!\n");
+            return "Customer Tests failed; \n";
+        }
+
+    }
+
     private String confirmations(Authentication a,String b, String c, String d, String e, String f){
         String x = "\n\nAuthentication Tests failed; \n";
         if(a!=null){x = "\n\nAuthentication Tests completed successfully; \n";}
@@ -206,54 +235,19 @@ class test {
     }
     
     public static void main(String[] args) {
-        // System.out.println("password123".hashCode());
-        /**
-         * Authentication Tests
-         */
-        Authentication auth = new Authentication();
-        //Authentication none = new Authentication();
-        auth.authenticate("mlewis","password123");
-        // //none.authenticate("user", "pw");
-
+        
+        test t = new test();
         
         /*        * RUNNING TESTS               */
         Authentication a = t.authenticationTests(); //Authentication
         String b = t.stockTests(); //Stock
         String c = t.braceletTests(); //"[BRACELET TEST PENDING]; \n"; //t.braceletTests(); //Bracelet
         String d = t.orderTests(); //"[ORDER TEST PENDING]; \n"; //t.orderTests(); //Order//"[ORDER TEST PENDING]; \n"; //Order
-        String e = "[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //Customer
+        String e = t.customerTests(); //"[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //Customer
         String f = t.userTests(); //"[USER TEST PENDING]; \n"; //t.userTests(); //Stock//"[USER TEST PENDING]; \n"; //User
         Customer.populate();
 
-        //Testing getcusID Preventing Duplication
-        // mercedes.addToDatabase();
-        // marlon.addToDatabase();
-        // gabriel.addToDatabase();
-        System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
-        System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
-        System.out.println(Customer.getCusId("Callay", "8769654681", "Spanish"));
-        System.out.println(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
-        System.out.println(Customer.getCusId("Kimani", "8769654781", "Mobay"));
-        System.out.println(Customer.getCusId("Gabriel", "8769654781", "Mobay"));
-
-        //Deleting customer
-        Customer.deleteCustomer(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
-
-
-        //Testing populate()
-        for (int i = 0; i < Customer.getCustomers().size(); i++)
-        {
-            System.out.println(Customer.getCustomers().get(i).getcustomerName());
-        } 
-
-        //Testing update customer()
-    
-
-
-        auth.logout();
-
-
-
+        t.confirmations(a,b,c,d,e,f);
 
 }
 }
