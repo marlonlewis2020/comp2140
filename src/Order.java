@@ -58,14 +58,15 @@ public class Order
      * function gets the total cost of order
      * @return int - total cost of order
      */ 
-    private int calcTotalCost(String braceletQuantities, String bracelets){
-      int total = 0;
+    private double calcTotalCost(String braceletQuantities, String bracelets){
+      double total = 0;
       ArrayList<String> items = new ArrayList<String>();
       items.addAll(Arrays.asList(bracelets.split(",")));
       ArrayList<String> qtys = new ArrayList<String>();
       qtys.addAll(Arrays.asList(braceletQuantities.split(",")));
       for(int i = 0; i<items.size();i++){
-        total+=Bracelet.getCost(items.get(i))*Integer.valueOf(qtys.get(i)); // call a static function from Taye-Vaughn bracelet that gets the cost of a specific bracelet by name
+        Bracelet bracelet = Bracelet.searchByName(items.get(i));
+        total+=bracelet.getCost()*Integer.valueOf(qtys.get(i));
       }
       return total;
     }
