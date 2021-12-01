@@ -38,15 +38,7 @@ public class Authentication implements Operations{
      * 
      */
     public Authentication(){
-        //request = "select * from roles r join users u on r.name=u.role where u.username=? and u.password=?";
-        // String s = "select * from roles";
-        // try {
-        //     PreparedStatement sql = getDbConn().prepareStatement(s);
-        //     ResultSet r = sql.executeQuery();
-
-        // } catch (Exception e) {
-        //     //TODO: handle exception
-        // }
+        // Order.populate();
     }
 
     /**
@@ -80,6 +72,9 @@ public class Authentication implements Operations{
                     String[] items = role.split(",");
                     userMenu.addAll(Arrays.asList(items));
                     login();
+                    // Stock.viewStock();
+                    // Order.populate();
+                    // Customer.populate();
                     return roles.getString("name");
                 }else{
                     //logout();

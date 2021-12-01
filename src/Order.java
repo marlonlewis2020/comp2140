@@ -14,7 +14,7 @@ import java.sql.Date;
 public class Order
 {
     private int orderNo;
-    private ArrayList <Order> orders = new ArrayList <Order>();
+    private static ArrayList <Order> orders = new ArrayList <Order>();
     private Date orderDate;
     private int customerID;
     private String bracelets = "";
@@ -32,6 +32,9 @@ public class Order
       this.orderDate = new java.sql.Date(new java.util.Date().getTime());
       this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
       this.customerID = getCusId(cusName,cusPhoneNumber);
+      // Customer c = Customer(cusPhoneNumber, cusName, pickupLocation);
+      // c.addToDatabase();
+      // addToDatabase();
     }
 
     /**
@@ -131,11 +134,11 @@ public class Order
         }
     }
 
-    public void deleteOrder(int orderNo)
+    public static void deleteOrder(int orderNo)
     {
        try{
          String query = "Delete from Orders where order_number = ?";
-         PreparedStatement preparedStmt = conn.prepareStatement(query);
+         PreparedStatement preparedStmt = Authentication.getDbConn().prepareStatement(query);
           preparedStmt.setInt(1, orderNo); 
           preparedStmt.execute();
         }
@@ -176,14 +179,14 @@ public class Order
      * function populates a list of orders from the database
      * @return ArrayList<Order>
      */
-   public ArrayList <Order> populate()
+   public static ArrayList <Order> populate()
    {
      ResultSet result;
     try{
       String query = "select * from orders";
 
       // create the mysql insert prepared statement
-      PreparedStatement preparedStmt = conn.prepareStatement(query);
+      PreparedStatement preparedStmt = Authentication.getDbConn().prepareStatement(query); //.prepareStatement(query);
       
       // execute the prepared statement
       result = preparedStmt.executeQuery();
@@ -192,15 +195,15 @@ public class Order
       {
         Order e = new Order(result.getInt("customer_id"), result.getString("order_quantity"), result.getString("bracelets"), 
         result.getString("pickup_location"),result.getInt("order_number"), result.getDouble("total"),result.getDate("order_date"));
-        this.orders.add(e);
+        orders.add(e);
       }
-      return this.orders;
+      return orders;
     }
     catch(Exception e)
     {
       e.printStackTrace();
       System.out.println(e.getMessage());
-      return this.orders;
+      return orders;
     }
   }
 
@@ -252,7 +255,8 @@ public class Order
      * @return object String
      */ 
     public String toString(){
-      return getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getCost());
+      String s = "\nCustomer name: "+this.customerID+"\nPickup: "+this.pickupLocation+"\n";
+      return s+getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getCost());
     }
 
 

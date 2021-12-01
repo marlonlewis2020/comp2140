@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import Authentication.Authentication;
 
 class test {
@@ -139,6 +141,20 @@ class test {
             
             // ADDING ORDER TO THE DATABASE
             System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
+
+            System.out.println("[GETTING ORDERS FROM DB]");
+
+            ArrayList<Order> orders = Order.populate();
+            for(Order o:orders){
+                System.out.println(o.toString());
+            }
+
+            System.out.println("[DELETING ORDER]");
+            
+            for(int i = 4;i<=orders.size();i++){
+                Order.deleteOrder(i);
+                System.out.println(String.format("[ORDER # %d DELETED]",i));
+            }
 
             return "Order Tests completed successfully; \n";
         } catch (Exception e) {
