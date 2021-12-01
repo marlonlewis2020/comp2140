@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.*;
 
 public class CreateNewBrace extends JFrame
 {
@@ -27,6 +28,10 @@ public class CreateNewBrace extends JFrame
     static JComboBox<String> cb_2;
     static JComboBox<String> cb_3;
     private String [] braceChoices;
+    private ArrayList<String>stockChoices  = new ArrayList<String>();
+    
+
+
 
 
     private JPanel      pnlCommand;
@@ -36,9 +41,18 @@ public class CreateNewBrace extends JFrame
     {
         //this.plisting = plisting;
         //entry = this;
+
+        for (int i = 0; i < Stock.viewStock(1).size(); i++){
+            if (Stock.viewStock(1).get(i).getType().equals("Beads")){
+                stockChoices.add((Stock.viewStock(1).get(i).getStockName()));
+            }
+        }
+        braceChoices = stockChoices.toArray(new String[stockChoices.size()]);
+
         setTitle("CREATING A NEW BRACELET");
         pnlCommand = new JPanel(); //NEW PANEL FOR ENERTING INFOR INTO FIELDS
         pnlDisplay = new JPanel(); //NEW PANEL FOR Saving and closing info
+
 
 
         pnlDisplay.add(new JLabel("Name:")); 
@@ -50,6 +64,7 @@ public class CreateNewBrace extends JFrame
         braceCost = new JTextField(20);
         pnlDisplay.add(braceCost);
 
+        
 
         pnlDisplay.add(new JLabel("Collection:"));
         braceCollection = new JTextField(20);
@@ -64,8 +79,7 @@ public class CreateNewBrace extends JFrame
         JLabel lbl = new JLabel("BEAD TYPE");
         lbl.setVisible(true);
         pnlDisplay.add(lbl);
-        String[] choices = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
-        cb_1 = new JComboBox<String>(choices);
+        cb_1 = new JComboBox<String>(braceChoices);
         cb_1.setVisible(true);
         pnlDisplay.add(cb_1);
         
@@ -92,7 +106,7 @@ public class CreateNewBrace extends JFrame
         lb2.setVisible(true);
         pnlDisplay.add(lb2);
         String[] choices_2 = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
-        cb_2 = new JComboBox<String>(choices_2);
+        cb_2 = new JComboBox<String>(braceChoices);
         cb_2.setVisible(true);
         pnlDisplay.add(cb_2);
         
@@ -119,7 +133,7 @@ public class CreateNewBrace extends JFrame
         lb3.setVisible(true);
         pnlDisplay.add(lb3);
         String[] choices_3 = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
-        cb_3 = new JComboBox<String>(choices_3);
+        cb_3 = new JComboBox<String>(braceChoices);
         cb_3.setVisible(true);
         pnlDisplay.add(cb_3);
         

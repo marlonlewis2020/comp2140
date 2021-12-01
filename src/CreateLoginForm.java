@@ -93,8 +93,8 @@ class CreateLoginForm extends JPanel implements ActionListener
         add(user_txtField);   //set text field to panel  
         add(passLabel);    //set password label to panel  
         add(pass_txtField);   //set text field to panel  
-        add(roleLabel);
-        add(role_txtField);
+        //add(roleLabel);
+        //add(role_txtField);
         add(login_btn);           //set button to panel  
         add(errorLabel).setVisible(false);
           
@@ -165,14 +165,16 @@ class CreateLoginForm extends JPanel implements ActionListener
       
         String userValue = user_txtField.getText();        //get user entered username from the textField1  
         String passValue = pass_txtField.getText(); //get user entered pasword from the textField2  
-        String roleVal = role_txtField.getText();
+        //String roleVal = role_txtField.getText();
         //Authentication newAuth = new Authentication();
         //newAuth.authenticate(userValue,String.valueOf(passValue.hashCode()));
         //Bracelet.populate();
 
-      if (userValue.equals("mlewis") && passValue.equals("password123") && (roleVal.equals("ADMIN"))){  //if Authenticate(userValue,passValue) != ("") and passValue !=("temp")
-          String role = (auth.authenticate(userValue,String.valueOf(passValue.hashCode())));
-          System.out.println(role);
+     // if (userValue.equals("mlewis") && passValue.equals("password123") && (roleVal.equals("ADMIN"))){  //if Authenticate(userValue,passValue) != ("") and passValue !=("temp")
+      if (auth.authenticate("mlewis","password123").equals("admin")){
+        System.out.println("Authenticating admin");
+          //String role = (auth.authenticate(userValue,String.valueOf(passValue.hashCode())));
+          //System.out.println(role);
           Bracelet.populate();
 
 
@@ -181,6 +183,9 @@ class CreateLoginForm extends JPanel implements ActionListener
             //make page visible to the user  
             newMenu.setVisible(true);  
             errorLabel.setVisible(false);
+    }else if (auth.authenticate(userValue,passValue).equals("BUSINESS_OWNER") && passValue.equals("temp")){
+        CreatePass newPass = new CreatePass();
+        newPass.setVisible(true);
     }
   }  
 } 

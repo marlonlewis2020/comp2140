@@ -9,6 +9,7 @@ public class AddUser extends JFrame
     private JTextField  userRole;        //age
     private JButton     cmdSave;
     private JButton     cmdClose;
+    private JComboBox<String> roles;
 
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
@@ -28,8 +29,10 @@ public class AddUser extends JFrame
 
 
         pnlDisplay.add(new JLabel("ROLE"));
-        userRole = new JTextField(20);
-        pnlDisplay.add(userRole);
+        
+        roles = new JComboBox(Role.values());
+        pnlDisplay.add(roles);
+
 
         pnlDisplay.setLayout(new GridLayout(3,4));
 
@@ -65,11 +68,12 @@ public class AddUser extends JFrame
         public void actionPerformed (ActionEvent event)
         {
           String name = userName.getText();
-          String role = userRole.getText();
           String password = ("temp");
-          //User newUser = User(name,password,role);
-          //newUser.addUser();
-          //dispose();
+          String role = String.valueOf(roles.getSelectedItem());
+
+          User newUser = new User(name,password,Role.valueOf(role));
+          newUser.addUser();
+          //dispose();roles.get
         }
     }
 }
