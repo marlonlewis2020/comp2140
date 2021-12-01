@@ -259,5 +259,4 @@ public class Order
       return s+getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getCost());
     }
 
-
   }

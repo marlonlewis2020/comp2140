@@ -150,11 +150,15 @@ class test {
             }
 
             System.out.println("[DELETING ORDER]");
-            
-            for(int i = 4;i<=orders.size();i++){
-                Order.deleteOrder(i);
-                System.out.println(String.format("[ORDER # %d DELETED]",i));
+            int n = orders.size();
+            System.out.println("[There are now "+n+" orders in the database!");
+            if (n>4){
+                for(int i = 2; i < n; i++){
+                    Order.deleteOrder(i);
+                    System.out.println(String.format("[ORDER # %d DELETED]",i));
+                }
             }
+            
 
             return "Order Tests completed successfully; \n";
         } catch (Exception e) {
