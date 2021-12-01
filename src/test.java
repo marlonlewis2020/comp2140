@@ -62,6 +62,8 @@ class test {
                 System.out.println(s.toString());
             }
 
+            System.out.println("[CREATING STOCK ITEMS]");
+
             // CREATING LOW STOCK ITEM
             Stock not = new Stock (StockType.Beads,"iron", 150,200);
             not.createStock();
@@ -71,6 +73,15 @@ class test {
 
             Stock black = new Stock (StockType.Beads,"black", 150,200);
             black.createStock();
+
+            Stock brown = new Stock (StockType.Beads,"brown", 50,200);
+            brown.createStock();
+
+            Stock red = new Stock (StockType.Beads,"red", 10,20);
+            red.createStock();
+
+            Stock green = new Stock (StockType.Beads,"green", 15,200);
+            green.createStock();
 
             // VIEWING LOW STOCK ITEMS
             System.out.println("\n\n[LOW STOCK]");
@@ -139,14 +150,18 @@ class test {
 
     private String userTests(){
         try{
+            Authentication auth = new Authentication();
             // Adding Users
             User callay = new User ("Calzy", "beautiful", Role.ADMIN);
             callay.addUser();
-            System.out.println("[USER ADDED] "+callay.getUserName().toUpperCase()+" ADDED TO DATABASE");
+            System.out.println("\n\n[USER ADDED] "+callay.getUserName().toUpperCase()+" ADDED TO DATABASE");
+            System.out.println(String.format("[USER] ROLE: %s","Calzy".toUpperCase(),auth.authenticate("Calzy", "beautiful")));
+
 
             User marlon = new User ("Marly", "blessed", Role.ADMIN);
             marlon.addUser();
             System.out.println("[USER ADDED] "+marlon.getUserName().toUpperCase()+" ADDED TO DATABASE");
+            System.out.println(String.format("USER '%s'] ROLE: %s",marlon.getUserName().toUpperCase(),auth.authenticate("Marly", "blessed")));
 
             return "User Tests completed successfully; \n";
         }

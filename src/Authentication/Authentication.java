@@ -39,14 +39,14 @@ public class Authentication implements Operations{
      */
     public Authentication(){
         //request = "select * from roles r join users u on r.name=u.role where u.username=? and u.password=?";
-        String s = "delete from roles";
-        try {
-            PreparedStatement sql = getDbConn().prepareStatement(s);
-            //sql.execute();
+        // String s = "select * from roles";
+        // try {
+        //     PreparedStatement sql = getDbConn().prepareStatement(s);
+        //     ResultSet r = sql.executeQuery();
 
-        } catch (Exception e) {
-            //TODO: handle exception
-        }
+        // } catch (Exception e) {
+        //     //TODO: handle exception
+        // }
     }
 
     /**
@@ -139,7 +139,7 @@ public class Authentication implements Operations{
         // Bracelet.populate();
         return "Welcome "+getUser()+" "+auth_message;
     }
-
+    
     // ---------- //PRIVATE METHODS USED TO ACHIEVE THE SYSTEM'S FUNCTIONALITIES// ---------- //
 
     /**
