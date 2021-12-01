@@ -34,7 +34,7 @@ class test {
             
         } catch (Exception e) {
             // System.out.println(e.getMessage()); 
-            System.out.println("!!!!!AUTHENTICATION EXCEPTION ENCOUNTERED!!!!!");
+            System.out.println("\n!!!!!AUTHENTICATION EXCEPTION ENCOUNTERED!!!!!\n");
             return null;
         }
     }
@@ -87,7 +87,7 @@ class test {
             return "Stock Tests completed successfully; \n";
         } catch (Exception e) {
             // System.out.println(e.getMessage()); 
-            System.out.println("!!!!!STOCK EXCEPTION ENCOUNTERED!!!!!");
+            System.out.println("\n!!!!!STOCK EXCEPTION ENCOUNTERED!!!!!\n");
             return "Stock Tests failed; \n";
         }
     }
@@ -116,7 +116,7 @@ class test {
             return "Bracelet Tests completed successfully; \n";
         }
         catch(Exception e){
-            System.out.println("!!!!!BRACELET EXCEPTION ENCOUNTERED!!!!!");
+            System.out.println("\n!!!!!BRACELET EXCEPTION ENCOUNTERED!!!!!\n");
             return "Bracelet Tests failed; \n";
         }
     }
@@ -124,25 +124,37 @@ class test {
     private String orderTests(){
         try {
             // CREATING ORDER 
-            Order fdr = new Order("8764385612", "Marlon Lewis", "2,3,4", "rock1,rockingb,rocknroll", "Half Way Tree"); // Requires a public static getCost(String braceletName) method from Bracelet to test and run        System.out.println("[Order object created]");
+            Order fdr = new Order("8764385612", "Marlon Lewis", "2,3,4", "b1,b1,b1", "Half Way Tree"); // Requires a public static getCost(String braceletName) method from Bracelet to test and run        System.out.println("[Order object created]");
             
             // ADDING ORDER TO THE DATABASE
             System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
 
             return "Order Tests completed successfully; \n";
         } catch (Exception e) {
-            System.out.println("!!!!!ORDER EXCEPTION ENCOUNTERED!!!!!");
+            e.printStackTrace();
+            System.out.println("\n!!!!!ORDER EXCEPTION ENCOUNTERED!!!!!\n");
             return "Order Tests failed; \n";
         }
     }
 
-    // private String customerTests(){
-    //     return "";
-    // }
+    private String userTests(){
+        try{
+            // Adding Users
+            User callay = new User ("Calzy", "beautiful", Role.ADMIN);
+            callay.addUser();
+            System.out.println("[USER ADDED] "+callay.getUserName().toUpperCase()+" ADDED TO DATABASE");
 
-    // private String userTests(){
-    //     return "";
-    // }
+            User marlon = new User ("Marly", "blessed", Role.ADMIN);
+            marlon.addUser();
+            System.out.println("[USER ADDED] "+marlon.getUserName().toUpperCase()+" ADDED TO DATABASE");
+
+            return "User Tests completed successfully; \n";
+        }
+        catch(Exception e){
+            System.out.println("\n!!!!!ORDER EXCEPTION ENCOUNTERED!!!!!\n");
+            return "User Tests failed; \n";
+        }
+    }
 
     private String confirmations(Authentication a,String b, String c, String d, String e, String f){
         String x = "\n\nAuthentication Tests failed; \n";
@@ -165,9 +177,9 @@ class test {
         Authentication a = t.authenticationTests(); //Authentication
         String b = t.stockTests(); //Stock
         String c = t.braceletTests(); //Bracelet
-        String d = t.orderTests(); //Order//"[ORDER TEST PENDING]; \n"; //
-        String e = "[CUSTOMER TEST PENDING]; \n"; //t.stockTests(); //Stock
-        String f = "[ORDER TEST PENDING]; \n"; //t.stockTests(); //Stock
+        String d = t.orderTests(); //Order//"[ORDER TEST PENDING]; \n"; //Order
+        String e = "[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //Customer
+        String f = t.userTests(); //Stock//"[USER TEST PENDING]; \n"; //User
 
         /*        * END OF TESTS. CLOSING       */       
         System.out.println(t.confirmations(a,b,c,d,e,f));

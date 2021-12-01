@@ -184,7 +184,7 @@ class User
           String message = "Username not found";
           System.out.println(message);
 
-         
+
         }
-}
-}
+      }
+    }

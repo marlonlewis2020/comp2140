@@ -64,9 +64,13 @@ public class Order
       items.addAll(Arrays.asList(bracelets.split(",")));
       ArrayList<String> qtys = new ArrayList<String>();
       qtys.addAll(Arrays.asList(braceletQuantities.split(",")));
-      for(int i = 0; i<items.size();i++){
-        Bracelet bracelet = Bracelet.searchByName(items.get(i));
-        total+=bracelet.getCost()*Integer.valueOf(qtys.get(i));
+      try {
+        for(int i = 0; i<items.size();i++){
+          Bracelet bracelet = Bracelet.searchByName(items.get(i));
+          total+=bracelet.getCost()*Integer.valueOf(qtys.get(i));
+        }
+      } catch (NullPointerException e) {
+        System.out.println("[Error] No bracelet exists for one or more items in yout order!");
       }
       return total;
     }
