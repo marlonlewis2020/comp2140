@@ -11,13 +11,31 @@ class test {
         auth.authenticate("mlewis","password123");
         // //none.authenticate("user", "pw");
 
-        Customer mercedes = new Customer("8768164681", "Mercedes", "Sedecrem");
-        Customer marlon = new Customer("8764385612", "Marlon", "Sovereign");
-        Customer gabriel = new Customer("8768964681", "Gabriel", "Portmore");
+        
+        Customer.populate();
 
-        mercedes.addToDatabase();
-        marlon.addToDatabase();
-        gabriel.addToDatabase();
+        //Testing getcusID Preventing Duplication
+        // mercedes.addToDatabase();
+        // marlon.addToDatabase();
+        // gabriel.addToDatabase();
+        System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+        System.out.println(Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+        System.out.println(Customer.getCusId("Callay", "8769654681", "Spanish"));
+        System.out.println(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
+        System.out.println(Customer.getCusId("Kimani", "8769654781", "Mobay"));
+        System.out.println(Customer.getCusId("Gabriel", "8769654781", "Mobay"));
+
+        //Deleting customer
+        Customer.deleteCustomer(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
+
+
+        //Testing populate()
+        for (int i = 0; i < Customer.getCustomers().size(); i++)
+        {
+            System.out.println(Customer.getCustomers().get(i).getcustomerName());
+        } 
+    
+
 
         auth.logout();
 

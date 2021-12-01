@@ -1,7 +1,10 @@
 import java.sql.Connection;
-//import java.util.ArrayList;
+import java.util.ArrayList;
+
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
+
 import java.sql.PreparedStatement;
-//import java.sql.ResultSet;
+import java.sql.ResultSet;
 import Authentication.Authentication;
 
 public class Customer
@@ -9,8 +12,9 @@ public class Customer
     private String phoneNumber;
     private String customerName;
     private String pickupLocation;
-    //private ArrayList <Customer> customers = new ArrayList <Customer>();
+    private static ArrayList <Customer> customers = new ArrayList <Customer>();
     private Connection conn = Authentication.getDbConn(); //Connection object created
+    private int id;
 
     
 
@@ -30,7 +34,7 @@ public class Customer
     public void addToDatabase()
     {
         try{
-
+      
           String query = "insert into customers (name,telephone,order_address)"
             + " values (?, ?, ?)";
 
@@ -51,110 +55,163 @@ public class Customer
           System.out.println(e.getMessage());
         }
     }
-  }
-//}
 
-//     public void updateCustomer(int customerID, String fields, String values)
-//     {
-//         String [] columns = fields.split(","); 
-//         String [] inputs = values.split(","); 
-//         String updates = "";
-//         for (int i = 0; i < columns.length - 1; i++) 
-//         {
-//             updates += columns [i] + "=" + inputs [i] + ",";
-//         }
-//             updates += columns [columns.length] + "=" + inputs [columns.length];
-    
-//             try
-//             {
-//               String query = "Update Customers set ? where id = ?";
-//               PreparedStatement preparedStmt = conn.prepareStatement(query);
-//               preparedStmt.setString(1, updates);
-//               preparedStmt.setInt(2, customerID);
-    
-//             }
-    
-//             catch(Exception e)
-//             {
-//                 e.printStackTrace();
-//               System.out.println(e.getMessage());
-//             }
-//     }
-    
+    public static ArrayList <Customer> getCustomers()
+    {
+        return customers;
+    }
+  
+    public int getID()
+    {
+      return id;
+    }
+
+    public void setID(int id)
+    {
+      this.id = id;
+    }
 
 
-//     public void deleteCustomer(int customerID)
-//     {
-//         try
-//         {
-//             String query = "Delete from Customers where id = ?";
-//             PreparedStatement preparedStmt = conn.prepareStatement(query);
-//                preparedStmt.setInt(1, customerID); 
-//                preparedStmt.execute();
-//         }
+    // public void updateCustomer(int customerID, String fields, String values)
+    // {
+    //     String [] columns = fields.split(","); 
+    //     String [] inputs = values.split(","); 
+    //     String updates = "";
+    //     for (int i = 0; i < columns.length - 1; i++) 
+    //     {
+    //         updates += columns [i] + "=" + inputs [i] + ",";
+    //     }
+    //         updates += columns [columns.length] + "=" + inputs [columns.length];
+    
+    //         try
+    //         {
+    //           String query = "Update Customers set ? where id = ?";
+    //           PreparedStatement preparedStmt = conn.prepareStatement(query);
+    //           preparedStmt.setString(1, updates);
+    //           preparedStmt.setInt(2, customerID);
+    
+    //         }
+    
+    //         catch(Exception e)
+    //         {
+    //             e.printStackTrace();
+    //           System.out.println(e.getMessage());
+    //         }
+    // }
+    
+
+
+    public static void deleteCustomer(int customerID)
+    {
+        try
+        {
+            int idx = -999;
+            Connection conn = Authentication.getDbConn(); 
+            String query = "Delete from customers where id = ?";
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
+               preparedStmt.setInt(1, customerID); 
+               preparedStmt.execute();
+
+             for (int i = 0; i < Customer.getCustomers().size(); i++)
+              {
+                if (Customer.getCustomers().get(i).getID() == customerID)
+                {
+                  idx = i;
+                }
+
+              } 
+              if (idx != -999)
+              {
+                Customer.getCustomers().remove(idx);
+                System.out.println("Customer removed :)");
+              }
+              
+        }
              
-//         catch(Exception e)
-//         {
-//             e.printStackTrace();
-//             System.out.println(e.getMessage());
-//         }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
              
-//     }
+    }
 
 
-//     public ArrayList <Customer> populate()
-//     {
-//       try{
-//             String query = "select * from customer";
+    public static void populate()
+    {
+      try{
+            Connection conn = Authentication.getDbConn(); 
+            String query = "select * from customers";
 
-//             // create the mysql insert prepared statement
-//             PreparedStatement preparedStmt = conn.prepareStatement(query);
+            // create the mysql insert prepared statement
+            PreparedStatement preparedStmt = conn.prepareStatement(query);
         
 
-//             // execute the prepared statement
-//             ResultSet result = preparedStmt.executeQuery();
+            // execute the prepared statement
+            ResultSet result = preparedStmt.executeQuery();
 
-//             while (result.next()) 
-//             {
-//                 Customer e = new Customer(result.getInt("telephone"), result.getString("name"), result.getString("pickup_location"));
-//                 this.customers.add(e);
-//             }
-//             return this.customers;
+            while (result.next()) 
+            {
+                Customer e = new Customer(result.getString("telephone"), result.getString("name"), result.getString("order_address"));
+                customers.add(e);
+                e.setID(result.getInt("id"));
+            }
+           
             
-//        }
+       }
 
-//        catch(Exception e)
-//        {
-//             e.printStackTrace();
-//             System.out.println(e.getMessage());
-//             return this.customers;
-//        }
+       catch(Exception e)
+       {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
             
-//     }
-// }
+       }
+            
+    }
 
 
 
-// private int getCusId(String cusName,String cusPhoneNumber){
-//   String sql = "select * from customers where name = ? and telephone = ?";
-//   try {
-    
-//     PreparedStatement p = conn.prepareStatement(sql);
-//     p.setString(1, cusName);
-//     p.setLong(2, Long.parseLong(cusPhoneNumber));
-//     ResultSet r = p.executeQuery();
-//     if(r.next()){
-//       return r.getInt("id");
-//     }
-//     else{
-//       // call create Customer
-//       // get customer id
-//       // return customer id
-//       return 0;
-//     }
-//   } catch (Exception e) {
-//     e.printStackTrace();
-//     return 0;
-//   }
-// }
-// }
+
+public static int getCusId(String cusName,String cusPhoneNumber, String pickupLocation){
+  String sql = "select * from customers where name = ? and telephone = ?";
+  try {
+    Connection conn = Authentication.getDbConn(); 
+    PreparedStatement p = conn.prepareStatement(sql);
+    p.setString(1, cusName);
+    p.setLong(2, Long.parseLong(cusPhoneNumber));
+    ResultSet r = p.executeQuery();
+
+    if(r.next()){
+      return r.getInt("id");
+    }
+
+    else{
+      Customer c = new Customer(cusPhoneNumber, cusName, pickupLocation);
+      c.addToDatabase();
+      customers.add(c);
+      sql = "select * from customers where name = ? and telephone = ?";
+      p = conn.prepareStatement(sql);
+      p.setString(1, cusName);
+      p.setLong(2, Long.parseLong(cusPhoneNumber));
+      r = p.executeQuery();
+
+      if(r.next()){
+        c.setID(r.getInt("id"));
+      return r.getInt("id");
+      // call create Customer
+      // get customer id
+      // return customer id
+      //return 0;
+      }
+
+    } 
+  }
+      
+      catch (Exception e) {
+      e.printStackTrace();
+      //return 0;
+      return -1;
+      }
+      return -1; 
+    }
+}
