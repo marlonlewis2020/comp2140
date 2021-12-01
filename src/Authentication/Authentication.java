@@ -29,7 +29,7 @@ public class Authentication implements Operations{
     private String user = null;
     private int pw = 0;
     private ArrayList<String> userMenu = new ArrayList<String>();
-    private String request = null;
+    private String request = "select * from roles r join users u on r.name=u.role where u.username=? and u.password=?";
     private String auth_message = "You are not signed in!";
     private String auth_option = "Sign in!";
 
@@ -38,7 +38,15 @@ public class Authentication implements Operations{
      * 
      */
     public Authentication(){
-        request = "select * from 'roles' r join 'users' u on r.id=u.id where u.uname=? and u.pword=?";
+        //request = "select * from roles r join users u on r.name=u.role where u.username=? and u.password=?";
+        String s = "delete from roles";
+        try {
+            PreparedStatement sql = getDbConn().prepareStatement(s);
+            //sql.execute();
+
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
     }
 
     /**
@@ -52,28 +60,30 @@ public class Authentication implements Operations{
      * @throws SQLException
      */
     public String authenticate(String user, String pw) {
+        conn = new DBConnect();
         if(user=="" && pw==""){
-            logout();
             return"";
         }
         else{
-            conn = new DBConnect();
-            String sql = "select * from roles r join users u on r.name=u.role where u.username=? and u.password=?";
+            //String sql = "select * from roles r join users u on r.name=u.role where u.username=? and u.password=?";
             this.user = user;
             this.pw = pw.hashCode(); //pw.hashCode()
             try{
-                PreparedStatement p = getDbConn().prepareStatement(sql);
-                p.setString(1,user);
+                PreparedStatement p = getDbConn().prepareStatement(this.request);
+                p.setString(1,this.user);
                 p.setString(2,String.valueOf(this.pw));
                 ResultSet roles = p.executeQuery();
                 if (roles.next()){
+                    System.out.println("[ROLE EXISTS] ROLE FOUND FOR "+this.user.toUpperCase());
+                    //roles.next();
                     role = roles.getString("privilege");
                     String[] items = role.split(",");
                     userMenu.addAll(Arrays.asList(items));
                     login();
                     return roles.getString("name");
                 }else{
-                    logout();
+                    //logout();
+                    System.out.println("[ROLE DOESN'T EXIST]");
                     return "";
                 }
             }
@@ -94,7 +104,7 @@ public class Authentication implements Operations{
         user = null;
         pw = 0;
         userMenu = new ArrayList<String>();
-        request = "select * from 'roles' r join 'users' u on r.id=u.id where u.username=? and u.password=?";
+        request = "select * from roles r join users u on r.name=u.role where u.username=? and u.password=?";
         auth_message = "You are not signed in!";
         auth_option = "Sign in!";
         conn.close();

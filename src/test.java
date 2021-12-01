@@ -12,7 +12,7 @@ class test {
             System.out.println("[AUTHENTICATED USER] role: "+auth.authenticate("mlewis","password123"));
 
             Authentication none = new Authentication(); 
-            System.out.println("[ANON USER] role: "+none.authenticate("user", "pw"));
+            // System.out.println("[ANON USER] role: "+none.authenticate("user", "pw"));
             
             // displating user's menu options
             for(String s : auth.getUserMenu()){
@@ -21,7 +21,7 @@ class test {
 
             // CHECKING AUTHENTICATION STATUS
             System.out.println("[AUTHENTICATED] MESSAGE: " + auth.getAuth_message());
-            System.out.println("[NOT AUTHENTICATED] MESSAGE: " + none.getAuth_message()); 
+            //System.out.println("[NOT AUTHENTICATED] MESSAGE: " + none.getAuth_message()); 
 
             // SIGNING OUT AND GETTING AUTHENTICATION STATUS MESSAGE
             auth.authenticate("", "");
@@ -176,10 +176,10 @@ class test {
         /*        * RUNNING TESTS               */
         Authentication a = t.authenticationTests(); //Authentication
         String b = t.stockTests(); //Stock
-        String c = t.braceletTests(); //Bracelet
-        String d = t.orderTests(); //Order//"[ORDER TEST PENDING]; \n"; //Order
+        String c = t.braceletTests(); //"[BRACELET TEST PENDING]; \n"; //t.braceletTests(); //Bracelet
+        String d = t.orderTests(); //"[ORDER TEST PENDING]; \n"; //t.orderTests(); //Order//"[ORDER TEST PENDING]; \n"; //Order
         String e = "[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //Customer
-        String f = t.userTests(); //Stock//"[USER TEST PENDING]; \n"; //User
+        String f = t.userTests(); //"[USER TEST PENDING]; \n"; //t.userTests(); //Stock//"[USER TEST PENDING]; \n"; //User
 
         /*        * END OF TESTS. CLOSING       */       
         System.out.println(t.confirmations(a,b,c,d,e,f));

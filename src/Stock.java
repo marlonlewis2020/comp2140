@@ -18,9 +18,8 @@ class Stock{
     private int stockID=0;
     private int level;
     private static ArrayList<Stock> inventory = new ArrayList<Stock>();
-    private static Authentication auth = new Authentication();
+    private static Connection conn = Authentication.getDbConn();
 
-        // auth.setRequest("view stock");
         // DBAccess dba;
         // dba = new DBAccess(auth);
 
@@ -84,7 +83,7 @@ class Stock{
      */
     public static int getQuantity(String name){
         try{
-            PreparedStatement sql = Authentication.getDbConn().prepareStatement("SELECT * FROM `stock` WHERE name=?");
+            PreparedStatement sql = conn.prepareStatement("SELECT * FROM `stock` WHERE name=?");
             sql.setString(1, name);
             ResultSet r = sql.executeQuery();
             if(r.next()){
@@ -118,7 +117,7 @@ class Stock{
             return false;
         }
         try{
-            PreparedStatement stmt = Authentication.getDbConn().prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1,qty);
             stmt.setString(2,name);
             stmt.execute();
@@ -147,7 +146,7 @@ class Stock{
     public static void deleteStock(String name){
         try{
             String sql = "DELETE FROM `stock` WHERE `name` = ?";
-            PreparedStatement p = Authentication.getDbConn().prepareStatement(sql);
+            PreparedStatement p = conn.prepareStatement(sql);
             p.setString(1,name);
             p.executeUpdate();
         }
@@ -167,9 +166,8 @@ class Stock{
             return true;
         }
         else{
-            auth.setRequest("create stock");
             try {
-                PreparedStatement sql = Authentication.getDbConn().prepareStatement("INSERT INTO `stock` (`type`, `name`, `quantity`, `limit`) VALUES (?, ?, ?, ?)");
+                PreparedStatement sql = conn.prepareStatement("INSERT INTO `stock` (`type`, `name`, `quantity`, `limit`) VALUES (?, ?, ?, ?)");
                 sql.setString(1, String.valueOf(this.stockType));
                 sql.setString(2, this.name);
                 sql.setInt(3, this.quantity);
@@ -193,7 +191,7 @@ class Stock{
         String stmt = "select * from `stock`";
         
         try {
-            PreparedStatement sql = Authentication.getDbConn().prepareStatement(stmt);
+            PreparedStatement sql = conn.prepareStatement(stmt);
             ResultSet r = sql.executeQuery();
             
             while(r.next()){
@@ -245,11 +243,9 @@ class Stock{
      * @return boolean true if the stock item is found to match the name
      */
     private boolean exists(String sname){
-        // auth.setRequest("view stock");
-        // System.out.println("[Stock - exists method] request: "+auth.getRequest());
         ResultSet result;
         try {
-            PreparedStatement sql = Authentication.getDbConn().prepareStatement("SELECT * FROM `stock` WHERE name=?");
+            PreparedStatement sql = conn.prepareStatement("SELECT * FROM `stock` WHERE name=?");
             sql.setString(1, sname);
             result = sql.executeQuery();
             return result.next();

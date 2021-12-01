@@ -7,6 +7,7 @@ req 5e, change - the system should not have duplicates of bracelets with the sam
 multiple users may need to use the program on the same pc without signing out.
 Revised:
 Requirement 2c to dispaly the id for a selected inventory item as well. 
+Allow admin to specify role of user.
 
 Stock CLASS (uses Authentication, aggregates DBAccess):
     - quantity :int 
@@ -31,6 +32,8 @@ Stock CLASS (uses Authentication, aggregates DBAccess):
     + viewItem(String) :Stock
     + getLevel() :int
     + toString() :String
+
+S
 
 Authentication CLASS (uses DBConnect, implements Operations):
     - static conn :DBConnect 
@@ -64,11 +67,12 @@ Acceptance Criteria: User shall be able to sign in
 with correct username and password combination.
 
 Input: "mlewis","password123"
-Process: starts a database connection.
+Expected Result: starts a database connection.
 verifies username and hashed password in database.
 If username password matches, returns the user's role.
 if no match found, closes connection. returns empty string.
 Outcome: "Admin" role returned, sets the dbconnector.
+
 
 Input: "mlewis","pword123"
 Process: starts a database connection.
