@@ -20,7 +20,7 @@ public class DBConnect {
      */
     public DBConnect() {
         users++;
-        System.out.println("[ACTIVE USERS] active users: "+users);
+        System.out.println("[ACTIVE PROCESSES] active processes: "+users);
         boolean x = conn==null;
         boolean c;
 
@@ -58,7 +58,7 @@ public class DBConnect {
         users--;
         if(users<1){
             try{
-                conn.close();
+                //conn.close();
                 System.out.println("[CLOSING CONNECTION] active connections: "+users);
             }
             catch(Exception e){

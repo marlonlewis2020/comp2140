@@ -17,6 +17,7 @@ class User
   private int passWord;
   private Role role;
   public ArrayList<String> menu = new ArrayList<String>();
+  Connection conn = Authentication.getDbConn();
   
 
 
@@ -82,8 +83,6 @@ class User
     try
     {
       
-      Connection conn = Authentication.getDbConn();
-
       String checkname = this.getUserName();
       String namecheck = "select username from users where username = ?";
 
@@ -121,9 +120,6 @@ class User
   public void deleteUser(String username)
   {
     try{
-  
-
-    Connection conn = Authentication.getDbConn();
 
     String query = "Delete from users where username = ?";
          PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -146,8 +142,6 @@ class User
    */
   public void updateUser(String username, String field, String value)
   {
-    Connection conn = Authentication.getDbConn();
-
        
         try
         {
