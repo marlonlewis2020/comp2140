@@ -1,11 +1,12 @@
 package Order;
 /**
  * class is responsible for creating order objects, querying these orders and storing the details to the database
- * @version 1.0
+ * @version 1.1
  * @author Mercedes Smith, Marlon Lewis
  */
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.sql.PreparedStatement;
 import Authentication.Authentication;
 import Inventory.Bracelet;
 import Inventory.Stock;
+import Inventory.StockType;
 
 import java.sql.Date;
 
@@ -40,7 +42,79 @@ public class Order
      */
     public Order(String cusPhoneNumber, String cusName, String sizes, String braceletQuantities, String bracelets, String pickupLocation)
     {
+      int count = 0;
+      int sum = 0;
+      String[] bsizes = sizes.split(",");
+      Bracelet brace;
       reducer(bracelets,braceletQuantities);
+      for(String bx: this.bracelets.split(",")){
+        brace = Bracelet.searchByName(bx);
+
+        //checks to ensure the beads required to make the bracelet exists
+        // CHECKING BEAD AVAILABILITY FOR ALL BRACELETS IN ORDER
+        for(String s: Bracelet.searchByName(bx).getSmallBeadQty().split(";")){
+          
+          Stock stock = new Stock (StockType.Beads,s.split("-")[0], 0, 0);
+          try {
+            String sql = "select * from stock where name = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,s.split("-")[0]);
+            ResultSet result = stmt.executeQuery();
+            
+            if(!result.next()){
+              stock.createStock();
+              this.bracelets = "";
+              this.braceletQuantities = "";
+              System.out.println("[ORDER NOT CREATED] ONE OR MORE ITEMS IN THE ORDER DOES NOT HAVE STOCK VALUE");
+              return;
+            }
+          } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            System.out.println("[DATABASE ERROR WHILE CREATING ORDER] ORDER NOT CREATED! ");
+            System.out.println(String.format("select * from stock where name = '%s'",s.split("-")[0]));
+          }  
+        }
+
+        // checking to ensure we can make the total number of bracelets in the order
+        // CHECKING THE BRACELET QUANTITY FOR EACH BRACELET IS WITHIN ESTIMATES
+        if(bsizes[count].toUpperCase().equals("SMALL")){
+          int est = brace.estimateQty().get(0);
+          sum+=Integer.valueOf(this.braceletQuantities.split(",")[count]);
+          if(sum>est){
+            System.out.println("SMALL [BRACELET QUANTITY EXCEEDS STOCK AVAILABILITY] ORDER NOT CREATED");
+            return;
+          }
+          count++;
+        }
+        
+        else if(bsizes[count].toUpperCase().equals("MEDIUM")){
+          int est = brace.estimateQty().get(1);
+          sum+=Integer.valueOf(this.braceletQuantities.split(",")[count]);
+          if(sum>est){
+            System.out.println("MEDIUM [BRACELET QUANTITY EXCEEDS STOCK AVAILABILITY] ORDER NOT CREATED");
+            return;
+          }
+          count++;
+        }
+
+        else if(bsizes[count].toUpperCase().equals("LARGE")){
+          int est = brace.estimateQty().get(2);
+          sum+=Integer.valueOf(this.braceletQuantities.split(",")[count]);
+          if(sum>est){
+            System.out.println("LARGE [BRACELET QUANTITY EXCEEDS STOCK AVAILABILITY] ORDER NOT CREATED");
+            return;
+          }
+          count++;
+        }
+        else{
+          System.out.println("[INVALID SIZE ENTERED] NO MATCHNG SIZE FOUND IN DATABASE FOR '"+String.valueOf(bsizes[count])+"'!");
+          return;
+        }
+      }
+      
+      // verified beads exist and quantity of each bead required to make each bracelet is within estimates
+      // PROCEEDING TO CREATE ORDER
       this.size = sizes;
       this.pickupLocation = pickupLocation;
       this.orderDate = new java.sql.Date(new java.util.Date().getTime());
@@ -50,6 +124,25 @@ public class Order
     }
 
     /**
+     * overloaded constructor for creating an Order using the database with the stock table that doesn't have a size field
+     */
+    public Order(String cusPhoneNumber, String cusName, String braceletQuantities, String bracelets, String pickupLocation){
+      this.pickupLocation = pickupLocation;
+      this.orderDate = new java.sql.Date(new java.util.Date().getTime());
+      this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
+      this.customerID = getCusId(cusName,cusPhoneNumber);
+      this.braceletQuantities = braceletQuantities;
+      this.bracelets = bracelets;
+      String sizes = "";
+      for(int i = 0; i<this.bracelets.split(",").length;i++){
+        sizes+="SMALL,";
+      }
+      this.size = sizes.substring(0, sizes.length()-1);
+      addToDatabase();
+    }
+
+    /**
+     * function creates 2 separate strings without duplicates, containing all the order items and quantities respectively
      * consolidates duplicate order items to prevent duplicate items showing in orders
      */
     private void reducer(String b, String q){
@@ -98,6 +191,23 @@ public class Order
       this.cost = total;
       this.size = sizes;
     }
+
+    /**
+     * overloaded constructor for loading Orders from the old stock table in database that doesn't have the size field.
+     */
+    public Order(int cus_id, String order_quantity, String bracelets, String pickup_location,int order_number, Double total, Date order_date){
+      this.customerID = cus_id;
+      this.orderNo = order_number;
+      reducer(bracelets, order_quantity);
+      this.pickupLocation = pickup_location;
+      this.orderDate = order_date;
+      this.cost = total;
+      String sizes = "";
+      for(int i = 0; i<this.bracelets.split(",").length;i++){
+        sizes+="SMALL,";
+      }
+      this.size = sizes.substring(0, sizes.length()-1);
+    }
     
     /**
      * function gets the total cost of order
@@ -131,14 +241,41 @@ public class Order
         
     }
 
+
+
     /**
      * adds an order to the database
      * @return boolean true if added to the database, false if unsuccessful
      */
     public boolean addToDatabase()
     {
-        try{
-          String query = "insert into Orders (bracelets, order_quantity, customer_id, pickup_location, order_date, total, size) values (?, ?, ?, ?, ?, ?, ?)";
+      try{
+        String query = "insert into Orders (bracelets, order_quantity, customer_id, pickup_location, order_date, total, size) values (?, ?, ?, ?, ?, ?, ?)";
+
+        // create the mysql insert prepared statement
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        preparedStmt.setString(1, this.bracelets);
+        preparedStmt.setString(2, this.braceletQuantities);
+        preparedStmt.setInt(3, this.customerID);
+        preparedStmt.setString(4, this.pickupLocation);
+        preparedStmt.setDate(5, this.orderDate);
+        preparedStmt.setDouble(6, this.cost);
+        preparedStmt.setString(7,this.size);
+        
+        // execute the preparedstatement
+        preparedStmt.execute();
+        
+        update('-'); 
+        Stock.viewStock(1);
+        populate();
+        Customer.populate();
+        System.out.println("[ADDED TO DATABASE]");
+        return true;
+      }
+      catch(Exception e)
+      {
+        try {
+          String query = "insert into Orders (bracelets, order_quantity, customer_id, pickup_location, order_date, total) values (?, ?, ?, ?, ?, ?)";
 
           // create the mysql insert prepared statement
           PreparedStatement preparedStmt = conn.prepareStatement(query);
@@ -148,42 +285,58 @@ public class Order
           preparedStmt.setString(4, this.pickupLocation);
           preparedStmt.setDate(5, this.orderDate);
           preparedStmt.setDouble(6, this.cost);
-          preparedStmt.setString(7,this.size);
           
           // execute the preparedstatement
           preparedStmt.execute();
           
-          update('-');
+          update('-'); 
+          Stock.viewStock(1);
+          populate();
+          Customer.populate();
           System.out.println("[ADDED TO DATABASE]");
           return true;
+          } catch (Exception exc) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return false;
+          }
         }
-        catch(Exception e)
-        {
-          e.printStackTrace();
-          System.out.println(e.getMessage());
+      }
+
+    /**
+     * function updates the beadcount for the beads involved in creating a specific bracelet
+     * @param ch the + or - operator character symbolizing either of those 2 operations to perform to the database
+     * @return boolean value indicating the status utcome of ths update process
+     */
+    private boolean update(char ch){
+      String[] allbeads = this.size.split(","); //{"SMALL","SMALL"} - SIZES (EACH BRACELET)
+        
+      String[] bracelets = this.bracelets.split(","); //{"b1","b1"} - NAMES (EACH BRACELET)
+      String[] qtys = this.braceletQuantities.split(","); //splitting quantitied "5,3" into {"5","3"} - QTY (EACH BRACELET)
+      for(int i =0; i < bracelets.length; i++){ // INDEXING {0,1} - INDEX FOR EACH BRACELET IN ORDER
+        int qty = Integer.valueOf(qtys[i]); // {"2","3"}[i] | i.e. qty = {"2","3"}[0] = 5
+        String size = allbeads[i]; // SIZE (SPECIFIC BRACELET NAME) | {"SMALL","SMALL"}[i] | i.e {"SMALL","SMALL"}[0] = "SMALL"
+        String name = bracelets[i]; // NAME (SPECIFIC BRACELET NAME) | {"b1","b1"}[i]  | i.e {"b1","b1"}[0] = "b1"
+        Bracelet brace = Bracelet.searchByName(name); //BRACELET (FINDS SPECIFIC BRACELET) | Bracelet.searchByName("b1")
+        System.out.println("BRACELET NAME: "+name);
+        String beadcount = getB(brace,size); // "yellow-10;green-16" BEADCOUNT STRING BY SIZE (SPECIFIC BRACELET/SIZE)
+        System.out.println("[BEADCOUNT TEST]");
+
+        if(!processOrder(ch,beadcount,qty)){ //("yellow-10;green-16",5)
           return false;
         }
-    }
-
-    private void update(char op){
-      String[] allbeads = this.size.split(","); //gets sizes
-        
-      String[] bracelets = this.bracelets.split(","); //gets bracelet names
-      for(int i =0; i < bracelets.length; i++){ //for each braceletname
-        int qty = Integer.valueOf(this.braceletQuantities.split(",")[i]); //find the qty of the ith bracelet
-        Bracelet brace = Bracelet.searchByName(bracelets[i]); //find braceletby name
-        String beadcount = getB(brace,allbeads[i]); //get the beadcounts for the size of the specified bracelet
-        String[] beads = beadcount.split(";"); //find each beadcount of this bracelet size
-
-        for(int n = 0; n < beads.length; i++){ //for each beadcount
-          int bead = Integer.valueOf(beads[n].split("-")[1]); //convert beadcount to int
-          Stock.updateStock(op, qty*bead, bracelets[i]); // update that particulat bead
-          System.out.println("[UPDATE]"+bracelets[i]+" was reduced by "+String.valueOf(qty*bead));
-        }      
       }
+      return true;
     }
 
+    /**
+     * function produces the beadcount information for making the specific size of a specific bracelet
+     * @param b Bracelet object
+     * @param s String size for the bracelet b
+     * @return String representing the beadcount information for making the specific size of the specified Bracelet b
+     */
     private String getB(Bracelet b, String s){
+      s=s.toUpperCase();
       if(s.equals("SMALL")){
         return b.getSmallBeadQty();
       }
@@ -195,7 +348,34 @@ public class Order
       }
     }
       
-    // }
+    //for each bracelet (name, qty) string, get the beads, qtys for each bead, call the updateStock function
+    //String bracelet = "yellow-10;green-16" - for small
+
+    /**
+     * function updates the bead count in the database for all the beads required to make a specifc bracelet in the order when an order is created or deleted
+     * @param ch is the operator either + or - to perform on the quantity of a bead item in the database
+     * @param bracelet is the String formatted beadcount for all the beads required for making the a specific bracelet
+     * @param qty is the quantity of a specific bracelet in the order
+     * @return booloean value representing the update status of the bead
+     */
+    private boolean processOrder(char cr, String bracelet, int qty){ // ("yellow-10;green-16",5)
+      try{
+        String[] beads = bracelet.split(";"); //{"yellow-10","green-16"}
+        for(String bead: beads){ //"yellow-10" | "green-16"
+          String[] parts = bead.split("-"); // {"yellow","10"}
+          String name = parts[0].toLowerCase(); // "yellow" | "green"
+          int beadcount = Integer.valueOf(parts[1]); //10 | 16
+          int quantity = beadcount*qty; //10*5 | 16*5
+          Stock.updateStock(cr,quantity,name); //updateStock('-',50,"yellow") | updateStock('-',80,"green")
+          System.out.println(name+" bead updated!"); // "yellow bead updated!" | "yellow bead updated!"
+        }
+        return true;
+      }catch(Exception e){
+        e.printStackTrace();
+        System.out.println(e.getMessage());
+        return false;
+      }
+    }
 
 
     /**
@@ -210,9 +390,9 @@ public class Order
         preparedStmt.setInt(1, this.orderNo); 
         preparedStmt.execute();
         for (Order o:orders){if(o.orderNo==orderNo){orders.remove(orders.indexOf(o));}}
-        //update('+');
+        update('-');
       } catch (Exception e) {
-        //e.printStackTrace();
+        e.printStackTrace();
       }
     }
 
@@ -289,9 +469,16 @@ public class Order
     
       while (result.next()) 
       {
-        Order e = new Order(result.getInt("customer_id"), result.getString("size"), result.getString("order_quantity"), result.getString("bracelets"), 
-        result.getString("pickup_location"),result.getInt("order_number"), result.getDouble("total"),result.getDate("order_date"));
-        orders.add(e);
+        try{
+          Order e = new Order(result.getInt("customer_id"), result.getString("size"), result.getString("order_quantity"), result.getString("bracelets"), 
+          result.getString("pickup_location"),result.getInt("order_number"), result.getDouble("total"),result.getDate("order_date"));
+          orders.add(e);
+        }
+        catch(SQLException exc){
+          Order e = new Order(result.getInt("customer_id"), result.getString("order_quantity"), result.getString("bracelets"), 
+          result.getString("pickup_location"),result.getInt("order_number"), result.getDouble("total"),result.getDate("order_date"));
+          orders.add(e);
+        }
       }
       return orders;
     }

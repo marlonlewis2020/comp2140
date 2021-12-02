@@ -27,7 +27,7 @@ import Order.Order;
 
 public class Authentication implements Operations{
     private static DBConnect conn;
-    private PreparedStatement ps;
+    // private PreparedStatement ps;
     
     private String role = null;
     private String user = null;
@@ -216,15 +216,15 @@ public class Authentication implements Operations{
      * function gets the sql request string and converts it into a prepared dtatement
      * @return prepared statement matching the user's request
      */
-    public PreparedStatement getPS() {
-        try{
-            ps = getDbConn().prepareStatement(getRequest());
-        }catch(SQLException e){
-            e.printStackTrace();
-            ps = null;
-        }
-        return ps;
-    }
+    // public PreparedStatement getPS() {
+    //     try{
+    //         ps = getDbConn().prepareStatement(getRequest());
+    //     }catch(SQLException e){
+    //         e.printStackTrace();
+    //         ps = null;
+    //     }
+    //     return ps;
+    // }
 
     /**
      * toString method that returns login/logout confirmation message when user logs in/out
