@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch LoginFormDemo",
+            "request": "launch",
+            "mainClass": "GUI.LoginFormDemo",
+            "projectName": "comp2140_419165b7"
+        },
+        {
+            "type": "java",
+            "name": "Launch LoginFormDemo",
+            "request": "launch",
+            "mainClass": "GUI.LoginFormDemo",
+            "projectName": "comp2140_5686c8e3"
+        },
+        {
+            "type": "java",
             "name": "Launch test",
             "request": "launch",
             "mainClass": "Test.test",
