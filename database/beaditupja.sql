@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2021 at 04:26 PM
+-- Generation Time: Dec 01, 2021 at 08:50 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -78,6 +78,7 @@ CREATE TABLE `orders` (
   `order_number` int(8) NOT NULL,
   `bracelets` varchar(150) NOT NULL,
   `order_quantity` varchar(50) NOT NULL,
+  `size` varchar(250) NOT NULL,
   `customer_id` int(8) NOT NULL,
   `pickup_location` varchar(30) NOT NULL,
   `order_date` datetime NOT NULL,
@@ -88,9 +89,9 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_number`, `bracelets`, `order_quantity`, `customer_id`, `pickup_location`, `order_date`, `total`) VALUES
-(86, 'b1', '9', 12, 'Half Way Tree', '2021-12-01 00:00:00', 27),
-(87, 'b1', '9', 12, 'Half Way Tree', '2021-12-01 00:00:00', 27);
+INSERT INTO `orders` (`order_number`, `bracelets`, `order_quantity`, `size`, `customer_id`, `pickup_location`, `order_date`, `total`) VALUES
+(86, 'b1', '9', '', 12, 'Half Way Tree', '2021-12-01 00:00:00', 27),
+(87, 'b1', '9', '', 12, 'Half Way Tree', '2021-12-01 00:00:00', 27);
 
 -- --------------------------------------------------------
 

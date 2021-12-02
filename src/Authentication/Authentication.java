@@ -142,26 +142,11 @@ public class Authentication implements Operations{
     // ---------- //PRIVATE METHODS USED TO ACHIEVE THE SYSTEM'S FUNCTIONALITIES// ---------- //
 
     /**
-     * 
-     * Retrieves SQL request statement that has been set by the system, based on the menu option selected. 
-     * Only used by the application logic layer
-     * @return String SQL statement to be executed to fulfill the user's menu request
-     */
-    public String getRequest(){
-        return request;
-    }
+    
 
     // ---------- //PUBLIC METHODS// ---------- //
 
-    /**
-     * 
-     * Method sets the current sql request attribute for the current user, based on the menu option selected. 
-     * Only used by the Interface Management layer
-     * @param option: THE STRING REPRESENTATION OF MENU OPTION CHOSEN BY THE USER
-     */
-    public void setRequest(String option){
-        request = menuHashMap.get(option);
-    }
+   
     
     // ---------- //GETTERS FOR THE CLASS// ---------- //
 

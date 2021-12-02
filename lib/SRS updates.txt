@@ -22,18 +22,19 @@ Stock CLASS (uses Authentication, aggregates DBAccess):
     - [static] inventory :ArrayList<Stock> 
     - [static] auth :Authentication 
 
-    + Stock(StockType,String,int,int) (Constructor)
-    + Stock(StockType,String,int) 
-    # Stock(int, StockType,String,int,int) (Constructor)
-    - exists(String) :boolean
+    + Stock(StockType type, String name,int quantity,int level) (Constructor)
+    + Stock(StockType type, String name,int quantity) 
+    # Stock(int id_input, StockType type, String name,int quantity,int level) (Constructor)
+    - exists(String sname) :boolean
     + getID() :int
-    + getQuantity(String) :int
-    + updateStock(char,int,String) :boolean
-    + getStockName() :String
-    + deleteStock(String) :void
+    + getQuantity(String name) :int
+    + updateStock(char ch,int qty, String name) :boolean
+    + getStockName(String newName) :void
+    + deleteStock(String name) :void
     + createStock() :void
-    + viewStock(int) :ArrayList<Stock>
-    + viewItem(String) :Stock
+    + changeStockType(StockType newName) :void
+    + viewStock(int filter) :ArrayList<Stock>
+    + viewItem(String name) :Stock
     + getLevel() :int
     + toString() :String
 
@@ -52,11 +53,9 @@ Authentication CLASS (uses DBConnect, implements Operations):
     - auth_option :String 
 
     + Authentication() (Constructor)
-    + authenticate(String, String) :String 
+    + authenticate(String user, String pw) :String 
     + logout() :String 
-    - login() :String 
-    + getRequest() :String 
-    + setRequest(String) :void 
+    - login() :String  
     + getRole() :String 
     + getPwd() :int 
     + getUser() :String 
@@ -112,3 +111,33 @@ DBConnect Class:
 
 
 Order class:
+    - orderNo :int 
+    - static orders :ArrayList <Order> 
+    - orderDate :Date 
+    - customerID :int 
+    - bracelets :String 
+    - braceletQuantities :String 
+    - pickupLocation :String 
+    - cost :double  
+    
+    - conn :Connection
+    - size :String 
+     + Order(String cusPhoneNumber, String cusName, String sizes, String braceletQuantities, String bracelets, String pickupLocation) (Constructor)
+     + reducer(String b, String q) :void
+     + Order(int cus_id, String sizes, String order_quantity, String bracelets, String pickup_location,int order_number, Double total, Date order_date) (Constructor)
+     + calcTotalCost(String braceletQuantities, String bracelets) :double
+     + getCusId(String cusName,String cusPhoneNumber) :int
+     + boolean addToDatabase() :boolean
+     + update(char op) :void
+     + deleteOrder() :void
+     + updateOrder(int orderNo, String fields, String values) :boolean
+     + populate() :ArrayList <Order>
+     + getOrderNo() :int
+     + getorderDate() :Date
+     + getbraceletQuantities() :String 
+     + getpickupLocation() :String
+     + getcustomerID() :int 
+     + getCost() :double 
+     + toString() :String 
+     + reducer(String b, String q) :void
+

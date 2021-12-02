@@ -161,7 +161,7 @@ class test {
         System.out.println(String.format(teststring,c));
         try {
             // CREATING ORDER 
-            Order fdr = new Order("8764385612", "Marlon Lewis", "2,3,4", "b1,b1,b1", "Half Way Tree"); // Requires a public static getCost(String braceletName) method from Bracelet to test and run        System.out.println("[Order object created]");
+            Order fdr = new Order("8764385612", "Marlon Lewis", "SMALL,SMALL,SMALL", "2,3,4", "b1,b1,b1", "Half Way Tree"); // Requires a public static getCost(String braceletName) method from Bracelet to test and run        System.out.println("[Order object created]");
             
             // ADDING ORDER TO THE DATABASE
             System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
@@ -180,7 +180,7 @@ class test {
                 System.out.println("\n[DELETING ORDER/S]");
                 for(int i = 1; i < n; i++){
                     int m=Order.orders.get(i).getOrderNo();
-                    Order.deleteOrder(m);
+                    Order.orders.get(i).deleteOrder();
                     System.out.println(String.format("[ORDER # %d DELETED]\n\n",m));
                 }
             }
@@ -270,11 +270,11 @@ class test {
         
         /*        * RUNNING TESTS               */
         Authentication a = t.authenticationTests(); //Authentication
-        String b = t.stockTests(); //Stock
+        String b = "[BRACELET TEST PENDING]"; //Stock //t.stockTests(); //Stock
         String c = t.braceletTests(); //"[BRACELET TEST PENDING]; \n"; //t.braceletTests(); //Bracelet
         String d = t.orderTests(); //"[ORDER TEST PENDING]; \n"; //t.orderTests(); //Order//"[ORDER TEST PENDING]; \n"; //Order
-        String e = t.customerTests(); //"[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //Customer
-        String f = t.userTests(); //"[USER TEST PENDING]; \n"; //t.userTests(); //Stock//"[USER TEST PENDING]; \n"; //User
+        String e = "[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //"[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //Customer
+        String f = "[USER TEST PENDING]; \n"; //t.userTests(); //"[USER TEST PENDING]; \n"; //t.userTests(); //Stock//"[USER TEST PENDING]; \n"; //User
         Customer.populate();
 
         t.confirmations(a,b,c,d,e,f);

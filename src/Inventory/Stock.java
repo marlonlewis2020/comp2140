@@ -40,6 +40,33 @@ public class Stock{
         this.quantity=quantity;
     }
 
+    public void changeStockName(String newName){
+        try{
+            PreparedStatement sql = conn.prepareStatement("update stock set name = ? where name = ?");
+            sql.setString(1, newName);
+            sql.setString(2, this.name);
+            sql.execute();
+            this.name=newName;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void changeStockType(StockType newName){
+        try{
+            PreparedStatement sql = conn.prepareStatement("update stock set type = ? where type = ?");
+            sql.setString(1, String.valueOf(newName));
+            sql.setString(2, String.valueOf(this.stockType));
+            sql.execute();
+            this.stockType=newName; 
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * overloaded constructor for creating Stock item
      * @param type - type of stock item
