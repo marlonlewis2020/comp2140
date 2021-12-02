@@ -7,10 +7,12 @@ package Authentication;
 import java.util.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import Authentication.Authentication;
 import java.sql.ResultSet;
 
-public class User{
-    private int userID;
+ public class User
+{
+  private int userID;
   private static int nextid =0;
   private String userName;
   private int passWord;
@@ -117,7 +119,7 @@ public class User{
    * deletes a user from the system using the username
    * @param username user name of the user to be deleted
    */
-  public void deleteUser(String username)
+  public static void deleteUser(String username)
   {
     try{
   
@@ -143,7 +145,7 @@ public class User{
    * @param field column heading to be updated (username,password,role)
    * @param value updated version of the username, password or role
    */
-  public void updateUser(String username, String field, String value)
+  public static void updateUser(String username, String field, String value)
   {
     Connection conn = Authentication.getDbConn();
 
@@ -186,4 +188,4 @@ public class User{
 
         }
       }
-}
+    }
