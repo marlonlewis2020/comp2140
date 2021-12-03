@@ -20,17 +20,16 @@ import java.sql.Date;
 
 public class Order
 {
-    private int orderNo;
-    public static ArrayList <Order> orders = new ArrayList <Order>();
-    private Date orderDate;
-    private int customerID;
-    private String bracelets = "";
-    private String braceletQuantities;
-    private String pickupLocation;
-    private double cost;
-    
-    private Connection conn = Authentication.getDbConn(); //Connection object created
-    private String size;
+  private int orderNo;
+  public static ArrayList <Order> orders = new ArrayList <Order>();
+  private Date orderDate;
+  private int customerID;
+  private String bracelets = "";
+  private String braceletQuantities;
+  private String pickupLocation;
+  private double cost;
+  private Connection conn = Authentication.getDbConn(); //Connection object created
+  private String size;
 
     /**
      * Function used to create new orders and add it to the database
@@ -45,10 +44,8 @@ public class Order
       this.size = sizes;
       System.out.println("[NEW CONSTRUCTOR USED] SIZE: "+this.size);
       reducer(bracelets,braceletQuantities);
-      String[] bsizes = this.size.split(",");
-      Bracelet brace = null;
-      
-      if(verify(brace,bsizes)){
+      String[] bsizes = this.size.split(",");      
+      if(verify(bsizes)){
         // verified beads exist and quantity of each bead required to make each bracelet is within estimates
         // PROCEEDING TO CREATE ORDER
         this.pickupLocation = pickupLocation;
@@ -67,7 +64,7 @@ public class Order
     public Order(String cusPhoneNumber, String cusName, String braceletQuantities, String bracelets, String pickupLocation){
       setSizesSmall(bracelets);
       reducer(bracelets, braceletQuantities);
-      if(verify(null,this.size.split(","))){
+      if(verify(this.size.split(","))){
         this.pickupLocation = pickupLocation;
         this.orderDate = new java.sql.Date(new java.util.Date().getTime());
         this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
@@ -165,6 +162,10 @@ public class Order
       
     }
 
+    /**
+     * Function works along with the old database constunctor that doesn't accept size as a parameter. 
+     * In these situations, the system automatically assigns the size small to each bracelet in the order.
+     */
     private void setSizesSmall(String bracelets){
       String sizes = "";
       for(int i = 0; i<bracelets.split(",").length;i++){
@@ -173,11 +174,16 @@ public class Order
       this.size = sizes.substring(0, sizes.length()-1);
     }
 
-    private boolean verify(Bracelet brace, String[] bsizes){
+    /**
+     * Function verifies if enough stock is availale to make each of the bracelets in the order. 
+     * @param bsizes the precisely ordered/arranged string array of sizes for each bracelet in the order.
+     * @return boolean value true if the order can be made with the available stock or false if it cannot.
+     */
+    private boolean verify(String[] bsizes){
       int sum = 0;
       int count= 0;
       for(String bx: this.bracelets.split(",")){
-        brace = Bracelet.searchByName(bx);
+        Bracelet brace = Bracelet.searchByName(bx);
 
         //checks to ensure the beads required to make the bracelet exists
         // CHECKING BEAD AVAILABILITY FOR ALL BRACELETS IN ORDER
@@ -194,6 +200,7 @@ public class Order
               stock.createStock();
               this.bracelets = "";
               this.braceletQuantities = "";
+              this.size = "";
               System.out.println("[ORDER NOT CREATED] ONE OR MORE ITEMS IN THE ORDER DOES NOT HAVE STOCK VALUE");
               return false;
             }
@@ -281,8 +288,6 @@ public class Order
       return Customer.getCusId(cusName, cusPhoneNumber, this.pickupLocation);
         
     }
-
-
 
     /**
      * adds an order to the database
@@ -392,12 +397,12 @@ public class Order
         return b.getLgBeadQty();
       }
     }
-      
-    //for each bracelet (name, qty) string, get the beads, qtys for each bead, call the updateStock function
-    //String bracelet = "yellow-10;green-16" - for small
 
     /**
-     * function updates the bead count in the database for all the beads required to make a specifc bracelet in the order when an order is created or deleted
+     * Function updates the bead count in the database for all the beads required to make a specific sized bracelet in the order 
+     * when an order is created or deleted. For each bracelet, the function retrieves the beads and qtys (i.e "yellow-10;green-16") 
+     * required to make a unit, call the updateStock function on each bead and include the bracelet qty to calculate the adjustment 
+     * to stock quantity.
      * @param ch is the operator either + or - to perform on the quantity of a bead item in the database
      * @param bracelet is the String formatted beadcount for all the beads required for making the a specific bracelet
      * @param qty is the quantity of a specific bracelet in the order
@@ -422,7 +427,6 @@ public class Order
       }
     }
 
-
     /**
      * deletes order from database and returns beads to inventory
      * 
@@ -442,58 +446,63 @@ public class Order
     }
 
     /**
-     * deletes order from database
-     * @param orderNo - order number of order to delete
-     */
-    // public static void deleteOrder(int orderNo)
-    // {
-    //   populate();
-    //   try{
-    //     String query = "Delete from Orders where order_number = ?";
-    //     PreparedStatement preparedStmt = Authentication.getDbConn().prepareStatement(query);
-    //     preparedStmt.setInt(1, orderNo); 
-    //     preparedStmt.execute();
-    //     for (Order o:orders){if(o.orderNo==orderNo){orders.remove(orders.indexOf(o));}}
-        
-    //     }
-    //     catch(Exception e)
-    //     {
-    //       e.printStackTrace();
-    //       System.out.println("ORDER NUMBER "+orderNo+": "+e.getMessage());
-    //     }
-    // }
-
-    /**
      * function updates an order
      * @param orderNo - order number of the order to be updated
-     * @param fields - fields of the table for the record that should be updated. string separated with comma delimiters
-     * @param values - values to enter into the fields in the same order as the fields were specified
+     * @param columns - ArrayList of Strings containing field names of the table for the record that should be updated.
+     * @param inputs - ArrayList of Object containing values to enter into the fields in the same order as the fields were specified.
      * @return boolean confirming successful update or not
      */
-    public boolean updateOrder(int orderNo, String fields, String values)
+    public boolean updateOrder(int orderNo, ArrayList<String> columns, ArrayList<Object> inputs)
     { 
-      boolean result = true;
-        ArrayList<String> columns = new ArrayList<String>();
-        columns.addAll(Arrays.asList(fields.split(","))); 
-        ArrayList<String> inputs = new ArrayList<String>();
-        inputs.addAll(Arrays.asList(values.split(","))); 
-        for (int i = 0; i < columns.size(); i++) 
-        {
-          try {
-            String query = String.format("Update orders set %s=? where order_number = ?",columns.get(i));
-            PreparedStatement preparedStmt = conn.prepareStatement(query);
-            preparedStmt.setString(1, inputs.get(i));
-            preparedStmt.setInt(2, orderNo);
-            preparedStmt.executeUpdate();
-            System.out.println(String.format("[SUCCESSFULLY UPDATED %s IN ORDER]", columns.get(i).toUpperCase()));
-          } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-            System.out.println(String.format("[FAILED TO UPDATE %s IN ORDER]",columns.get(i).toUpperCase()));
-            return false;
-          }
+      for (int i = 0; i < columns.size(); i++) 
+      {
+        if(makeChange(columns,inputs,i)==false){
+          return false;
         }
-        return result;
+      }
+      // makeChange updates the database. 
+      // Now apply changes to this object. 
+      // recalculate total for database and this object.
+      try{
+        PreparedStatement prep = conn.prepareStatement("select bracelets,order_quantity from orders where order_number=?");
+        prep.setInt(1,this.customerID);
+        ResultSet orderDetails = prep.executeQuery();
+        this.braceletQuantities = orderDetails.getString("order_quantity");
+        this.bracelets = orderDetails.getString("bracelets");
+        this.pickupLocation = orderDetails.getString("pickup_location");
+        this.size = orderDetails.getString("size");
+        this.customerID = orderDetails.getInt("customer_id");
+        this.orderDate = orderDetails.getDate("order_date");
+        this.cost = calcTotalCost(this.braceletQuantities, this.bracelets);
+
+        PreparedStatement preparedStmt = conn.prepareStatement("Update orders set total=? where order_number = ?");
+        preparedStmt.setDouble(1, this.cost);
+        preparedStmt.executeUpdate();
+        System.out.println(String.format("[SUCCESSFULLY UPDATED %s IN ORDER]", "TOTAL COST"));
+        return true;
+        
+      }
+      catch(Exception e){
+        e.printStackTrace();
+        return false;
+      }
+    }
+
+    private boolean makeChange(ArrayList<String> columns, ArrayList<Object> inputs, int i){
+      try {
+        String query = String.format("Update orders set %s=? where order_number = ?",columns.get(i));
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        preparedStmt.setObject(1, inputs.get(i)); //for Date, String or Double
+        preparedStmt.setInt(2, this.orderNo);
+        preparedStmt.executeUpdate();
+        System.out.println(String.format("[SUCCESSFULLY UPDATED %s IN ORDER]", columns.get(i).toUpperCase()));
+        return true;
+      } catch (Exception e) {  
+        e.printStackTrace();
+        System.out.println(e.getMessage());
+        System.out.println(String.format("[FAILED TO UPDATE %s IN ORDER]",columns.get(i).toUpperCase()));
+        return false;
+      }
     }
 
     /**
@@ -537,7 +546,7 @@ public class Order
 
   // ---------- GETTERS ---------- //
 
-  /**
+    /**
      * function gets the set order number
      * @return int - the order number that has been set.
      */
@@ -578,19 +587,23 @@ public class Order
       return calcTotalCost(braceletQuantities, bracelets);
       }
 
-      private ResultSet getCustomer(){
-        try{
-          PreparedStatement cus = conn.prepareStatement("select * from customers where id=?");
-          cus.setString(1,String.valueOf(this.customerID));
-          ResultSet customer = cus.executeQuery();
-          customer.next();
-          return customer;
-        }
-        catch(Exception e){
-          e.printStackTrace();
-          return null;
-        }
+    /**
+     * Function locates the customer details for this order's customer. 
+     * @return the customer details from the search results are provided as a ResultSet. 
+     */
+    private ResultSet getCustomer(){
+      try{
+        PreparedStatement cus = conn.prepareStatement("select * from customers where id=?");
+        cus.setString(1,String.valueOf(this.customerID));
+        ResultSet customer = cus.executeQuery();
+        customer.next();
+        return customer;
       }
+      catch(Exception e){
+        e.printStackTrace();
+        return null;
+      }
+    }
 
     /**
      * function converts the order to a String
@@ -616,5 +629,4 @@ public class Order
       }
       return st+ci+pl+"Total: $"+String.valueOf(getCost())+"0";
     }
-
   }

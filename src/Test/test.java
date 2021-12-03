@@ -137,7 +137,7 @@ class test {
         try{
             Bracelet.populate();
             Bracelet b; 
-            b = new Bracelet("b1", 3.00, "yellow-2;green-4", "yellow-5;green-8", "yellow-10;green-16", "diatta");
+            b = new Bracelet("b2", 5.00, "green-2;yellow-4", "green-5;yellow-8", "green-10;yellow-16", "another");
             //System.out.println(b.getName());
             //System.out.println(b.getBracelets());
             //System.out.println(b.getID());
@@ -164,7 +164,8 @@ class test {
         System.out.println(String.format(teststring,c));
         try {
             /* CREATING ORDER */
-            // Order fdr = new Order("8763792241", "Olivia Blackwood", "SMALL,MEDIUM", "2,10", "b1,b1", "Half Way Tree"); // Requires a public static getCost(String braceletName) method from Bracelet to test and run        System.out.println("[Order object created]");
+            new Order("8763792241", "Olivia Blackwood", "SMALL,MEDIUM", "2,10", "b1,b1", "Half Way Tree"); 
+
             new Order("8765799876", "Sean Morgan", "2,8", "b1,b1", "Harbour View");
             /* ADDING ORDER TO THE DATABASE */
             //System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
