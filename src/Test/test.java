@@ -167,7 +167,7 @@ class test {
             /* CREATING ORDER */
             new Order("8763792241", "Olivia Blackwood", "SMALL,MEDIUM", "2,10", "b1,b1", "Half Way Tree"); 
 
-            new Order("8765799876", "Sean Morgan", "2,8", "b6,b5", "Harbour View");
+            new Order("8765799876", "Sean Morgan", "2,8", "b2,b3", "Harbour View");
             /* ADDING ORDER TO THE DATABASE */
             //System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
             //System.out.println("[ORDER STATUS] OLD STOCK FORMAT - Added to Database: "+old.addToDatabase());
