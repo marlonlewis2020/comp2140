@@ -190,7 +190,7 @@ public class Stock{
         // System.out.println(this.name+": "+"[esists method status] "+exists(this.name));
         if(exists(this.name)){
             updateStock('+',quantity, name);
-            // System.out.println("updated");
+            System.out.println("[updated] "+this.name);
             return true;
         }
         else{
@@ -201,6 +201,7 @@ public class Stock{
                 sql.setInt(3, this.quantity);
                 sql.setInt(4, this.level);
                 sql.execute();
+                System.out.println("[ADDED NEW BEAD]");
                 return true;
             } catch (SQLException e) {
                 System.out.println(e.getMessage());

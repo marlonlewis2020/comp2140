@@ -136,15 +136,16 @@ class test {
         System.out.println(String.format(teststring,c));
         try{
             Bracelet.populate();
-            Bracelet b; 
-            b = new Bracelet("b2", 5.00, "green-2;yellow-4", "green-5;yellow-8", "green-10;yellow-16", "another");
+            Bracelet b = new Bracelet("b3", 6.00, "purple-2;silver-4", "purple-5;silver-8", "purple-10;silver-16", "another");
+            // Bracelet cd = new Bracelet("b3", 5.00, "green-2;yellow-4", "green-5;yellow-8", "green-10;yellow-16", "another");
+            // Bracelet de = new Bracelet("b4", 5.00, "green-2;yellow-4", "green-5;yellow-8", "green-10;yellow-16", "another");
             //System.out.println(b.getName());
             //System.out.println(b.getBracelets());
             //System.out.println(b.getID());
             //System.out.println(b.getCollection());
             //System.out.println(Bracelet.getBraceletIndex("b1"));
             // Bracelet b = Bracelet.searchByName("b1");
-            Bracelet.addToArray(b);
+            //Bracelet.addToArray(b);
             b.addToDatabase();
             System.out.println(b.getName());
             System.out.println(b.getSmallBeadQty());
@@ -166,7 +167,7 @@ class test {
             /* CREATING ORDER */
             new Order("8763792241", "Olivia Blackwood", "SMALL,MEDIUM", "2,10", "b1,b1", "Half Way Tree"); 
 
-            new Order("8765799876", "Sean Morgan", "2,8", "b1,b1", "Harbour View");
+            new Order("8765799876", "Sean Morgan", "2,8", "b6,b5", "Harbour View");
             /* ADDING ORDER TO THE DATABASE */
             //System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
             //System.out.println("[ORDER STATUS] OLD STOCK FORMAT - Added to Database: "+old.addToDatabase());

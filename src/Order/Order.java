@@ -190,6 +190,9 @@ public class Order
         for(String s: Bracelet.searchByName(bx).getSmallBeadQty().split(";")){
           
           Stock stock = new Stock (StockType.Beads,s.split("-")[0], 0, 0);
+          System.out.println("[NEW BEAD CREATION ATTEMPT] " + s.split("-")[0]);
+          stock.createStock();
+          System.out.println("[NES STOCK CREATED...ORDER]");
           try {
             String sql = "select * from stock where name = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);

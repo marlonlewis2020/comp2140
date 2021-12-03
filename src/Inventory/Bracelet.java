@@ -180,18 +180,18 @@ public class Bracelet{
         try{
             if(Bracelet.searchByName(getName()) == null || Bracelet.getBracelets().size() == 0){
                 Connection conn = Authentication.getDbConn();
-                String query = "insert into bracelet (id, name,collection,cost, smallBeads, mediumBeads, largeBeads)"
-                    + " values (?, ?, ?, ?, ?, ?, ?)";
+                String query = "insert into bracelet (name,collection,cost, smallBeads, mediumBeads, largeBeads)"
+                    + " values (?, ?, ?, ?, ?, ?)";
             
                 // create the mysql insert prepared statement
                 PreparedStatement preparedStmt = conn.prepareStatement(query);
-                preparedStmt.setInt(1, this.getID());
-                preparedStmt.setString(2, this.getName());
-                preparedStmt.setString(3, this.getCollection());
-                preparedStmt.setDouble(4, this.getCost());
-                preparedStmt.setString(5, this.getSmallBeadQty());
-                preparedStmt.setString(6,  this.getMedBeadQty());
-                preparedStmt.setString(7,  this.getLgBeadQty());
+                //preparedStmt.setInt(1, this.getID());
+                preparedStmt.setString(1, this.getName());
+                preparedStmt.setString(2, this.getCollection());
+                preparedStmt.setDouble(3, this.getCost());
+                preparedStmt.setString(4, this.getSmallBeadQty());
+                preparedStmt.setString(5,  this.getMedBeadQty());
+                preparedStmt.setString(6,  this.getLgBeadQty());
                 // execute the preparedstatement
                 preparedStmt.execute();
                 System.out.println("Added to database");
