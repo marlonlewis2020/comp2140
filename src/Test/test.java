@@ -163,12 +163,12 @@ class test {
         String c = "ORDER TESTS\n\n";
         System.out.println(String.format(teststring,c));
         try {
-            // CREATING ORDER 
+            /* CREATING ORDER */
             // Order fdr = new Order("8763792241", "Olivia Blackwood", "SMALL,MEDIUM", "2,10", "b1,b1", "Half Way Tree"); // Requires a public static getCost(String braceletName) method from Bracelet to test and run        System.out.println("[Order object created]");
-            Order old = new Order("8764449876", "Old McDonald", "4,8", "b1,b1", "Harbour View");
-            // ADDING ORDER TO THE DATABASE
-            // System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
-            System.out.println("[ORDER STATUS] OLD STOCK FORMAT - Added to Database: "+old.addToDatabase());
+            new Order("8765799876", "Sean Morgan", "2,8", "b1,b1", "Harbour View");
+            /* ADDING ORDER TO THE DATABASE */
+            //System.out.println("[ORDER STATUS] Added to Database: "+fdr.addToDatabase());
+            //System.out.println("[ORDER STATUS] OLD STOCK FORMAT - Added to Database: "+old.addToDatabase());
 
             System.out.println("[GETTING ORDERS FROM DB]");
 
@@ -202,7 +202,7 @@ class test {
         System.out.println(String.format(teststring,c));
         try{
             Authentication auth = new Authentication();
-            // Adding Users
+            /* Adding Users*/
             User callay = new User ("Calzy", "beautiful", Role.ADMIN);
             callay.addUser();
             System.out.println("\n\n[USER ADDED] "+callay.getUserName().toUpperCase()+" ADDED TO DATABASE");
@@ -231,25 +231,25 @@ class test {
         String c = "CUSTOMER TESTS\n\n";
         System.out.println(String.format(teststring,c));
         try {
-            //Testing getcusID Preventing Duplication
+            /*Testing getcusID Preventing Duplication*/
             // mercedes.addToDatabase();
             // marlon.addToDatabase();
             // gabriel.addToDatabase();
             
-            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
-            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
-            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Callay", "8769654681", "Spanish"));
-            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
-            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Kimani", "8769654781", "Mobay"));
-            System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Gabriel", "8769654781", "Mobay"));
+            // System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+            // System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Mercedes", "8768164681", "Sedecrem"));
+            // System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Callay", "8769654681", "Spanish"));
+            // System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
+            // System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Kimani", "8769654781", "Mobay"));
+            // System.out.println("[CUSTOMER ID] Found: "+Customer.getCusId("Gabriel", "8769654781", "Mobay"));
 
-            //Deleting customer
+            /*Deleting customer*/
             Customer.deleteCustomer(Customer.getCusId("Taye-Vaughn", "8769654781", "Mobay"));
 
-            //Testing populate()
+            /*Testing populate()*/
             for (int i = 0; i < Customer.getCustomers().size(); i++)
             {
-                System.out.println(Customer.getCustomers().get(i).getcustomerName());
+                System.out.println("CUSTOMER: "+Customer.getCustomers().get(i).getcustomerName());
             } 
             System.out.println("\n\n");
             return "Customer Tests completed successfully; \n";
@@ -279,7 +279,6 @@ class test {
         String e = t.customerTests(); //"[CUSTOMER TEST PENDING]; \n"; //t.customerTests(); //Customer
         String f = t.userTests(); //"[USER TEST PENDING]; \n"; //t.userTests(); //Stock//"[USER TEST PENDING]; \n"; //User
         
-
         t.confirmations(a,b,c,d,e,f);
     }
 }

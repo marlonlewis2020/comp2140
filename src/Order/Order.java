@@ -42,11 +42,140 @@ public class Order
      */
     public Order(String cusPhoneNumber, String cusName, String sizes, String braceletQuantities, String bracelets, String pickupLocation)
     {
-      int count = 0;
-      int sum = 0;
-      String[] bsizes = sizes.split(",");
-      Bracelet brace;
+      this.size = sizes;
+      System.out.println("[NEW CONSTRUCTOR USED] SIZE: "+this.size);
       reducer(bracelets,braceletQuantities);
+      String[] bsizes = this.size.split(",");
+      Bracelet brace = null;
+      
+      if(verify(brace,bsizes)){
+        // verified beads exist and quantity of each bead required to make each bracelet is within estimates
+        // PROCEEDING TO CREATE ORDER
+        this.pickupLocation = pickupLocation;
+        this.orderDate = new java.sql.Date(new java.util.Date().getTime());
+        this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
+        this.customerID = getCusId(cusName,cusPhoneNumber);
+        System.out.println(String.format("[line 58] bracelets: '%s' \nQuantities: %s \nSizes: %s \nPickupLocation: %s \nCost: %s", this.bracelets,this.braceletQuantities,this.size,this.pickupLocation,this.cost));
+
+        addToDatabase();      }
+    }
+
+    /**
+     * overloaded constructor for creating an Order using the older database configuration with the stock table 
+     * that doesn't have a size field
+     */
+    public Order(String cusPhoneNumber, String cusName, String braceletQuantities, String bracelets, String pickupLocation){
+      setSizesSmall(bracelets);
+      reducer(bracelets, braceletQuantities);
+      if(verify(null,this.size.split(","))){
+        this.pickupLocation = pickupLocation;
+        this.orderDate = new java.sql.Date(new java.util.Date().getTime());
+        this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
+        this.customerID = getCusId(cusName,cusPhoneNumber);
+        System.out.println(String.format("[line 74] bracelets: '%s' \nQuantities: %s \nSizes: %s \nPickupLocation: %s \nCost: %s", this.bracelets,this.braceletQuantities,this.size,this.pickupLocation,this.cost));
+
+        addToDatabase();
+      }
+    }
+
+    /**
+     * Function creates 2 separate strings without duplicates.
+     * One string contains all the order items, separated by ','.
+     * The other string contains all the order quantities, separated by ','.
+     * These strings are stored in their respective attributes, to be added to the database where/when applicable.
+     * the bracelets, braceletQuantities and size fields must be set before reducer can be used.
+     * this function consolidates duplicate order items with their respective order quantities, preventing unnecessary duplicate items being written
+     */
+    private void reducer(String b, String q){
+      String x="";
+      String y="";
+      ArrayList<Integer> k = new ArrayList<Integer>();
+      HashMap<String,Integer> c = new HashMap<String,Integer>();
+
+      String[] bs = b.split(",");
+      String[] qs = q.split(",");
+      int bl = bs.length;
+      for(int i = 0; i < bl; i++){
+        c.put(bs[i],0);
+        // System.out.println(String.valueOf(c.get(bs[i]))+" [VALUE FOR C] "+c.toString());
+        if(c.get(bs[i])!=null){
+          k.add(i);
+        }
+      }
+      System.out.println("[NUMBER OF INDEXES] "+k.size());
+      for(int i = 0; i < bl; i++){
+        c.put(bs[i],c.get(bs[i])+Integer.valueOf(qs[i]));
+      }
+      String r = c.toString().substring(1).replace('}', ' ').strip();
+      // System.out.println("[REDUCER ========== ]"+r);
+      String[] bqp = r.split(",");
+      for(String pair: bqp){
+        String[] par = pair.split("=");
+        x+=par[0]+",";
+        y+=par[1]+",";
+      }
+      this.bracelets=x.substring(0, x.length()-1);
+      this.braceletQuantities=y.substring(0, y.length()-1);
+      String val = this.size;
+      String[] sa = val.split(",");
+      // System.out.println("[bracelets] "+this.bracelets+"\n[quantities] "+this.braceletQuantities+"\n[sizes] "+val);
+      // update sizes to match bracelet/qty strings
+      String z="";
+      int g = this.bracelets.split(",").length;
+      for(int p=0; p<g; p++){
+        z+=sa[k.get(p)]+",";
+        System.out.println("[PRINTING SA[P]] "+sa[p]);
+      }
+      // System.out.println("[STRING OF SIZES] Z: "+z);
+      this.size=z.substring(0,z.length()-1);
+      System.out.println("\n[bracelet sizes] "+this.size);
+    }
+
+    /**
+     * Method used when loading orders into order objects from the database
+     * @param cus_id - int representing customer if
+     * @param order_quantity - String representing the number of each bracelet in the bracelets string in order
+     * @param bracelets - String representing the bracelets in an Order
+     * @param pickup_location - String representing the pickup location
+     * @param order_number - int representing the order id for the order
+     * @param total - total cost of the Order
+     * @param order_date - Date when the order was placed
+     */
+    public Order(int cus_id, String sizes, String order_quantity, String bracelets, String pickup_location,int order_number, Double total, Date order_date){
+      this.customerID = cus_id;
+      this.orderNo = order_number;
+      this.size = sizes;
+      reducer(bracelets, order_quantity);
+      this.pickupLocation = pickup_location;
+      this.orderDate = order_date;
+      this.cost = total;
+    }
+
+    /**
+     * overloaded constructor for loading Orders from the old stock table in database that doesn't have the size field.
+     */
+    public Order(int cus_id, String order_quantity, String bracelets, String pickup_location,int order_number, Double total, Date order_date){
+      this.customerID = cus_id;
+      this.orderNo = order_number;
+      setSizesSmall(bracelets);
+      reducer(bracelets, order_quantity);
+      this.pickupLocation = pickup_location;
+      this.orderDate = order_date;
+      this.cost = total;
+      
+    }
+
+    private void setSizesSmall(String bracelets){
+      String sizes = "";
+      for(int i = 0; i<bracelets.split(",").length;i++){
+        sizes+="SMALL,";
+      }
+      this.size = sizes.substring(0, sizes.length()-1);
+    }
+
+    private boolean verify(Bracelet brace, String[] bsizes){
+      int sum = 0;
+      int count= 0;
       for(String bx: this.bracelets.split(",")){
         brace = Bracelet.searchByName(bx);
 
@@ -66,26 +195,30 @@ public class Order
               this.bracelets = "";
               this.braceletQuantities = "";
               System.out.println("[ORDER NOT CREATED] ONE OR MORE ITEMS IN THE ORDER DOES NOT HAVE STOCK VALUE");
-              return;
+              return false;
             }
           } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
             System.out.println("[DATABASE ERROR WHILE CREATING ORDER] ORDER NOT CREATED! ");
             System.out.println(String.format("select * from stock where name = '%s'",s.split("-")[0]));
+            //return false;
           }  
         }
 
         // checking to ensure we can make the total number of bracelets in the order
         // CHECKING THE BRACELET QUANTITY FOR EACH BRACELET IS WITHIN ESTIMATES
         if(bsizes[count].toUpperCase().equals("SMALL")){
+          System.out.println("Beadcount: "+bsizes[count]);
           int est = brace.estimateQty().get(0);
           sum+=Integer.valueOf(this.braceletQuantities.split(",")[count]);
+          
           if(sum>est){
             System.out.println("SMALL [BRACELET QUANTITY EXCEEDS STOCK AVAILABILITY] ORDER NOT CREATED");
-            return;
+            return false;
           }
           count++;
+          return true;
         }
         
         else if(bsizes[count].toUpperCase().equals("MEDIUM")){
@@ -93,9 +226,10 @@ public class Order
           sum+=Integer.valueOf(this.braceletQuantities.split(",")[count]);
           if(sum>est){
             System.out.println("MEDIUM [BRACELET QUANTITY EXCEEDS STOCK AVAILABILITY] ORDER NOT CREATED");
-            return;
+            return false;
           }
           count++;
+          return true;
         }
 
         else if(bsizes[count].toUpperCase().equals("LARGE")){
@@ -103,110 +237,17 @@ public class Order
           sum+=Integer.valueOf(this.braceletQuantities.split(",")[count]);
           if(sum>est){
             System.out.println("LARGE [BRACELET QUANTITY EXCEEDS STOCK AVAILABILITY] ORDER NOT CREATED");
-            return;
+            return false;
           }
           count++;
+          return true;
         }
         else{
           System.out.println("[INVALID SIZE ENTERED] NO MATCHNG SIZE FOUND IN DATABASE FOR '"+String.valueOf(bsizes[count])+"'!");
-          return;
+          return false;
         }
       }
-      
-      // verified beads exist and quantity of each bead required to make each bracelet is within estimates
-      // PROCEEDING TO CREATE ORDER
-      this.size = sizes;
-      this.pickupLocation = pickupLocation;
-      this.orderDate = new java.sql.Date(new java.util.Date().getTime());
-      this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
-      this.customerID = getCusId(cusName,cusPhoneNumber);
-      addToDatabase();
-    }
-
-    /**
-     * overloaded constructor for creating an Order using the database with the stock table that doesn't have a size field
-     */
-    public Order(String cusPhoneNumber, String cusName, String braceletQuantities, String bracelets, String pickupLocation){
-      this.pickupLocation = pickupLocation;
-      this.orderDate = new java.sql.Date(new java.util.Date().getTime());
-      this.cost = calcTotalCost(braceletQuantities, bracelets); //calculate the cost based on items and quantities in bracelets and braceletQuantities respectively. 
-      this.customerID = getCusId(cusName,cusPhoneNumber);
-      this.braceletQuantities = braceletQuantities;
-      this.bracelets = bracelets;
-      String sizes = "";
-      for(int i = 0; i<this.bracelets.split(",").length;i++){
-        sizes+="SMALL,";
-      }
-      this.size = sizes.substring(0, sizes.length()-1);
-      addToDatabase();
-    }
-
-    /**
-     * function creates 2 separate strings without duplicates, containing all the order items and quantities respectively
-     * consolidates duplicate order items to prevent duplicate items showing in orders
-     */
-    private void reducer(String b, String q){
-      String x="";
-      String y="";
-      HashMap<String,Integer> c = new HashMap<String,Integer>();
-
-      String[] bs = b.split(",");
-      String[] qs = q.split(",");
-      for(int i = 0; i < bs.length; i++){
-        c.put(bs[i],0);
-      }
-      for(int i = 0; i < bs.length; i++){
-        c.put(bs[i],c.get(bs[i])+Integer.valueOf(qs[i]));
-      }
-      String r = c.toString().substring(1).replace('}', ' ').strip();
-      // System.out.println("[REDUCER ========== ]"+r);
-      String[] bqp = r.split(",");
-      for(String pair: bqp){
-        String[] par = pair.split("=");
-        x+=par[0]+",";
-        y+=par[1]+",";
-      }
-      bracelets=x.substring(0, x.length()-1);
-      braceletQuantities=y.substring(0, y.length()-1);
-      // System.out.println("[bracelets ========== ]"+this.bracelets);
-      // System.out.println("[quantities ========== ]"+this.braceletQuantities);
-    }
-
-    /**
-     * Method used when loading orders into order objects from the database
-     * @param cus_id - int representing customer if
-     * @param order_quantity - String representing the number of each bracelet in the bracelets string in order
-     * @param bracelets - String representing the bracelets in an Order
-     * @param pickup_location - String representing the pickup location
-     * @param order_number - int representing the order id for the order
-     * @param total - total cost of the Order
-     * @param order_date - Date when the order was placed
-     */
-    public Order(int cus_id, String sizes, String order_quantity, String bracelets, String pickup_location,int order_number, Double total, Date order_date){
-      this.customerID = cus_id;
-      this.orderNo = order_number;
-      reducer(bracelets, order_quantity);
-      this.pickupLocation = pickup_location;
-      this.orderDate = order_date;
-      this.cost = total;
-      this.size = sizes;
-    }
-
-    /**
-     * overloaded constructor for loading Orders from the old stock table in database that doesn't have the size field.
-     */
-    public Order(int cus_id, String order_quantity, String bracelets, String pickup_location,int order_number, Double total, Date order_date){
-      this.customerID = cus_id;
-      this.orderNo = order_number;
-      reducer(bracelets, order_quantity);
-      this.pickupLocation = pickup_location;
-      this.orderDate = order_date;
-      this.cost = total;
-      String sizes = "";
-      for(int i = 0; i<this.bracelets.split(",").length;i++){
-        sizes+="SMALL,";
-      }
-      this.size = sizes.substring(0, sizes.length()-1);
+      return true;
     }
     
     /**
@@ -274,6 +315,8 @@ public class Order
       }
       catch(Exception e)
       {
+        e.printStackTrace();
+        System.out.println("EXCEPTION ABOVE CAUGHT FROM PREVIOUS BLOCK");
         try {
           String query = "insert into Orders (bracelets, order_quantity, customer_id, pickup_location, order_date, total) values (?, ?, ?, ?, ?, ?)";
 
@@ -313,7 +356,9 @@ public class Order
         
       String[] bracelets = this.bracelets.split(","); //{"b1","b1"} - NAMES (EACH BRACELET)
       String[] qtys = this.braceletQuantities.split(","); //splitting quantitied "5,3" into {"5","3"} - QTY (EACH BRACELET)
-      for(int i =0; i < bracelets.length; i++){ // INDEXING {0,1} - INDEX FOR EACH BRACELET IN ORDER
+      for(int i = 0; i < bracelets.length; i++){ // INDEXING {0,1} - INDEX FOR EACH BRACELET IN ORDER
+        // System.out.println("Value of i: "+i); 
+        // System.out.println("sizes: "+allbeads[i]); 
         int qty = Integer.valueOf(qtys[i]); // {"2","3"}[i] | i.e. qty = {"2","3"}[0] = 5
         String size = allbeads[i]; // SIZE (SPECIFIC BRACELET NAME) | {"SMALL","SMALL"}[i] | i.e {"SMALL","SMALL"}[0] = "SMALL"
         String name = bracelets[i]; // NAME (SPECIFIC BRACELET NAME) | {"b1","b1"}[i]  | i.e {"b1","b1"}[0] = "b1"
@@ -390,7 +435,7 @@ public class Order
         preparedStmt.setInt(1, this.orderNo); 
         preparedStmt.execute();
         for (Order o:orders){if(o.orderNo==orderNo){orders.remove(orders.indexOf(o));}}
-        update('-');
+        update('+');
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -533,13 +578,43 @@ public class Order
       return calcTotalCost(braceletQuantities, bracelets);
       }
 
+      private ResultSet getCustomer(){
+        try{
+          PreparedStatement cus = conn.prepareStatement("select * from customers where id=?");
+          cus.setString(1,String.valueOf(this.customerID));
+          ResultSet customer = cus.executeQuery();
+          customer.next();
+          return customer;
+        }
+        catch(Exception e){
+          e.printStackTrace();
+          return null;
+        }
+      }
+
     /**
      * function converts the order to a String
      * @return object String
      */ 
     public String toString(){
-      String s = "\nCustomer id: "+this.customerID+"\nPickup: "+this.pickupLocation+"\nOrder #";
-      return s+getOrderNo()+": \n Bracelets: "+this.bracelets+"\n Sizes"+this.size+"\n Quantities: "+getbraceletQuantities()+"\n Total: "+String.valueOf(getCost());
+      String pl = "";
+      String[] b = this.bracelets.split(",");
+      String[] q = this.braceletQuantities.split(",");
+      String[] s = this.size.split(",");
+      System.out.println("");
+      for(int n = 0; n<b.length; n++){
+        pl+="Bracelet: "+b[n]+" \t Size: "+s[n]+" \t Quantity: "+q[n]+" \t Unit Cost: "+Bracelet.searchByName(b[n]).getCost()+"\n";
+      }
+      ResultSet customer = getCustomer();
+      String st = "\nOrder #: "+getOrderNo()+"\tPickup: "+this.pickupLocation+"\n";
+      String ci="";
+      try{
+        ci = "Customer id: "+this.customerID+"\tCustomer: "+customer.getString("name")+"\tCustomer tel: "+customer.getString("telephone")+"\n";
+      }
+      catch(Exception e){
+        e.printStackTrace();
+      }
+      return st+ci+pl+"Total: $"+String.valueOf(getCost())+"0";
     }
 
   }
